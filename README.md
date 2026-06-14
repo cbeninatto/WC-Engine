@@ -133,9 +133,50 @@ sqlite3 wc.db "SELECT t.name, power, prior_power, wc_games FROM power_ratings p 
 sqlite3 wc.db "SELECT agent, action, status, created_at FROM agent_runs ORDER BY id DESC LIMIT 10;"
 ```
 
+## Automation
+
+Two complementary pieces let the engine run while you're away — one autonomous, one
+interactive.
+
+### Scheduled results monitor (GitHub Actions)
+
+[`.github/workflows/results-monitor.yml`](.github/workflows/results-monitor.yml) runs the
+monitor **every 30 minutes** (and on-demand via **workflow_dispatch** from the GitHub
+mobile app). Each run fetches new finals, re-rates, pings Telegram, and **commits `wc.db`
+back** to the repo so tournament state persists across the ephemeral runners (it only
+commits when results actually change). It self-stops after `FINAL_DATE` (the World Cup
+final) and no-ops cleanly until its secret is set.
+
+**Required — add these repo secrets** (Settings → Secrets and variables → Actions):
+
+| Secret | Needed for |
+|--------|-----------|
+| `ANTHROPIC_API_KEY` | required — the monitor's web search |
+| `TELEGRAM_BOT_TOKEN` | optional — pings |
+| `TELEGRAM_CHAT_ID` | optional — pings |
+
+Then watch the first run under the repo's **Actions** tab. To change the stop date, edit
+`FINAL_DATE` in the workflow.
+
+### Telegram control bot (always-on host)
+
+[`agents/telegram_bot.py`](agents/telegram_bot.py) is the inbound half of the control
+plane — a long-polling bot **locked to your `TELEGRAM_CHAT_ID`** so only you can drive it:
+
+```bash
+python agents/telegram_bot.py
+```
+
+Commands: `/status` · `/results` (fetch finals + recompute) · `/predict` · `/top` ·
+`/standings` · `/pending` · `/proposals` · `/approve <id>` · `/reject <id>`.
+
+It needs an **always-on host** (home server / small VPS) — a scheduled GitHub Action can't
+hold a long-poll open, which is exactly why the autonomous cadence lives in Actions and the
+interactive control lives here.
+
 ## Host it
 
 The DB is a single file — back it up by copying `wc.db`. For always-on operation, run the
-agents on cron (home server / Tailscale) or a small box, or schedule them via GitHub
-Actions (store secrets as Actions secrets, never commit them). See
+agents on cron (home server / Tailscale) or a small box, or use the GitHub Actions workflow
+above (store secrets as Actions secrets, never commit them). See
 [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md#remote-access).
