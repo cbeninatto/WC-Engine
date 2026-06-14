@@ -22,7 +22,15 @@ backtest scored with Brier / log-loss). We never fine-tune Claude itself.
 - `agents/` — runtime workers (Anthropic API). `results_monitor.py` is built; squad
   monitor, ingest, and tuner are the next three (see Roadmap).
 - `scripts/` — `seed_from_xlsx.py` (one-time bridge from the workbook), `predict.py`.
+- `app.py` + `webapp/` — local FastAPI + Tailwind dashboard/control panel over `wc.db`
+  (view standings/predictions/ratings; run the monitor, recompute, approve proposals).
+  Localhost only.
 - `db/schema.sql` — the schema.
+
+Deeper references in `docs/`: [ARCHITECTURE](docs/ARCHITECTURE.md), [MODEL](docs/MODEL.md),
+[DATABASE](docs/DATABASE.md). Claude Code helpers live in `.claude/` — subagents
+(`data-integrity-auditor`, `runtime-agent-builder`, `model-tuner`) and skills
+(`/check-results`, `/record-result`, `/reseed`).
 
 ## The model (keep parity with the workbook)
     power = ( PPG/3 * 40
@@ -57,6 +65,8 @@ the provenance for each team.
     python scripts/seed_from_xlsx.py            # build wc.db from the workbook
     python scripts/predict.py                   # compute ratings + predictions
     ANTHROPIC_API_KEY=... python agents/results_monitor.py   # fetch finals, re-rate
+    python app.py                               # dashboard at http://127.0.0.1:8000
+                                                # (WC_WEB_PORT=8765 if 8000 is busy)
 
 ## Roadmap (next agents, in order)
 1. `agents/squad_monitor.py` — watch injury/lineup news; when a key player is out, write a

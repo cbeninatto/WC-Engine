@@ -1,30 +1,46 @@
 # WC Engine
 
-Local World Cup 2026 prediction engine + runtime agents. Productionized from the Excel
-model. **Fully local — SQLite, single file, no server.** Only the agents reach the network
-(Anthropic API + web search).
+Local **World Cup 2026 prediction engine** + a fleet of runtime agents that keep it
+current, with a browser dashboard on top. Productionized from an Excel model
+(`WorldCup2026_Analytics_Companion.xlsx`).
 
-## Setup
+**Fully local — SQLite, single file `wc.db`, no server, no cloud DB.** The only outbound
+calls are the runtime agents (Anthropic API + web search) and optional Telegram pings.
 
-Works on native **Windows (PowerShell)**, macOS, or Linux/WSL — it's just Python +
-SQLite, no server. (The WSL2 requirement applies only to *Claude Code itself*, not to
-running this app.)
+---
+
+## What's in here
+
+| Piece | Path | Role |
+|-------|------|------|
+| **Engine** | `engine/` | Pure math — power rating, match probabilities, in-tournament re-rate. No I/O. |
+| **Data layer** | `lib/db.py` | All SQLite access (stdlib only). |
+| **Control plane** | `lib/notify.py` | Optional Telegram notifications. |
+| **Runtime agents** | `agents/` | `results_monitor.py` (built). `squad_monitor`, `ingest`, `tuner` are next. |
+| **Scripts** | `scripts/` | `seed_from_xlsx.py` (one-time bridge), `predict.py` (recompute). |
+| **Web app** | `app.py` + `webapp/` | FastAPI dashboard + control panel. |
+| **Schema** | `db/schema.sql` | The 8-table SQLite schema. |
+
+Deeper references live in [`docs/`](docs/): [architecture](docs/ARCHITECTURE.md) ·
+[the model](docs/MODEL.md) · [database](docs/DATABASE.md). Project rules and the agent
+roadmap are in [`CLAUDE.md`](CLAUDE.md).
+
+---
+
+## Quickstart
+
+> Works on native **Windows (PowerShell)**, macOS, or Linux/WSL — just Python + SQLite.
 
 ### Windows / PowerShell
 
 ```powershell
 python -m venv .venv
-.\.venv\Scripts\Activate.ps1        # optional; skip if deps already global
+.\.venv\Scripts\Activate.ps1            # optional
 pip install -r requirements.txt
 copy "$env:USERPROFILE\Downloads\WorldCup2026_Analytics_Companion.xlsx" .
-python scripts\seed_from_xlsx.py    # auto-finds the workbook (cwd / Downloads)
-python scripts\predict.py
-$env:ANTHROPIC_API_KEY = "sk-ant-..."   # set env var BEFORE the command
-python agents\results_monitor.py
+python scripts\seed_from_xlsx.py        # builds wc.db from the workbook
+python scripts\predict.py               # compute ratings + predictions
 ```
-
-If `Activate.ps1` is blocked, run once:
-`Set-ExecutionPolicy -Scope CurrentUser RemoteSigned`.
 
 ### macOS / Linux / WSL
 
@@ -33,46 +49,93 @@ python -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
 python scripts/seed_from_xlsx.py /path/to/WorldCup2026_Analytics_Companion.xlsx
 python scripts/predict.py
-ANTHROPIC_API_KEY=sk-ant-... python agents/results_monitor.py
 ```
 
 The seeder auto-locates the workbook in the current folder or `~/Downloads`; pass the
-path explicitly if it lives elsewhere. `predict.py` prints the current top 5.
+path explicitly if it lives elsewhere.
 
-## Run the results monitor
+### Secrets (`.env`)
+
+Only the runtime agents need a key. Copy the template and fill it in — `.env` is
+gitignored and auto-loaded by `config.py`:
+
+```bash
+cp .env.example .env        # then edit: ANTHROPIC_API_KEY=sk-ant-...
+```
+
+Optional `TELEGRAM_BOT_TOKEN` + `TELEGRAM_CHAT_ID` enable phone notifications.
+
+---
+
+## The browser dashboard
+
+```bash
+python app.py                    # http://127.0.0.1:8000
+WC_WEB_PORT=8765 python app.py   # pick another port if 8000 is busy
+```
+
+A FastAPI + Tailwind dashboard that reads/writes the same `wc.db`:
+
+- **View** — group standings, upcoming matches with win/draw/win probabilities, power
+  ratings (with Δ vs the pre-tournament prior), and final results.
+- **Control** — buttons to *run the results monitor* and *recompute predictions*, plus an
+  approval queue for anything an agent proposes (see Guardrails).
+
+Endpoints: `GET /api/state`, `POST /api/run-monitor`, `POST /api/recompute`,
+`POST /api/proposals/{id}/{approve|reject}`. Localhost only — see
+[docs/ARCHITECTURE.md](docs/ARCHITECTURE.md#remote-access) for remote hosting.
+
+---
+
+## The results monitor
 
 ```bash
 python agents/results_monitor.py            # one pass: fetch finals, re-rate, notify
 python agents/results_monitor.py --loop 300 # poll every 5 minutes
 ```
 
-It finds matches that have kicked off, asks Claude (with web search) for the final
-scores, records them, folds each result into the ratings (in-tournament re-rate), and —
-if you set the Telegram vars — pings you. Then re-run `predict.py` to refresh predictions.
+Finds matches that have kicked off but aren't final, asks Claude (with web search) for
+the final scores, records them, folds each into the ratings (in-tournament re-rate),
+logs to `agent_runs`, and pings Telegram if configured. Then refreshes predictions.
 
-## Layout
+---
 
-```
-engine/   pure math (power, probabilities, re-rate, params) — no I/O
-lib/      db.py (SQLite), notify.py (Telegram)
-agents/   results_monitor.py  (squad_monitor, ingest, tuner = next)
-scripts/  seed_from_xlsx.py, predict.py
-db/       schema.sql
-```
+## Guardrails (non-negotiable)
+
+1. **Agents propose; you approve.** Observed facts (a final score) auto-commit. Anything
+   that changes model **parameters** or applies a squad adjustment writes a `proposed`
+   row to `agent_runs` and waits.
+2. **Never fabricate data.** No invented friendlies or scores. Unsourceable → skip.
+3. **Full team names always** ("Ivory Coast", never a code). Slugs are lowercase-hyphen.
+4. **Observed group games are immutable** — don't overwrite recorded results.
+
+Full detail in [CLAUDE.md](CLAUDE.md).
+
+---
+
+## Claude Code tooling
+
+This repo ships its own Claude Code scaffolding under [`.claude/`](.claude/):
+
+- **Subagents** (`.claude/agents/`): `data-integrity-auditor`, `runtime-agent-builder`,
+  `model-tuner`.
+- **Skills** (`.claude/skills/`): `/check-results`, `/record-result`, `/reseed`.
+
+Point Claude Code at this folder and it has full context plus these helpers.
+
+---
 
 ## Inspect the data
 
 ```bash
-sqlite3 wc.db "SELECT name, power, prior_power, wc_games FROM power_ratings \
-  JOIN teams USING(id) ORDER BY power DESC LIMIT 10;"   # if you alias team_id->id
-sqlite3 wc.db "SELECT * FROM agent_runs ORDER BY created_at DESC LIMIT 10;"
+sqlite3 wc.db "SELECT t.name, power, prior_power, wc_games FROM power_ratings p \
+  JOIN teams t ON t.id=p.team_id ORDER BY power DESC LIMIT 10;"
+sqlite3 wc.db "SELECT agent, action, status, created_at FROM agent_runs ORDER BY id DESC LIMIT 10;"
 ```
 
-See `CLAUDE.md` for architecture, the model formula, the SoS philosophy, guardrails, and
-the agent roadmap. Point Claude Code at this folder and it has full context.
+## Host it
 
-## Host
-
-For always-on running: cron the agents on your Mac mini home server (it's on Tailscale),
-or Fly.io + Docker like the Fastmail agent. The DB is a single file — back it up by copying
-`wc.db`.
+The DB is a single file — back it up by copying `wc.db`. For always-on operation, run the
+agents on cron (home server / Tailscale) or a small box, or schedule them via GitHub
+Actions (store secrets as Actions secrets, never commit them). See
+[docs/ARCHITECTURE.md](docs/ARCHITECTURE.md#remote-access).

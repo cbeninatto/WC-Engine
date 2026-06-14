@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>WC Engine</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = { darkMode: "class",
+      theme: { extend: { colors: { ink: "#0b0f17", panel: "#131a26", edge: "#22304a" } } } };
+  </script>
+</head>
+<body class="bg-ink text-slate-200 min-h-screen">
+  <div class="max-w-6xl mx-auto p-5">
+
+    <!-- header -->
+    <header class="flex items-center justify-between mb-5">
+      <div>
+        <h1 class="text-2xl font-bold text-white">⚽ WC Engine</h1>
+        <p class="text-slate-400 text-sm">World Cup 2026 prediction dashboard ·
+          <span id="today">—</span></p>
+      </div>
+      <button onclick="load()" class="px-3 py-2 rounded-lg bg-panel border border-edge
+        hover:border-sky-500 text-sm">↻ Refresh</button>
+    </header>
+
+    <!-- controls -->
+    <section class="flex flex-wrap gap-3 mb-5">
+      <button id="btn-monitor" onclick="act('run-monitor', this)"
+        class="px-4 py-2 rounded-lg bg-sky-600 hover:bg-sky-500 text-white font-medium text-sm">
+        ⤓ Run results monitor</button>
+      <button id="btn-recompute" onclick="act('recompute', this)"
+        class="px-4 py-2 rounded-lg bg-panel border border-edge hover:border-sky-500 text-sm">
+        ↻ Recompute predictions</button>
+      <span id="action-msg" class="text-sm text-slate-400 self-center"></span>
+    </section>
+
+    <!-- stat cards -->
+    <section id="stats" class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6"></section>
+
+    <!-- proposals -->
+    <section id="proposals-wrap" class="mb-6 hidden">
+      <h2 class="text-lg font-semibold text-white mb-2">⚑ Proposals awaiting approval</h2>
+      <div id="proposals" class="space-y-2"></div>
+    </section>
+
+    <!-- standings -->
+    <section class="mb-6">
+      <h2 class="text-lg font-semibold text-white mb-3">Group standings</h2>
+      <div id="standings" class="grid md:grid-cols-2 xl:grid-cols-3 gap-4"></div>
+    </section>
+
+    <!-- predictions for pending -->
+    <section class="mb-6">
+      <h2 class="text-lg font-semibold text-white mb-3">Upcoming — model probabilities</h2>
+      <div id="upcoming" class="space-y-2"></div>
+    </section>
+
+    <div class="grid lg:grid-cols-2 gap-6">
+      <!-- ratings -->
+      <section>
+        <h2 class="text-lg font-semibold text-white mb-3">Power ratings</h2>
+        <div id="ratings" class="bg-panel border border-edge rounded-xl overflow-hidden"></div>
+      </section>
+      <!-- results -->
+      <section>
+        <h2 class="text-lg font-semibold text-white mb-3">Results</h2>
+        <div id="results" class="bg-panel border border-edge rounded-xl divide-y divide-edge
+          max-h-[28rem] overflow-y-auto"></div>
+      </section>
+    </div>
+
+    <footer class="text-center text-slate-600 text-xs mt-8">
+      Local engine · reads <code>wc.db</code> · agents propose, you approve
+    </footer>
+  </div>
+
+<script>
+const $ = s => document.querySelector(s);
+const pct = x => x == null ? "—" : Math.round(x * 100) + "%";
+const esc = s => String(s).replace(/[&<>]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));
+
+async function load() {
+  const s = await (await fetch("/api/state")).json();
+  $("#today").textContent = "today " + s.today;
+  renderStats(s.counts);
+  renderProposals(s.proposals);
+  renderStandings(s.standings);
+  renderUpcoming(s.matches);
+  renderRatings(s.ratings);
+  renderResults(s.matches);
+}
+
+function card(label, value, tone="text-white") {
+  return `<div class="bg-panel border border-edge rounded-xl p-4">
+    <div class="text-3xl font-bold ${tone}">${value}</div>
+    <div class="text-slate-400 text-sm mt-1">${label}</div></div>`;
+}
+function renderStats(c) {
+  $("#stats").innerHTML =
+    card("Results in", c.finals) +
+    card("Pending", c.pending) +
+    card("Overdue", c.overdue, c.overdue ? "text-amber-400" : "text-white") +
+    card("Proposals", c.proposals, c.proposals ? "text-rose-400" : "text-white");
+}
+
+function renderProposals(ps) {
+  const wrap = $("#proposals-wrap");
+  if (!ps.length) { wrap.classList.add("hidden"); return; }
+  wrap.classList.remove("hidden");
+  $("#proposals").innerHTML = ps.map(p => `
+    <div class="bg-panel border border-rose-700/50 rounded-lg p-3 flex items-center justify-between">
+      <div class="text-sm"><span class="text-rose-300 font-medium">${esc(p.agent)}</span>
+        · ${esc(p.action)} <span class="text-slate-500">${esc(p.payload||"")}</span></div>
+      <div class="flex gap-2">
+        <button onclick="decide(${p.id},'approve')"
+          class="px-3 py-1 rounded bg-emerald-600 hover:bg-emerald-500 text-white text-xs">Approve</button>
+        <button onclick="decide(${p.id},'reject')"
+          class="px-3 py-1 rounded bg-slate-700 hover:bg-slate-600 text-xs">Reject</button>
+      </div></div>`).join("");
+}
+
+function renderStandings(groups) {
+  $("#standings").innerHTML = groups.map(g => `
+    <div class="bg-panel border border-edge rounded-xl overflow-hidden">
+      <div class="px-3 py-2 bg-edge/40 text-white font-semibold text-sm">Group ${g.group}</div>
+      <table class="w-full text-sm">
+        <thead class="text-slate-500 text-xs">
+          <tr><th class="text-left px-3 py-1">Team</th><th>P</th><th>W</th><th>D</th>
+          <th>L</th><th>GD</th><th class="pr-3">Pts</th></tr></thead>
+        <tbody>${g.rows.map((r,i) => `
+          <tr class="${i<2?'bg-emerald-900/20':''}">
+            <td class="px-3 py-1">${esc(r.team)}</td>
+            <td class="text-center">${r.P}</td><td class="text-center">${r.W}</td>
+            <td class="text-center">${r.D}</td><td class="text-center">${r.L}</td>
+            <td class="text-center">${r.GD>0?'+':''}${r.GD}</td>
+            <td class="text-center pr-3 font-semibold text-white">${r.Pts}</td></tr>`).join("")}
+        </tbody></table></div>`).join("");
+}
+
+function bar(wh, dr, wa) {
+  const w = x => (x||0)*100;
+  return `<div class="flex h-2 rounded overflow-hidden w-40">
+    <div style="width:${w(wh)}%" class="bg-sky-500"></div>
+    <div style="width:${w(dr)}%" class="bg-slate-500"></div>
+    <div style="width:${w(wa)}%" class="bg-rose-500"></div></div>`;
+}
+function renderUpcoming(matches) {
+  const up = matches.filter(m => m.status !== "final" && m.win_home != null).slice(0, 12);
+  $("#upcoming").innerHTML = up.length ? up.map(m => `
+    <div class="bg-panel border ${m.overdue?'border-amber-600/60':'border-edge'} rounded-lg
+      px-4 py-2 flex items-center justify-between gap-4">
+      <div class="text-sm">
+        <span class="text-slate-500 text-xs mr-2">${m.kickoff||''} · ${m.group}</span>
+        <span class="text-white">${esc(m.home)}</span>
+        <span class="text-slate-500">vs</span>
+        <span class="text-white">${esc(m.away)}</span>
+        ${m.overdue?'<span class="ml-2 text-amber-400 text-xs">⏳ overdue</span>':''}
+      </div>
+      <div class="flex items-center gap-3">
+        <span class="text-xs text-slate-400 tabular-nums">${pct(m.win_home)} / ${pct(m.draw)} / ${pct(m.win_away)}</span>
+        ${bar(m.win_home, m.draw, m.win_away)}
+        <span class="text-xs text-slate-500 w-14 text-right">${m.pred_home_goals}–${m.pred_away_goals}</span>
+      </div></div>`).join("")
+    : `<p class="text-slate-500 text-sm">No upcoming matches with predictions.</p>`;
+}
+
+function renderRatings(rs) {
+  $("#ratings").innerHTML = `
+    <table class="w-full text-sm">
+      <thead class="text-slate-500 text-xs"><tr>
+        <th class="text-left px-3 py-2">#</th><th class="text-left">Team</th>
+        <th class="text-right">Prior</th><th class="text-right">Power</th>
+        <th class="text-right pr-3">Δ</th></tr></thead>
+      <tbody class="divide-y divide-edge">${rs.map((r,i) => `
+        <tr><td class="px-3 py-1.5 text-slate-500">${i+1}</td>
+          <td>${esc(r.team)} <span class="text-slate-600 text-xs">${r.confederation}</span></td>
+          <td class="text-right text-slate-400">${r.prior_power?.toFixed(1) ?? '—'}</td>
+          <td class="text-right text-white font-medium">${r.power.toFixed(1)}</td>
+          <td class="text-right pr-3 ${r.delta>0?'text-emerald-400':r.delta<0?'text-rose-400':'text-slate-500'}">
+            ${r.delta>0?'+':''}${r.delta || 0}</td></tr>`).join("")}
+      </tbody></table>`;
+}
+
+function renderResults(matches) {
+  const fin = matches.filter(m => m.status === "final");
+  $("#results").innerHTML = fin.length ? fin.map(m => `
+    <div class="px-4 py-2 flex items-center justify-between text-sm">
+      <div><span class="text-slate-500 text-xs mr-2">${m.kickoff||''} · ${m.group}</span>
+        <span class="text-white">${esc(m.home)}</span>
+        <span class="font-bold text-white mx-1">${m.home_goals}–${m.away_goals}</span>
+        <span class="text-white">${esc(m.away)}</span></div>
+      <span class="text-xs ${m.source?.includes('agent')?'text-sky-400':'text-slate-600'}">${esc(m.source||'')}</span>
+    </div>`).join("")
+    : `<p class="text-slate-500 text-sm p-4">No results yet.</p>`;
+}
+
+async function act(endpoint, btn) {
+  const msg = $("#action-msg");
+  const old = btn.textContent;
+  btn.disabled = true; btn.classList.add("opacity-60");
+  btn.textContent = "Working…"; msg.textContent = "running " + endpoint + "…";
+  try {
+    const r = await (await fetch("/api/" + endpoint, { method: "POST" })).json();
+    msg.textContent = (r.ok ? "✓ " : "✗ ") + (r.output || "").split("\n").pop();
+    msg.className = "text-sm self-center " + (r.ok ? "text-emerald-400" : "text-rose-400");
+    await load();
+  } catch (e) {
+    msg.textContent = "✗ " + e; msg.className = "text-sm self-center text-rose-400";
+  } finally {
+    btn.disabled = false; btn.classList.remove("opacity-60"); btn.textContent = old;
+  }
+}
+
+async function decide(id, action) {
+  await fetch(`/api/proposals/${id}/${action}`, { method: "POST" });
+  await load();
+}
+
+load();
+</script>
+</body>
+</html>
