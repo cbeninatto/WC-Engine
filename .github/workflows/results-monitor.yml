@@ -1,0 +1,88 @@
+name: results-monitor
+
+# Autonomous results monitor: every 30 min, fetch new finals, re-rate, notify Telegram,
+# and persist wc.db back to the repo. Stops running after the World Cup final (FINAL_DATE).
+#
+# Required repo secrets (Settings -> Secrets and variables -> Actions):
+#   ANTHROPIC_API_KEY   (required)
+#   TELEGRAM_BOT_TOKEN  (optional, for pings)
+#   TELEGRAM_CHAT_ID    (optional, for pings)
+
+on:
+  schedule:
+    - cron: "*/30 * * * *"   # every 30 minutes (UTC); GitHub may delay under load
+  workflow_dispatch: {}       # manual trigger (e.g. from the GitHub mobile app)
+
+permissions:
+  contents: write             # allow committing the updated wc.db back
+
+concurrency:
+  group: results-monitor      # never overlap two passes
+  cancel-in-progress: false
+
+env:
+  FINAL_DATE: "2026-07-19"    # WC 2026 final — the job no-ops after this day
+
+jobs:
+  monitor:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run results monitor
+        id: run
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          PYTHONIOENCODING: "utf-8"
+        run: |
+          set -eo pipefail
+
+          # --- end-date guard: stop after the final ---
+          TODAY=$(date -u +%F)
+          if [[ "$TODAY" > "$FINAL_DATE" ]]; then
+            echo "Today ($TODAY) is past the final ($FINAL_DATE); nothing to do."
+            exit 0
+          fi
+
+          # --- secret guard: no-op (green) until ANTHROPIC_API_KEY is set ---
+          if [ -z "$ANTHROPIC_API_KEY" ]; then
+            echo "ANTHROPIC_API_KEY secret not set; skipping. Add it in repo settings."
+            exit 0
+          fi
+
+          CHANGED=false
+          # Ephemeral runner: rebuild wc.db from the committed workbook if absent
+          if [ ! -f wc.db ]; then
+            echo "No wc.db in repo yet; seeding from the workbook."
+            python scripts/seed_from_xlsx.py
+            python scripts/predict.py
+            CHANGED=true
+          fi
+
+          python agents/results_monitor.py | tee monitor.log
+          if grep -qE "Logged [1-9][0-9]* new" monitor.log; then
+            python scripts/predict.py        # refresh predictions off new ratings
+            CHANGED=true
+          else
+            echo "No new results this pass."
+          fi
+
+          echo "changed=$CHANGED" >> "$GITHUB_OUTPUT"
+
+      - name: Persist wc.db
+        if: steps.run.outputs.changed == 'true'
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -f wc.db
+          git commit -m "data: update wc.db from results monitor [skip ci]"
+          git push
