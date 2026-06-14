@@ -138,17 +138,44 @@ def state():
     }
 
 
+def _trigger_workflow() -> dict:
+    """Fire the GitHub Actions results-monitor workflow via workflow_dispatch.
+
+    Used when the app can't run the long web-search agent itself (serverless / Vercel).
+    Needs GITHUB_DISPATCH_TOKEN (a token with `actions:write`) and GITHUB_REPO ("owner/repo").
+    """
+    import httpx
+    token, repo = os.environ.get("GITHUB_DISPATCH_TOKEN"), os.environ.get("GITHUB_REPO")
+    if not token or not repo:
+        return {"ok": False, "output": "GITHUB_DISPATCH_TOKEN / GITHUB_REPO not set"}
+    url = f"https://api.github.com/repos/{repo}/actions/workflows/results-monitor.yml/dispatches"
+    r = httpx.post(url, headers={"Authorization": f"Bearer {token}",
+                                 "Accept": "application/vnd.github+json"},
+                   json={"ref": "main"}, timeout=20)
+    ok = r.status_code == 204
+    return {"ok": ok, "output": "Triggered GitHub Actions run." if ok
+            else f"dispatch failed: {r.status_code} {r.text[:120]}"}
+
+
 @app.post("/api/run-monitor")
 def run_monitor():
+    # Serverless (Vercel): delegate the long web-search loop to GitHub Actions.
+    # Local/Actions: run it directly, then recompute inline.
+    if os.environ.get("GITHUB_DISPATCH_TOKEN"):
+        return JSONResponse(_trigger_workflow())
     res = _run(["agents/results_monitor.py"], timeout=300)
-    if res["ok"]:
-        _run(["scripts/predict.py"], timeout=120)  # refresh preds off new ratings
+    if res["ok"] and "Logged 0" not in res["output"]:
+        from scripts.predict import recompute as _recompute
+        _recompute()  # refresh preds off new ratings
     return JSONResponse(res)
 
 
 @app.post("/api/recompute")
 def recompute():
-    return JSONResponse(_run(["scripts/predict.py"], timeout=120))
+    # Pure DB + math — safe to run inline anywhere (incl. serverless).
+    from scripts.predict import recompute as _recompute
+    post, _, _, _, n = _recompute()
+    return JSONResponse({"ok": True, "output": f"Recomputed {len(post)} teams over {n} finals."})
 
 
 @app.post("/api/proposals/{run_id}/{action}")

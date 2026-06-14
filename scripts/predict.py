@@ -17,8 +17,16 @@ from engine.params import DEFAULT_PARAMS
 VERSION = 1
 
 
-def main():
-    conn = db.connect()
+def recompute(conn=None):
+    """Recompute power ratings + predictions. Pure DB + math (no I/O, no subprocess),
+    so it runs inline anywhere — CLI, the web app, or a serverless function.
+
+    Returns (post_powers, prior_powers, wc_games, teams, n_finals) for callers that want
+    to report. Caller owns the connection if one is passed; otherwise we open+close ours.
+    """
+    own = conn is None
+    if own:
+        conn = db.connect()
     db.init_db(conn)  # ensure tables exist even on a fresh checkout
 
     # 1) prior power from form
@@ -57,13 +65,18 @@ def main():
         db.upsert_prediction(conn, m["id"], wh, dr, wa, ph, pa, VERSION)
 
     conn.commit()
+    if own:
+        conn.close()
+    return post, prior, wc_games, teams, len(finals)
 
+
+def main():
+    post, prior, wc_games, teams, n_finals = recompute()
     ranked = sorted(post.items(), key=lambda kv: -kv[1])
-    print(f"Re-rated {len(post)} teams over {len(finals)} final matches. Top 5:")
+    print(f"Re-rated {len(post)} teams over {n_finals} final matches. Top 5:")
     for tid, pw in ranked[:5]:
         tag = f"  (prior {prior[tid]:.1f}, {wc_games.get(tid,0)} WC games)"
         print(f"  {teams[tid]['name']:22s} {pw:5.1f}{tag}")
-    conn.close()
 
 
 if __name__ == "__main__":

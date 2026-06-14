@@ -3,10 +3,18 @@
 Project context for Claude Code. Read this before changing anything.
 
 ## What this is
-A local World Cup 2026 prediction engine plus a fleet of runtime agents that keep it
-current. It is the productionized version of an Excel model (`WorldCup2026_Analytics_Companion.xlsx`).
-**Fully local: SQLite, single file `wc.db`. No Supabase, no server.** Only the runtime
-agents make outbound calls (Anthropic API + web search).
+A World Cup 2026 prediction engine plus a fleet of runtime agents that keep it current.
+It is the productionized version of an Excel model (`WorldCup2026_Analytics_Companion.xlsx`).
+
+**Two backends, one codebase** — `lib/db.py` switches on the `DATABASE_URL` env var:
+- **Local (default):** SQLite, single file `wc.db`. No server. Dev + offline.
+- **Hosted:** Supabase (Postgres) for state + Vercel for the dashboard, with the results
+  monitor on GitHub Actions. Always-on, remote, no machine of yours required.
+
+> History: this began **fully local** ("SQLite … No Supabase, no server"). On 2026-06-14 it
+> was deliberately re-platformed to add the hosted option — see `docs/DEPLOY.md`. The local
+> path still works unchanged; the hosted path activates only when `DATABASE_URL` is set, so
+> "no Supabase" is no longer a constraint, it's just the default.
 
 ## "Fine-tuning the model" means parameter tuning, NOT LLM fine-tuning
 The "model" is the power formula and its coefficients in `engine/params.py`. Tuning =
@@ -18,17 +26,20 @@ backtest scored with Brier / log-loss). We never fine-tune Claude itself.
   - `power.py` — `power(form)` and `match_probs(a, b)`.
   - `rerate.py` — in-tournament Elo-style update of prior ratings from real results.
   - `params.py` — `DEFAULT_PARAMS` (the tunable knobs) + confederation SoS defaults.
-- `lib/db.py` — all SQLite access. `lib/notify.py` — optional Telegram control plane.
-- `agents/` — runtime workers (Anthropic API). `results_monitor.py` is built; squad
-  monitor, ingest, and tuner are the next three (see Roadmap).
-- `scripts/` — `seed_from_xlsx.py` (one-time bridge from the workbook), `predict.py`.
-- `app.py` + `webapp/` — local FastAPI + Tailwind dashboard/control panel over `wc.db`
-  (view standings/predictions/ratings; run the monitor, recompute, approve proposals).
-  Localhost only.
-- `db/schema.sql` — the schema.
+- `lib/db.py` — all DB access, **dual-backend**: SQLite by default, Postgres (Supabase)
+  when `DATABASE_URL` is set. Translates placeholders + coerces timestamps so callers are
+  backend-agnostic. `lib/notify.py` — optional Telegram control plane.
+- `agents/` — runtime workers (Anthropic API). `results_monitor.py` + `telegram_bot.py`
+  are built; squad monitor, ingest, and tuner are next (see Roadmap).
+- `scripts/` — `seed_from_xlsx.py` (one-time bridge from the workbook), `predict.py`
+  (exposes `recompute()`), `migrate_to_postgres.py` (copy `wc.db` → Supabase).
+- `app.py` + `webapp/` — FastAPI + Tailwind dashboard/control panel. `api/index.py` +
+  `vercel.json` deploy it to Vercel; control actions fire GitHub Actions when serverless.
+- `db/schema.sql` (SQLite) + `db/schema_postgres.sql` (Supabase) — the schema, two dialects.
 
 Deeper references in `docs/`: [ARCHITECTURE](docs/ARCHITECTURE.md), [MODEL](docs/MODEL.md),
-[DATABASE](docs/DATABASE.md). Claude Code helpers live in `.claude/` — subagents
+[DATABASE](docs/DATABASE.md), [DEPLOY](docs/DEPLOY.md) (Supabase + Vercel runbook). Claude
+Code helpers live in `.claude/` — subagents
 (`data-integrity-auditor`, `runtime-agent-builder`, `model-tuner`) and skills
 (`/check-results`, `/record-result`, `/reseed`).
 

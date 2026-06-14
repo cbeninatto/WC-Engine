@@ -1,11 +1,16 @@
 # WC Engine
 
-Local **World Cup 2026 prediction engine** + a fleet of runtime agents that keep it
-current, with a browser dashboard on top. Productionized from an Excel model
+**World Cup 2026 prediction engine** + a fleet of runtime agents that keep it current,
+with a browser dashboard on top. Productionized from an Excel model
 (`WorldCup2026_Analytics_Companion.xlsx`).
 
-**Fully local — SQLite, single file `wc.db`, no server, no cloud DB.** The only outbound
-calls are the runtime agents (Anthropic API + web search) and optional Telegram pings.
+**Two backends, one codebase** ([lib/db.py](lib/db.py) switches on `DATABASE_URL`):
+- **Local (default):** SQLite, single file `wc.db`. No server. Dev + offline.
+- **Hosted:** Supabase (Postgres) + Vercel dashboard, results monitor on GitHub Actions —
+  always-on and remote, no machine of yours needed. See the runbook: [docs/DEPLOY.md](docs/DEPLOY.md).
+
+Outbound calls come only from the runtime agents (Anthropic API + web search) and optional
+Telegram pings.
 
 ---
 
@@ -14,16 +19,18 @@ calls are the runtime agents (Anthropic API + web search) and optional Telegram 
 | Piece | Path | Role |
 |-------|------|------|
 | **Engine** | `engine/` | Pure math — power rating, match probabilities, in-tournament re-rate. No I/O. |
-| **Data layer** | `lib/db.py` | All SQLite access (stdlib only). |
+| **Data layer** | `lib/db.py` | Dual-backend DB access: SQLite or Postgres/Supabase. |
 | **Control plane** | `lib/notify.py` | Optional Telegram notifications. |
-| **Runtime agents** | `agents/` | `results_monitor.py` (built). `squad_monitor`, `ingest`, `tuner` are next. |
-| **Scripts** | `scripts/` | `seed_from_xlsx.py` (one-time bridge), `predict.py` (recompute). |
+| **Runtime agents** | `agents/` | `results_monitor.py`, `telegram_bot.py` (built); `squad_monitor`, `ingest`, `tuner` next. |
+| **Scripts** | `scripts/` | `seed_from_xlsx.py`, `predict.py`, `migrate_to_postgres.py`. |
 | **Web app** | `app.py` + `webapp/` | FastAPI dashboard + control panel. |
-| **Schema** | `db/schema.sql` | The 8-table SQLite schema. |
+| **Hosting** | `api/` + `vercel.json` | Vercel serverless entrypoint. |
+| **Schema** | `db/schema.sql` · `db/schema_postgres.sql` | The 8-table schema, both dialects. |
 
 Deeper references live in [`docs/`](docs/): [architecture](docs/ARCHITECTURE.md) ·
-[the model](docs/MODEL.md) · [database](docs/DATABASE.md). Project rules and the agent
-roadmap are in [`CLAUDE.md`](CLAUDE.md).
+[the model](docs/MODEL.md) · [database](docs/DATABASE.md) ·
+[deploy (Supabase + Vercel)](docs/DEPLOY.md). Project rules and the agent roadmap are in
+[`CLAUDE.md`](CLAUDE.md).
 
 ---
 

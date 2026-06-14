@@ -42,6 +42,7 @@ jobs:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}   # set -> write to Supabase, not wc.db
           PYTHONIOENCODING: "utf-8"
         run: |
           set -eo pipefail
@@ -59,6 +60,18 @@ jobs:
             exit 0
           fi
 
+          # --- Postgres backend (Supabase): write straight to the hosted DB ---
+          # State lives in Supabase, so there's no wc.db to seed or commit back.
+          if [ -n "$DATABASE_URL" ]; then
+            echo "DATABASE_URL set -> Postgres backend."
+            python agents/results_monitor.py | tee monitor.log
+            if grep -qE "Logged [1-9][0-9]* new" monitor.log; then
+              python scripts/predict.py
+            fi
+            exit 0
+          fi
+
+          # --- SQLite backend (pre-migration): run + commit wc.db back ---
           CHANGED=false
           # Ephemeral runner: rebuild wc.db from the committed workbook if absent
           if [ ! -f wc.db ]; then
