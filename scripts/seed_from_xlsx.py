@@ -12,10 +12,13 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
+import json
+
 import openpyxl
 import config
 import lib.db as db
 from engine.power import TeamForm, power
+from engine.params import CONFED_SOS
 
 
 def slug(name: str) -> str:
@@ -41,6 +44,17 @@ def find_xlsx(explicit: str | None) -> str:
     )
 
 
+def load_sos_overrides() -> dict:
+    """Curated, evidence-based SoS + provenance, keyed by slug. Applied on top of the
+    confederation defaults so a reseed reproduces the tuned strength-of-schedule — the
+    workbook itself has no SoS column. Missing file -> everyone on their confed default."""
+    path = Path(config.ROOT) / "data" / "sos_overrides.json"
+    if not path.is_file():
+        return {}
+    with open(path, encoding="utf-8") as f:
+        return json.load(f).get("overrides", {})
+
+
 def main(xlsx_path: str | None = None):
     xlsx_path = find_xlsx(xlsx_path)
     wb = openpyxl.load_workbook(xlsx_path, data_only=True)
@@ -53,6 +67,7 @@ def main(xlsx_path: str | None = None):
         if nm:
             tactics[nm] = (tac.cell(row=r, column=8).value, tac.cell(row=r, column=10).value)
 
+    overrides = load_sos_overrides()
     conn = db.connect()
     db.init_db(conn)
 
@@ -63,14 +78,18 @@ def main(xlsx_path: str | None = None):
             continue
         tid = slug(name)
         press, pa = tactics.get(name, (6, 80))
+        confed = fm.cell(row=r, column=3).value
+        # The workbook has no SoS/notes columns; SoS comes from the confederation default,
+        # overlaid with the curated, evidence-based entries in data/sos_overrides.json.
+        ov = overrides.get(tid, {})
         form = dict(
             played=fm.cell(row=r, column=5).value, wins=fm.cell(row=r, column=6).value,
             draws=fm.cell(row=r, column=7).value, losses=fm.cell(row=r, column=8).value,
             gf=fm.cell(row=r, column=10).value, ga=fm.cell(row=r, column=11).value,
             pass_acc=pa or 80, pressing=press or 6,
-            sos=fm.cell(row=r, column=17).value, notes=fm.cell(row=r, column=16).value,
+            sos=ov.get("sos", CONFED_SOS.get(confed, 1.0)), notes=ov.get("notes"),
         )
-        db.upsert_team(conn, tid, name, fm.cell(row=r, column=3).value, fm.cell(row=r, column=4).value)
+        db.upsert_team(conn, tid, name, confed, fm.cell(row=r, column=4).value)
         db.upsert_form(conn, tid, **form)
 
         p = power(TeamForm(form["played"], form["wins"], form["draws"], form["losses"],

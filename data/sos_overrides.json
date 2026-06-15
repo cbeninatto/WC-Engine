@@ -1,0 +1,165 @@
+{
+  "_comment": "Evidence-based strength-of-schedule overrides + provenance, applied by scripts/seed_from_xlsx.py AFTER seeding so a reseed/clone reproduces the curated SoS (the source workbook has no SoS column). Teams absent here fall back to the confederation default in engine/params.CONFED_SOS. notes=null means provenance was not recorded.",
+  "overrides": {
+    "algeria": {
+      "name": "Algeria",
+      "sos": 0.8,
+      "notes": null
+    },
+    "argentina": {
+      "name": "Argentina",
+      "sos": 1.0,
+      "notes": null
+    },
+    "australia": {
+      "name": "Australia",
+      "sos": 0.82,
+      "notes": "SoS 0.82 (was AFC default 0.72): beat Japan 1-0 & drew Saudi Arabia 0-0 in AFC R3 (top-tier AFC results), plus weaker games vs Indonesia/China/Bahrain. Boosted toward the Japan(0.84)/S.Korea(0.83) tier. [src: FIFA, Wikipedia, ESPN]"
+    },
+    "austria": {
+      "name": "Austria",
+      "sos": 1.0,
+      "notes": "Qual 6-1-1 VALIDATED: Euro 2024 GROUP WINNERS over France & Netherlands, beat Norway 5-1. High rating earned, not an artifact."
+    },
+    "belgium": {
+      "name": "Belgium",
+      "sos": 1.0,
+      "notes": null
+    },
+    "brazil": {
+      "name": "Brazil",
+      "sos": 1.0,
+      "notes": null
+    },
+    "canada": {
+      "name": "Canada",
+      "sos": 0.82,
+      "notes": "CONCACAF/NL base + Copa America 2024 SEMIFINALIST (lost Argentina SF). SoS lifted for proven strong-opposition run."
+    },
+    "colombia": {
+      "name": "Colombia",
+      "sos": 1.12,
+      "notes": "CONMEBOL quals + Copa America 2024 RUNNERS-UP (4-1-1: beat Uruguay SF, lost final to Argentina 0-1 ET; 28-game unbeaten run)."
+    },
+    "croatia": {
+      "name": "Croatia",
+      "sos": 1.0,
+      "notes": null
+    },
+    "dr-congo": {
+      "name": "DR Congo",
+      "sos": 0.74,
+      "notes": null
+    },
+    "egypt": {
+      "name": "Egypt",
+      "sos": 0.9,
+      "notes": null
+    },
+    "england": {
+      "name": "England",
+      "sos": 1.0,
+      "notes": null
+    },
+    "france": {
+      "name": "France",
+      "sos": 1.0,
+      "notes": null
+    },
+    "germany": {
+      "name": "Germany",
+      "sos": 1.0,
+      "notes": null
+    },
+    "ivory-coast": {
+      "name": "Ivory Coast",
+      "sos": 0.8,
+      "notes": null
+    },
+    "japan": {
+      "name": "Japan",
+      "sos": 0.84,
+      "notes": "AFC quals (7-2-1, 30/3) + Tier-1 friendlies: W Germany 4-1, W Brazil 3-2, D Mexico, D Paraguay, W Ghana, L USA. SoS lifted: proved vs elite."
+    },
+    "mexico": {
+      "name": "Mexico",
+      "sos": 0.84,
+      "notes": "Copa/NL/GoldCup base + 10 Tier-1 friendlies (draw-heavy: D Japan/SK/Ecuador/Uruguay/Portugal/Belgium; L Colombia 0-4 & Paraguay; W Ghana/Australia). Friendly slump visible."
+    },
+    "morocco": {
+      "name": "Morocco",
+      "sos": 1.0,
+      "notes": null
+    },
+    "netherlands": {
+      "name": "Netherlands",
+      "sos": 1.0,
+      "notes": null
+    },
+    "new-zealand": {
+      "name": "New Zealand",
+      "sos": 1.0,
+      "notes": "Level-adjusted: raw OFC qualifying was 5-0-0, 29 GF/1 GA vs Pacific minnows — non-predictive at WC level"
+    },
+    "norway": {
+      "name": "Norway",
+      "sos": 0.98,
+      "notes": "Qual 8-0-0 (incl 2x Italy) BUT padded by 11-1 Moldova. Strong-opp overlay: L Netherlands, D Switzerland, D Morocco, L Austria 1-5, W Austria. Perfect record didn't hold up."
+    },
+    "paraguay": {
+      "name": "Paraguay",
+      "sos": 1.12,
+      "notes": "CONMEBOL quals + Copa America 2024 REALITY CHECK: lost all 3 group games (vs Colombia, Brazil, Costa Rica). Weaker than qualifying implied."
+    },
+    "portugal": {
+      "name": "Portugal",
+      "sos": 1.0,
+      "notes": null
+    },
+    "senegal": {
+      "name": "Senegal",
+      "sos": 0.92,
+      "notes": null
+    },
+    "south-korea": {
+      "name": "South Korea",
+      "sos": 0.83,
+      "notes": "AFC quals (7-1-2) + Tier-1 friendlies: W USA 2-0, D Mexico 2-2, L Brazil 0-5, W Paraguay, W Ghana. Brazil thrashing = reality check."
+    },
+    "spain": {
+      "name": "Spain",
+      "sos": 1.0,
+      "notes": null
+    },
+    "sweden": {
+      "name": "Sweden",
+      "sos": 0.96,
+      "notes": "SoS 0.96 (UEFA default, UNCHANGED): genuinely poor form (bottom of WCQ Group B, 1pt/4) but vs strong UEFA sides; qualified via playoffs beating Ukraine 3-1 & Poland 3-2. Low rating trusted; WC upside handled by re-rate. [src: UEFA, Wikipedia]"
+    },
+    "switzerland": {
+      "name": "Switzerland",
+      "sos": 0.9,
+      "notes": "SoS 0.90 (was UEFA default 0.96): won WCQ group but vs mid-tier (Kosovo/Slovenia/Sweden); modest discount, 84.1 power exceeded Germany. WC 1-1 vs Qatar corroborates. [src: FIFA, UEFA, ESPN]"
+    },
+    "tunisia": {
+      "name": "Tunisia",
+      "sos": 0.55,
+      "notes": "SoS 0.55 (was CAF default 0.72): 9-1-0 GA0 in WCQ but vs Sao Tome/Malawi/Eq.Guinea/Namibia/Liberia (weakest CAF tier); lost 0-5 to Belgium, drew Brazil 1-1 & Canada 0-0 (Jun 2026). Perfect record discounted. [src: FIFA, Wikipedia]"
+    },
+    "türkiye": {
+      "name": "Türkiye",
+      "sos": 0.96,
+      "notes": "SoS 0.96 (UEFA default, UNCHANGED): WCQ Group E record (6-1-1) on a legitimate UEFA slate - drew Spain 2-2 (also lost 0-6), beat Bulgaria/Georgia/Romania/Kosovo. Leaky defense already in GA/g 1.50; no schedule-based discount warranted. [src: UEFA, Wikipedia]"
+    },
+    "united-states": {
+      "name": "United States",
+      "sos": 0.85,
+      "notes": "Copa/NL/GoldCup base + 10 Tier-1 friendlies (W Japan/Australia/Paraguay/Uruguay/Senegal; L S.Korea/Belgium/Portugal/Germany; D Ecuador). Honest mid-tier."
+    },
+    "uruguay": {
+      "name": "Uruguay",
+      "sos": 1.12,
+      "notes": "CONMEBOL quals + Copa America 2024 THIRD PLACE (beat Brazil on pens QF, lost Colombia SF). Strong, defensive."
+    }
+  }
+}

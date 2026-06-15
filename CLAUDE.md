@@ -64,7 +64,10 @@ defaults are in `params.CONFED_SOS` (CONMEBOL 1.12 … OFC 0.55); overrides live
 `team_form.sos`, set from real strong-opposition results (friendlies, AFCON 2025, Copa
 América 2024). Example: Japan earns a higher SoS for beating Germany/Brazil; Norway's
 perfect qualifying was discounted after losing 5-1 to Austria. `team_form.notes` records
-the provenance for each team.
+the provenance for each team. These overrides + provenance are persisted in
+`data/sos_overrides.json` and re-applied by `seed_from_xlsx.py` (the workbook has no SoS
+column), so a reseed reproduces the curated SoS instead of dropping everyone to defaults.
+`scripts/audit_sos.py` flags teams whose SoS looks unsupported by the evidence.
 
 ## Guardrails (non-negotiable)
 1. **Agents propose; you approve.** Every agent action is logged to `agent_runs`. Pure
