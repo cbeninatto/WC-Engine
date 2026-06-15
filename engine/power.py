@@ -44,15 +44,32 @@ def power(form: TeamForm, p: dict = DEFAULT_PARAMS) -> float:
     return round(raw + form.power_adjustment, 1)
 
 
-def match_probs(power_a: float, power_b: float, p: dict = DEFAULT_PARAMS):
-    """Win/Draw/Loss for A vs B. Draw curve is widest for evenly matched sides."""
+def match_probs(power_a: float, power_b: float, p: dict = DEFAULT_PARAMS, raw: bool = False):
+    """Win/Draw/Loss for A vs B. Draw curve is widest for evenly matched sides.
+
+    raw=True returns full-precision floats (for scoring/tuning, where rounding a heavy
+    favorite's opponent to 0.000 would blow up log-loss); default rounds for display/storage.
+    """
     d = power_a - power_b
     draw = max(p["draw_floor"], p["draw_base"] - abs(d) / p["draw_slope"])
     win_a = (1 / (1 + 10 ** (-d / p["logistic_scale"]))) * (1 - draw)
     win_b = 1 - win_a - draw
+    if raw:
+        return win_a, draw, win_b
     return round(win_a, 3), round(draw, 3), round(win_b, 3)
 
 
 def expected_score(power_a: float, power_b: float, p: dict = DEFAULT_PARAMS) -> float:
     """Logistic expectation for A (1=win .. 0=loss). Used by the in-tournament re-rate."""
     return 1 / (1 + 10 ** (-(power_a - power_b) / p["logistic_scale"]))
+
+
+def expected_goals(power_a: float, power_b: float, p: dict = DEFAULT_PARAMS):
+    """Crude predicted scoreline (home, away) from the power gap.
+
+    Centralizes the mapping predict.py used inline, so the scoreboard's backtest produces
+    the exact same scorelines the live engine does — and so the tuner can tune it too.
+    """
+    gap = (power_a - power_b) / p["score_div"]
+    return (round(max(0.0, p["score_base"] + gap), 1),
+            round(max(0.0, p["score_base"] - gap), 1))

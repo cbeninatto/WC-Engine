@@ -23,16 +23,20 @@ backtest scored with Brier / log-loss). We never fine-tune Claude itself.
 
 ## Architecture
 - `engine/` — pure functions, no I/O. The math lives here.
-  - `power.py` — `power(form)` and `match_probs(a, b)`.
+  - `power.py` — `power(form)`, `match_probs(a, b)`, `expected_goals(a, b)`.
   - `rerate.py` — in-tournament Elo-style update of prior ratings from real results.
+  - `scoring.py` — Brier / log-loss / RPS / accuracy. `backtest.py` — leakage-free
+    walk-forward replay; both the scoreboard and the tuner score through this one path.
   - `params.py` — `DEFAULT_PARAMS` (the tunable knobs) + confederation SoS defaults.
 - `lib/db.py` — all DB access, **dual-backend**: SQLite by default, Postgres (Supabase)
   when `DATABASE_URL` is set. Translates placeholders + coerces timestamps so callers are
   backend-agnostic. `lib/notify.py` — optional Telegram control plane.
-- `agents/` — runtime workers (Anthropic API). `results_monitor.py` + `telegram_bot.py`
-  are built; squad monitor, ingest, and tuner are next (see Roadmap).
+- `agents/` — runtime workers. `results_monitor.py` + `telegram_bot.py` (Anthropic API) and
+  `tuner.py` (scipy backtest, proposes a `model_params` version) are built; squad monitor
+  and ingest are next (see Roadmap).
 - `scripts/` — `seed_from_xlsx.py` (one-time bridge from the workbook), `predict.py`
-  (exposes `recompute()`), `migrate_to_postgres.py` (copy `wc.db` → Supabase).
+  (exposes `recompute()`), `scoreboard.py` (grade forecasts vs finals; `--save` records the
+  baseline), `migrate_to_postgres.py` (copy `wc.db` → Supabase).
 - `app.py` + `webapp/` — FastAPI + Tailwind dashboard/control panel. `api/index.py` +
   `vercel.json` deploy it to Vercel; control actions fire GitHub Actions when serverless.
 - `db/schema.sql` (SQLite) + `db/schema_postgres.sql` (Supabase) — the schema, two dialects.
@@ -75,6 +79,8 @@ the provenance for each team.
     pip install -r requirements.txt
     python scripts/seed_from_xlsx.py            # build wc.db from the workbook
     python scripts/predict.py                   # compute ratings + predictions
+    python scripts/scoreboard.py                # grade forecasts vs finals (Brier/log-loss/RPS)
+    python agents/tuner.py                      # backtest + propose a tuned model_params (proposes only)
     ANTHROPIC_API_KEY=... python agents/results_monitor.py   # fetch finals, re-rate
     python app.py                               # dashboard at http://127.0.0.1:8000
                                                 # (WC_WEB_PORT=8765 if 8000 is busy)
@@ -83,5 +89,9 @@ the provenance for each team.
 1. `agents/squad_monitor.py` — watch injury/lineup news; when a key player is out, write a
    `power_adjustment` to `squad_status` (proposed). Fixes the model's biggest blind spot.
 2. `agents/ingest.py` — research/scraper agent: fetch & normalize new competitive results.
-3. `agents/tuner.py` — backtest on Euro 2024 / WC 2022, optimize `params`, propose a new
-   `model_params` version scored vs a baseline. Proposes only.
+
+Built: `agents/tuner.py` — backtests via `engine/backtest.py`, scipy-optimizes a bounded
+knob subset, proposes a new `model_params` version vs a baseline (proposes only; never
+edits `DEFAULT_PARAMS`). Held-out past tournaments (Euro 2024 / WC 2022) aren't in the repo
+yet, so it defaults to backtesting the recorded WC2026 finals and flags that as a small
+in-sample set — pass `--holdout <file>` when real past-tournament data exists.

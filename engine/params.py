@@ -17,6 +17,8 @@ DEFAULT_PARAMS = {
     "def_w": 6.0, "def_anchor": 1.3, "def_cap_hi": 1.3, "def_cap_lo": -0.7,
     # tactics terms
     "pass_w": 0.3, "press_w": 1.5,
+    # expected-scoreline mapping: goals = score_base +/- power_gap/score_div
+    "score_base": 1.3, "score_div": 30.0,
     # win/draw/loss probability model
     "draw_base": 0.56, "draw_slope": 48.0, "draw_floor": 0.19,
     "logistic_scale": 15.0,

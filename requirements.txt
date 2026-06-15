@@ -5,3 +5,4 @@ python-dotenv>=1.0
 fastapi>=0.115
 uvicorn>=0.30
 psycopg[binary]>=3.1   # Postgres/Supabase backend (used only when DATABASE_URL is set)
+scipy>=1.11            # tuner only (agents/tuner.py); not used by the web app

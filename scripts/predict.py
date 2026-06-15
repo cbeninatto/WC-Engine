@@ -10,7 +10,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 import lib.db as db
-from engine.power import TeamForm, power, match_probs
+from engine.power import TeamForm, power, match_probs, expected_goals
 from engine.rerate import rerate_all
 from engine.params import DEFAULT_PARAMS
 
@@ -59,9 +59,7 @@ def recompute(conn=None):
         if h not in post or a not in post:
             continue
         wh, dr, wa = match_probs(post[h], post[a], DEFAULT_PARAMS)
-        # crude expected scoreline from the power gap
-        gap = (post[h] - post[a]) / 30.0
-        ph, pa = round(max(0, 1.3 + gap), 1), round(max(0, 1.3 - gap), 1)
+        ph, pa = expected_goals(post[h], post[a], DEFAULT_PARAMS)
         db.upsert_prediction(conn, m["id"], wh, dr, wa, ph, pa, VERSION)
 
     conn.commit()

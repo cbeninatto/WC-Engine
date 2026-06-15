@@ -180,7 +180,8 @@ def upsert_power(conn, team_id, power, prior_power, wc_games, version):
         """INSERT INTO power_ratings(team_id,power,prior_power,wc_games,params_version)
            VALUES(?,?,?,?,?)
            ON CONFLICT(team_id) DO UPDATE SET
-             power=excluded.power, wc_games=excluded.wc_games,
+             power=excluded.power, prior_power=excluded.prior_power,
+             wc_games=excluded.wc_games,
              params_version=excluded.params_version, computed_at=CURRENT_TIMESTAMP""",
         (team_id, power, prior_power, wc_games, version),
     )
@@ -195,6 +196,20 @@ def upsert_prediction(conn, match_id, wh, dr, wa, ph, pa, version):
              pred_home_goals=excluded.pred_home_goals, pred_away_goals=excluded.pred_away_goals,
              params_version=excluded.params_version, computed_at=CURRENT_TIMESTAMP""",
         (match_id, wh, dr, wa, ph, pa, version),
+    )
+
+
+def upsert_model_params(conn, version, params: dict, brier, log_loss, note, approved=0):
+    """Record a scored param set. The scoreboard writes the live baseline here; the tuner
+    will write `proposed` challengers for it to beat."""
+    conn.execute(
+        """INSERT INTO model_params(version,params,brier,log_loss,note,approved)
+           VALUES(:version,:params,:brier,:log_loss,:note,:approved)
+           ON CONFLICT(version) DO UPDATE SET
+             params=excluded.params, brier=excluded.brier, log_loss=excluded.log_loss,
+             note=excluded.note, approved=excluded.approved""",
+        {"version": version, "params": json.dumps(params), "brier": brier,
+         "log_loss": log_loss, "note": note, "approved": approved},
     )
 
 
