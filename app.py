@@ -159,15 +159,14 @@ def _trigger_workflow() -> dict:
 
 @app.post("/api/run-monitor")
 def run_monitor():
-    # Serverless (Vercel): delegate the long web-search loop to GitHub Actions.
-    # Local/Actions: run it directly, then recompute inline.
+    # The "Run results monitor" button runs the SportDB ingest agent (agents/ingest.py): a
+    # fast, deterministic pull of finished results from real data — the path that reliably
+    # confirms finals, vs the LLM web-search results_monitor. Ingest records new finals and
+    # recomputes predictions itself, so there's no inline recompute here.
+    # Serverless (Vercel): delegate to the GitHub Actions workflow instead.
     if os.environ.get("GITHUB_DISPATCH_TOKEN"):
         return JSONResponse(_trigger_workflow())
-    res = _run(["agents/results_monitor.py"], timeout=300)
-    if res["ok"] and "Logged 0" not in res["output"]:
-        from scripts.predict import recompute as _recompute
-        _recompute()  # refresh preds off new ratings
-    return JSONResponse(res)
+    return JSONResponse(_run(["agents/ingest.py"], timeout=120))
 
 
 @app.post("/api/recompute")

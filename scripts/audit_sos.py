@@ -11,8 +11,9 @@ Checks:
   B. Ratings contradicted by observed WC results — teams whose prior_power was pulled
      hardest by the in-tournament re-rate (|post - prior|). That swing is real, sourced
      evidence the prior (form x SoS) is off; we cross-flag which sit on a default SoS.
-  C. Form-source drift — DB team_form vs the workbook's Form_L20 (if present). Surfaces when
-     the live data and the documented seed source disagree (so a re-seed would clobber).
+  C. Form-source drift — DB team_form vs the seed snapshot (data/seed_snapshot.json, if
+     present). Surfaces when the live data and the frozen seed baseline disagree (so a re-seed
+     would clobber, or the snapshot is stale and should be refreshed via snapshot_db.py).
 
     python scripts/audit_sos.py
 """
@@ -52,26 +53,22 @@ def load(conn):
     return rows
 
 
-def load_workbook_form():
-    """Workbook Form_L20 played/W/D/L/GF/GA by team name, or None if unavailable."""
-    candidates = [config.XLSX_PATH,
-                  str(config.ROOT / "WorldCup2026_Analytics_Companion.xlsx"),
-                  "WorldCup2026_Analytics_Companion.xlsx"]
-    path = next((c for c in candidates if c and Path(c).is_file()), None)
-    if not path:
+def load_snapshot_form():
+    """Seed-snapshot played/W/D/L/GF/GA by team name, or None if no snapshot exists."""
+    import json
+    path = config.ROOT / "data" / "seed_snapshot.json"
+    if not path.is_file():
         return None
     try:
-        import warnings
-        warnings.filterwarnings("ignore")
-        import openpyxl
-        fm = openpyxl.load_workbook(path, data_only=True)["Form_L20"]
+        snap = json.loads(path.read_text(encoding="utf-8"))
     except Exception:
         return None
+    name_of = {t["id"]: t["name"] for t in snap.get("teams", [])}
     out = {}
-    for r in range(5, 53):
-        nm = fm.cell(r, 2).value
+    for f in snap.get("team_form", []):
+        nm = name_of.get(f["team_id"])
         if nm:
-            out[nm] = [fm.cell(r, c).value for c in (5, 6, 7, 8, 10, 11)]
+            out[nm] = [f["played"], f["wins"], f["draws"], f["losses"], f["gf"], f["ga"]]
     return out
 
 
@@ -126,28 +123,28 @@ def main():
                   f"(dominant record on an un-discounted default)")
         print()
 
-    # --- C. form-source drift vs workbook ---
-    wbf = load_workbook_form()
-    print("C. Form-source drift  (live DB team_form vs workbook Form_L20)")
+    # --- C. form-source drift vs seed snapshot ---
+    wbf = load_snapshot_form()
+    print("C. Form-source drift  (live DB team_form vs seed snapshot)")
     drift = []
     if wbf is None:
-        print("   workbook not found — skipped.\n")
+        print("   no snapshot found (data/seed_snapshot.json) — run snapshot_db.py — skipped.\n")
     else:
         keys = ["played", "wins", "draws", "losses", "gf", "ga"]
         for nm, w in wbf.items():
             d = by_name.get(nm)
             if d and any((w[i] or 0) != (d[keys[i]] or 0) for i in range(6)):
                 drift.append(nm)
-        print(f"   {len(drift)}/{len(wbf)} teams differ from the workbook source.")
-        if len(drift) > len(wbf) // 2:
-            print(f"   -> The live DB is NOT in sync with the workbook. Re-running")
-            print(f"      seed_from_xlsx.py would OVERWRITE the engine's data. Do not re-seed")
-            print(f"      until the intended source of truth is settled.")
-        for nm in [t for t in ("Tunisia", "Sweden", "Switzerland") if t in drift]:
-            d = by_name[nm]
-            w = wbf[nm]
-            print(f"     {nm}: workbook {w[:6]}  vs  DB [{d['played']},{d['wins']},{d['draws']},"
-                  f"{d['losses']},{d['gf']},{d['ga']}]")
+        print(f"   {len(drift)}/{len(wbf)} teams differ from the seed snapshot.")
+        if drift:
+            print(f"   -> The live DB has changed since the last snapshot. Re-running")
+            print(f"      seed_from_snapshot.py would OVERWRITE those changes; run snapshot_db.py")
+            print(f"      first if the live data is the version to keep.")
+            for nm in drift[:3]:
+                d = by_name[nm]
+                w = wbf[nm]
+                print(f"     {nm}: snapshot {w[:6]}  vs  DB [{d['played']},{d['wins']},{d['draws']},"
+                      f"{d['losses']},{d['gf']},{d['ga']}]")
         print()
 
     # --- proposal (no data changed) ---

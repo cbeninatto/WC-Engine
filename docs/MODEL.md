@@ -67,6 +67,18 @@ win_b = 1 − win_a − draw
 
 Knobs: `draw_base 0.56`, `draw_slope 48`, `draw_floor 0.19`, `logistic_scale 15`.
 
+### 3a. Projected scoreline
+
+`expected_goals(power_a, power_b)` maps the same gap to a projected score:
+
+```
+goals_home = max(0, 1.3 + Δ/30)   goals_away = max(0, 1.3 − Δ/30)
+```
+
+The dashboard rounds these to whole goals and shows a single projected scoreline (e.g.
+`2–1`) per match. Driven by the `score_base 1.3` / `score_div 30` knobs, so the tuner
+reaches it for free. The backtest scores the same rounded scoreline.
+
 ## 4. In-tournament re-rate
 
 The form model is static — it can't see what a team is doing *at the tournament*. As real

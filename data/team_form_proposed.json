@@ -1,0 +1,487 @@
+{
+  "_comment": "PROPOSED team_form rebuilt from real SportDB results by agents/build_team_form.py (last-N official matches, uniform window). Replaces the workbook as the form source. Review, then re-run with --apply.",
+  "window": 20,
+  "since": "2024-01-01",
+  "forms": {
+    "algeria": {
+      "name": "Algeria",
+      "played": 20,
+      "wins": 13,
+      "draws": 5,
+      "losses": 2,
+      "gf": 50,
+      "ga": 19,
+      "notes": "Form = last 20 official matches (2024-01-20..2026-06-11); sources: Friendlies 12, WC2026 qualifiers 6, AFCON 2. Recent: 0-4 @ Bolivia; 0-1 @ Netherlands; 0-0 vs Uruguay; 7-0 vs Guatemala. [src: SportDB; PROPOSED, awaiting approval]"
+    },
+    "argentina": {
+      "name": "Argentina",
+      "played": 20,
+      "wins": 16,
+      "draws": 3,
+      "losses": 1,
+      "gf": 43,
+      "ga": 6,
+      "notes": "Form = last 20 official matches (2024-06-15..2026-06-10); sources: Friendlies 8, WC2026 qualifiers 6, Copa America 2024 6. Recent: 3-0 vs Iceland; 2-0 vs Honduras; 5-0 vs Zambia; 2-1 vs Mauritania. [src: SportDB; PROPOSED, awaiting approval]"
+    },
+    "australia": {
+      "name": "Australia",
+      "played": 18,
+      "wins": 11,
+      "draws": 3,
+      "losses": 4,
+      "gf": 28,
+      "ga": 13,
+      "notes": "Form = last 18 official matches (2024-01-06..2026-06-06); sources: Friendlies 9, Asian Cup 5, WC2026 qualifiers 4. Recent: 1-1 @ Switzerland; 1-0 @ Mexico; 3-0 @ Colombia; 1-0 @ Venezuela. [src: SportDB; PROPOSED, awaiting approval]"
+    },
+    "austria": {
+      "name": "Austria",
+      "played": 19,
+      "wins": 14,
+      "draws": 2,
+      "losses": 3,
+      "gf": 47,
+      "ga": 14,
+      "notes": "Form = last 19 official matches (2024-03-23..2026-06-01); sources: WC2026 qualifiers 8, Friendlies 7, Euro 2024 4. Recent: 1-0 vs Tunisia; 1-0 vs South Korea; 5-1 vs Ghana; 1-1 vs Bosnia & Herzegovina. [src: SportDB; PROPOSED, awaiting approval]"
+    },
+    "belgium": {
+      "name": "Belgium",
+      "played": 20,
+      "wins": 11,
+      "draws": 7,
+      "losses": 2,
+      "gf": 51,
+      "ga": 14,
+      "notes": "Form = last 20 official matches (2024-03-23..2026-06-06); sources: Friendlies 8, WC2026 qualifiers 8, Euro 2024 4. Recent: 5-0 vs Tunisia; 0-2 @ Croatia; 1-1 @ Mexico; 2-5 @ USA. [src: SportDB; PROPOSED, awaiting approval]"
+    },
+    "bosnia-and-herzegovina": {
+      "name": "Bosnia and Herzegovina",
+      "played": 17,
+      "wins": 6,
+      "draws": 6,
+      "losses": 5,
+      "gf": 26,
+      "ga": 19,
+      "notes": "Form = last 17 official matches (2024-03-21..2026-06-06); sources: WC2026 qualifiers 10, Friendlies 6, Euro 2024 1. Recent: 1-1 @ Panama; 0-0 vs North Macedonia; 1-1 vs Italy; 1-1 @ Wales. [src: SportDB; PROPOSED, awaiting approval]"
+    },
+    "brazil": {
+      "name": "Brazil",
+      "played": 20,
+      "wins": 10,
+      "draws": 6,
+      "losses": 4,
+      "gf": 38,
+      "ga": 21,
+      "notes": "Form = last 20 official matches (2024-06-09..2026-06-06); sources: Friendlies 10, WC2026 qualifiers 6, Copa America 2024 4. Recent: 2-1 vs Egypt; 6-2 vs Panama; 3-1 vs Croatia; 1-2 vs France. [src: SportDB; PROPOSED, awaiting approval]"
+    },
+    "canada": {
+      "name": "Canada",
+      "played": 20,
+      "wins": 8,
+      "draws": 10,
+      "losses": 2,
+      "gf": 23,
+      "ga": 13,
+      "notes": "Form = last 20 official matches (2024-06-30..2026-06-05); sources: Friendlies 16, Copa America 2024 4. Recent: 1-1 vs Ireland; 2-0 vs Uzbekistan; 0-0 vs Tunisia; 2-2 vs Iceland. [src: SportDB; PROPOSED, awaiting approval]"
+    },
+    "cape-verde": {
+      "name": "Cape Verde",
+      "played": 20,
+      "wins": 13,
+      "draws": 7,
+      "losses": 0,
+      "gf": 34,
+      "ga": 10,
+      "notes": "Form = last 20 official matches (2024-01-14..2026-06-06); sources: Friendlies 9, WC2026 qualifiers 6, AFCON 5. Recent: 3-0 vs Bermuda; 3-0 vs Serbia; 1-1 @ Egypt; 0-0 @ Iran. [src: SportDB; PROPOSED, awaiting approval]"
+    },
+    "colombia": {
+      "name": "Colombia",
+      "played": 20,
+      "wins": 11,
+      "draws": 6,
+      "losses": 3,
+      "gf": 41,
+      "ga": 17,
+      "notes": "Form = last 20 official matches (2024-06-24..2026-06-07); sources: Friendlies 8, WC2026 qualifiers 6, Copa America 2024 6. Recent: 2-0 vs Jordan; 3-1 vs Costa Rica; 1-3 vs France; 1-2 vs Croatia. [src: SportDB; PROPOSED, awaiting approval]"
+    },
+    "croatia": {
+      "name": "Croatia",
+      "played": 19,
+      "wins": 12,
+      "draws": 4,
+      "losses": 3,
+      "gf": 43,
+      "ga": 20,
+      "notes": "Form = last 19 official matches (2024-03-23..2026-06-07); sources: Friendlies 8, WC2026 qualifiers 8, Euro 2024 3. Recent: 2-1 vs Slovenia; 0-2 vs Belgium; 3-1 @ Brazil; 1-2 @ Colombia. [src: SportDB; PROPOSED, awaiting approval]"
+    },
+    "curaçao": {
+      "name": "Curaçao",
+      "played": 11,
+      "wins": 6,
+      "draws": 3,
+      "losses": 2,
+      "gf": 27,
+      "ga": 10,
+      "notes": "Form = last 11 official matches (2025-03-19..2026-06-07); sources: WC2026 qualifiers 8, Friendlies 3. Recent: 4-0 vs Aruba; 4-1 @ Scotland; 0-0 @ Jamaica; 0-7 @ Bermuda. [src: SportDB; PROPOSED, awaiting approval]"
+    },
+    "czechia": {
+      "name": "Czechia",
+      "played": 20,
+      "wins": 11,
+      "draws": 5,
+      "losses": 4,
+      "gf": 42,
+      "ga": 22,
+      "notes": "Form = last 20 official matches (2024-03-26..2026-06-05); sources: WC2026 qualifiers 10, Friendlies 7, Euro 2024 3. Recent: 3-1 vs Guatemala; 2-1 vs Kosovo; 1-1 vs Denmark; 2-2 vs Ireland. [src: SportDB; PROPOSED, awaiting approval]"
+    },
+    "dr-congo": {
+      "name": "DR Congo",
+      "played": 20,
+      "wins": 11,
+      "draws": 6,
+      "losses": 3,
+      "gf": 26,
+      "ga": 11,
+      "notes": "Form = last 20 official matches (2024-01-24..2026-06-09); sources: WC2026 qualifiers 9, Friendlies 6, AFCON 5. Recent: 1-2 vs Chile; 0-0 vs Denmark; 0-0 vs Jamaica; 2-0 vs Bermuda. [src: SportDB; PROPOSED, awaiting approval]"
+    },
+    "ecuador": {
+      "name": "Ecuador",
+      "played": 20,
+      "wins": 8,
+      "draws": 11,
+      "losses": 1,
+      "gf": 24,
+      "ga": 12,
+      "notes": "Form = last 20 official matches (2024-06-13..2026-06-07); sources: Friendlies 10, WC2026 qualifiers 6, Copa America 2024 4. Recent: 3-0 vs Guatemala; 2-1 vs Saudi Arabia; 1-1 @ Netherlands; 1-1 @ Morocco. [src: SportDB; PROPOSED, awaiting approval]"
+    },
+    "egypt": {
+      "name": "Egypt",
+      "played": 20,
+      "wins": 10,
+      "draws": 7,
+      "losses": 3,
+      "gf": 31,
+      "ga": 17,
+      "notes": "Form = last 20 official matches (2024-01-14..2026-06-06); sources: Friendlies 10, WC2026 qualifiers 6, AFCON 4. Recent: 2-1 @ Brazil; 0-0 @ Spain; 0-4 @ Saudi Arabia; 2-1 vs Nigeria. [src: SportDB; PROPOSED, awaiting approval]"
+    },
+    "england": {
+      "name": "England",
+      "played": 20,
+      "wins": 12,
+      "draws": 5,
+      "losses": 3,
+      "gf": 37,
+      "ga": 11,
+      "notes": "Form = last 20 official matches (2024-06-20..2026-06-10); sources: WC2026 qualifiers 8, Friendlies 6, Euro 2024 6. Recent: 3-0 vs Costa Rica; 1-0 vs New Zealand; 0-1 vs Japan; 1-1 vs Uruguay. [src: SportDB; PROPOSED, awaiting approval]"
+    },
+    "france": {
+      "name": "France",
+      "played": 20,
+      "wins": 12,
+      "draws": 5,
+      "losses": 3,
+      "gf": 35,
+      "ga": 16,
+      "notes": "Form = last 20 official matches (2024-03-23..2026-06-08); sources: Friendlies 8, WC2026 qualifiers 6, Euro 2024 6. Recent: 3-1 vs Northern Ireland; 1-2 vs Ivory Coast; 1-3 @ Colombia; 1-2 @ Brazil. [src: SportDB; PROPOSED, awaiting approval]"
+    },
+    "germany": {
+      "name": "Germany",
+      "played": 19,
+      "wins": 15,
+      "draws": 3,
+      "losses": 1,
+      "gf": 45,
+      "ga": 13,
+      "notes": "Form = last 19 official matches (2024-03-23..2026-06-06); sources: Friendlies 8, WC2026 qualifiers 6, Euro 2024 5. Recent: 1-2 @ USA; 4-0 vs Finland; 2-1 vs Ghana; 3-4 @ Switzerland. [src: SportDB; PROPOSED, awaiting approval]"
+    },
+    "ghana": {
+      "name": "Ghana",
+      "played": 20,
+      "wins": 7,
+      "draws": 5,
+      "losses": 8,
+      "gf": 34,
+      "ga": 26,
+      "notes": "Form = last 20 official matches (2024-01-14..2026-06-02); sources: Friendlies 11, WC2026 qualifiers 6, AFCON 3. Recent: 1-1 @ Wales; 2-0 @ Mexico; 2-1 @ Germany; 5-1 @ Austria. [src: SportDB; PROPOSED, awaiting approval]"
+    },
+    "haiti": {
+      "name": "Haiti",
+      "played": 13,
+      "wins": 6,
+      "draws": 3,
+      "losses": 4,
+      "gf": 24,
+      "ga": 15,
+      "notes": "Form = last 13 official matches (2025-03-22..2026-06-06); sources: WC2026 qualifiers 8, Friendlies 5. Recent: 1-2 vs Peru; 4-0 vs New Zealand; 1-1 vs Iceland; 0-1 vs Tunisia. [src: SportDB; PROPOSED, awaiting approval]"
+    },
+    "iran": {
+      "name": "Iran",
+      "played": 19,
+      "wins": 12,
+      "draws": 4,
+      "losses": 3,
+      "gf": 39,
+      "ga": 14,
+      "notes": "Form = last 19 official matches (2024-01-05..2026-06-04); sources: Friendlies 9, Asian Cup 6, WC2026 qualifiers 4. Recent: 2-0 vs Mali; 3-1 vs Gambia; 0-5 @ Costa Rica; 1-2 vs Nigeria. [src: SportDB; PROPOSED, awaiting approval]"
+    },
+    "iraq": {
+      "name": "Iraq",
+      "played": 17,
+      "wins": 8,
+      "draws": 4,
+      "losses": 5,
+      "gf": 22,
+      "ga": 20,
+      "notes": "Form = last 17 official matches (2024-01-06..2026-06-10); sources: WC2026 qualifiers 9, Friendlies 4, Asian Cup 4. Recent: 0-2 vs Venezuela; 1-1 @ Spain; 1-0 vs Andorra; 2-1 vs Bolivia. [src: SportDB; PROPOSED, awaiting approval]"
+    },
+    "ivory-coast": {
+      "name": "Ivory Coast",
+      "played": 20,
+      "wins": 13,
+      "draws": 5,
+      "losses": 2,
+      "gf": 35,
+      "ga": 10,
+      "notes": "Form = last 20 official matches (2024-01-29..2026-06-04); sources: Friendlies 10, WC2026 qualifiers 6, AFCON 4. Recent: 1-2 @ France; 0-1 @ Scotland; 0-4 @ South Korea; 0-2 @ Oman. [src: SportDB; PROPOSED, awaiting approval]"
+    },
+    "japan": {
+      "name": "Japan",
+      "played": 20,
+      "wins": 13,
+      "draws": 3,
+      "losses": 4,
+      "gf": 44,
+      "ga": 16,
+      "notes": "Form = last 20 official matches (2024-01-01..2026-05-31); sources: Friendlies 11, Asian Cup 5, WC2026 qualifiers 4. Recent: 1-0 vs Iceland; 0-1 @ England; 0-1 @ Scotland; 3-0 vs Bolivia. [src: SportDB; PROPOSED, awaiting approval]"
+    },
+    "jordan": {
+      "name": "Jordan",
+      "played": 20,
+      "wins": 5,
+      "draws": 7,
+      "losses": 8,
+      "gf": 25,
+      "ga": 28,
+      "notes": "Form = last 20 official matches (2024-02-06..2026-06-07); sources: Friendlies 14, WC2026 qualifiers 4, Asian Cup 2. Recent: 2-0 @ Colombia; 4-1 @ Switzerland; 2-2 vs Nigeria; 2-2 vs Costa Rica. [src: SportDB; PROPOSED, awaiting approval]"
+    },
+    "mexico": {
+      "name": "Mexico",
+      "played": 20,
+      "wins": 9,
+      "draws": 8,
+      "losses": 3,
+      "gf": 27,
+      "ga": 15,
+      "notes": "Form = last 20 official matches (2024-07-01..2026-06-05); sources: Friendlies 19, Copa America 2024 1. Recent: 5-1 vs Serbia; 1-0 vs Australia; 2-0 vs Ghana; 1-1 vs Belgium. [src: SportDB; PROPOSED, awaiting approval]"
+    },
+    "morocco": {
+      "name": "Morocco",
+      "played": 20,
+      "wins": 15,
+      "draws": 3,
+      "losses": 2,
+      "gf": 38,
+      "ga": 10,
+      "notes": "Form = last 20 official matches (2024-01-30..2026-06-07); sources: Friendlies 14, WC2026 qualifiers 5, AFCON 1. Recent: 1-1 vs Norway; 4-0 vs Madagascar; 5-0 vs Burundi; 2-1 vs Paraguay. [src: SportDB; PROPOSED, awaiting approval]"
+    },
+    "netherlands": {
+      "name": "Netherlands",
+      "played": 20,
+      "wins": 13,
+      "draws": 4,
+      "losses": 3,
+      "gf": 50,
+      "ga": 15,
+      "notes": "Form = last 20 official matches (2024-06-06..2026-06-08); sources: WC2026 qualifiers 8, Friendlies 6, Euro 2024 6. Recent: 2-1 vs Uzbekistan; 0-1 vs Algeria; 1-1 vs Ecuador; 2-1 vs Norway. [src: SportDB; PROPOSED, awaiting approval]"
+    },
+    "new-zealand": {
+      "name": "New Zealand",
+      "played": 17,
+      "wins": 4,
+      "draws": 3,
+      "losses": 10,
+      "gf": 20,
+      "ga": 22,
+      "notes": "Form = last 17 official matches (2024-03-22..2026-06-06); sources: Friendlies 15, WC2026 qualifiers 2. Recent: 1-0 @ England; 4-0 @ Haiti; 2-0 @ Ecuador; 2-1 @ Colombia. [src: SportDB; PROPOSED, awaiting approval]"
+    },
+    "norway": {
+      "name": "Norway",
+      "played": 18,
+      "wins": 11,
+      "draws": 4,
+      "losses": 3,
+      "gf": 50,
+      "ga": 16,
+      "notes": "Form = last 18 official matches (2024-03-22..2026-06-07); sources: Friendlies 10, WC2026 qualifiers 8. Recent: 1-1 @ Morocco; 3-1 vs Sweden; 0-0 vs Switzerland; 2-1 @ Netherlands. [src: SportDB; PROPOSED, awaiting approval]"
+    },
+    "panama": {
+      "name": "Panama",
+      "played": 20,
+      "wins": 8,
+      "draws": 6,
+      "losses": 6,
+      "gf": 30,
+      "ga": 33,
+      "notes": "Form = last 20 official matches (2024-07-02..2026-06-06); sources: Friendlies 10, WC2026 qualifiers 8, Copa America 2024 2. Recent: 1-1 vs Bosnia & Herzegovina; 4-2 vs Dominican Republic; 6-2 @ Brazil; 1-2 @ South Africa. [src: SportDB; PROPOSED, awaiting approval]"
+    },
+    "paraguay": {
+      "name": "Paraguay",
+      "played": 19,
+      "wins": 7,
+      "draws": 4,
+      "losses": 8,
+      "gf": 21,
+      "ga": 23,
+      "notes": "Form = last 19 official matches (2024-06-08..2026-06-05); sources: Friendlies 10, WC2026 qualifiers 6, Copa America 2024 3. Recent: 4-0 vs Nicaragua; 2-1 @ Morocco; 0-1 @ Greece; 1-2 @ Mexico. [src: SportDB; PROPOSED, awaiting approval]"
+    },
+    "portugal": {
+      "name": "Portugal",
+      "played": 20,
+      "wins": 12,
+      "draws": 4,
+      "losses": 4,
+      "gf": 44,
+      "ga": 20,
+      "notes": "Form = last 20 official matches (2024-03-21..2026-06-10); sources: Friendlies 9, WC2026 qualifiers 6, Euro 2024 5. Recent: 2-1 vs Nigeria; 2-1 vs Chile; 0-2 @ USA; 0-0 @ Mexico. [src: SportDB; PROPOSED, awaiting approval]"
+    },
+    "qatar": {
+      "name": "Qatar",
+      "played": 19,
+      "wins": 9,
+      "draws": 4,
+      "losses": 6,
+      "gf": 27,
+      "ga": 21,
+      "notes": "Form = last 19 official matches (2024-01-05..2026-06-06); sources: Asian Cup 7, Friendlies 6, WC2026 qualifiers 6. Recent: 0-0 vs El Salvador; 1-0 @ Ireland; 1-2 vs Zimbabwe; 2-1 vs United Arab Emirates. [src: SportDB; PROPOSED, awaiting approval]"
+    },
+    "saudi-arabia": {
+      "name": "Saudi Arabia",
+      "played": 20,
+      "wins": 9,
+      "draws": 6,
+      "losses": 5,
+      "gf": 24,
+      "ga": 18,
+      "notes": "Form = last 20 official matches (2024-01-21..2026-06-09); sources: Friendlies 11, WC2026 qualifiers 6, Asian Cup 3. Recent: 0-0 vs Senegal; 0-3 @ Puerto Rico; 2-1 @ Ecuador; 2-1 @ Serbia. [src: SportDB; PROPOSED, awaiting approval]"
+    },
+    "scotland": {
+      "name": "Scotland",
+      "played": 19,
+      "wins": 8,
+      "draws": 3,
+      "losses": 8,
+      "gf": 32,
+      "ga": 27,
+      "notes": "Form = last 19 official matches (2024-03-22..2026-06-06); sources: Friendlies 10, WC2026 qualifiers 6, Euro 2024 3. Recent: 0-4 @ Bolivia; 4-1 vs Curacao; 0-1 vs Ivory Coast; 0-1 vs Japan. [src: SportDB; PROPOSED, awaiting approval]"
+    },
+    "senegal": {
+      "name": "Senegal",
+      "played": 20,
+      "wins": 12,
+      "draws": 4,
+      "losses": 4,
+      "gf": 42,
+      "ga": 14,
+      "notes": "Form = last 20 official matches (2024-03-22..2026-06-09); sources: Friendlies 14, WC2026 qualifiers 6. Recent: 0-0 @ Saudi Arabia; 3-2 @ USA; 3-1 vs Gambia; 2-0 vs Peru. [src: SportDB; PROPOSED, awaiting approval]"
+    },
+    "south-africa": {
+      "name": "South Africa",
+      "played": 20,
+      "wins": 6,
+      "draws": 12,
+      "losses": 2,
+      "gf": 25,
+      "ga": 15,
+      "notes": "Form = last 20 official matches (2024-01-30..2026-06-06); sources: Friendlies 10, WC2026 qualifiers 6, AFCON 4. Recent: 1-1 @ Jamaica; 0-0 vs Nicaragua; 1-2 vs Panama; 1-1 vs Panama. [src: SportDB; PROPOSED, awaiting approval]"
+    },
+    "south-korea": {
+      "name": "South Korea",
+      "played": 20,
+      "wins": 9,
+      "draws": 7,
+      "losses": 4,
+      "gf": 33,
+      "ga": 24,
+      "notes": "Form = last 20 official matches (2024-01-15..2026-06-04); sources: Friendlies 10, Asian Cup 6, WC2026 qualifiers 4. Recent: 1-0 vs El Salvador; 5-0 vs Trinidad & Tobago; 1-0 @ Austria; 0-4 vs Ivory Coast. [src: SportDB; PROPOSED, awaiting approval]"
+    },
+    "spain": {
+      "name": "Spain",
+      "played": 20,
+      "wins": 15,
+      "draws": 5,
+      "losses": 0,
+      "gf": 55,
+      "ga": 12,
+      "notes": "Form = last 20 official matches (2024-03-26..2026-06-09); sources: Friendlies 7, Euro 2024 7, WC2026 qualifiers 6. Recent: 1-3 @ Peru; 1-1 vs Iraq; 0-0 vs Egypt; 3-0 vs Serbia. [src: SportDB; PROPOSED, awaiting approval]"
+    },
+    "sweden": {
+      "name": "Sweden",
+      "played": 19,
+      "wins": 7,
+      "draws": 3,
+      "losses": 9,
+      "gf": 30,
+      "ga": 36,
+      "notes": "Form = last 19 official matches (2024-01-12..2026-06-04); sources: Friendlies 11, WC2026 qualifiers 8. Recent: 2-2 vs Greece; 3-1 @ Norway; 3-2 vs Poland; 1-3 @ Ukraine. [src: SportDB; PROPOSED, awaiting approval]"
+    },
+    "switzerland": {
+      "name": "Switzerland",
+      "played": 20,
+      "wins": 10,
+      "draws": 9,
+      "losses": 1,
+      "gf": 43,
+      "ga": 17,
+      "notes": "Form = last 20 official matches (2024-06-08..2026-06-06); sources: Friendlies 9, WC2026 qualifiers 6, Euro 2024 5. Recent: 1-1 vs Australia; 4-1 vs Jordan; 0-0 @ Norway; 3-4 vs Germany. [src: SportDB; PROPOSED, awaiting approval]"
+    },
+    "tunisia": {
+      "name": "Tunisia",
+      "played": 20,
+      "wins": 10,
+      "draws": 5,
+      "losses": 5,
+      "gf": 26,
+      "ga": 17,
+      "notes": "Form = last 20 official matches (2024-03-23..2026-06-06); sources: Friendlies 14, WC2026 qualifiers 6. Recent: 5-0 @ Belgium; 1-0 @ Austria; 0-0 @ Canada; 0-1 @ Haiti. [src: SportDB; PROPOSED, awaiting approval]"
+    },
+    "türkiye": {
+      "name": "Türkiye",
+      "played": 20,
+      "wins": 12,
+      "draws": 2,
+      "losses": 6,
+      "gf": 37,
+      "ga": 31,
+      "notes": "Form = last 20 official matches (2024-03-26..2026-06-06); sources: WC2026 qualifiers 8, Friendlies 7, Euro 2024 5. Recent: 1-2 @ Venezuela; 4-0 vs North Macedonia; 0-1 @ Kosovo; 1-0 vs Romania. [src: SportDB; PROPOSED, awaiting approval]"
+    },
+    "united-states": {
+      "name": "United States",
+      "played": 20,
+      "wins": 8,
+      "draws": 2,
+      "losses": 10,
+      "gf": 30,
+      "ga": 32,
+      "notes": "Form = last 20 official matches (2024-06-27..2026-06-06); sources: Friendlies 18, Copa America 2024 2. Recent: 1-2 vs Germany; 3-2 vs Senegal; 0-2 vs Portugal; 2-5 vs Belgium. [src: SportDB; PROPOSED, awaiting approval]"
+    },
+    "uruguay": {
+      "name": "Uruguay",
+      "played": 20,
+      "wins": 8,
+      "draws": 8,
+      "losses": 4,
+      "gf": 26,
+      "ga": 15,
+      "notes": "Form = last 20 official matches (2024-06-06..2026-03-31); sources: Friendlies 8, WC2026 qualifiers 6, Copa America 2024 6. Recent: 0-0 @ Algeria; 1-1 @ England; 5-1 @ USA; 0-0 @ Mexico. [src: SportDB; PROPOSED, awaiting approval]"
+    },
+    "uzbekistan": {
+      "name": "Uzbekistan",
+      "played": 18,
+      "wins": 7,
+      "draws": 8,
+      "losses": 3,
+      "gf": 22,
+      "ga": 13,
+      "notes": "Form = last 18 official matches (2024-01-07..2026-06-08); sources: Friendlies 9, Asian Cup 5, WC2026 qualifiers 4. Recent: 2-1 @ Netherlands; 2-0 @ Canada; 2-2 vs China; 0-0 vs Iran. [src: SportDB; PROPOSED, awaiting approval]"
+    }
+  }
+}

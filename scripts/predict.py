@@ -34,8 +34,7 @@ def recompute(conn=None):
     if not teams:
         raise SystemExit(
             "No teams in the database yet. Seed it first:\n"
-            "  python scripts\\seed_from_xlsx.py "
-            '"%USERPROFILE%\\Downloads\\WorldCup2026_Analytics_Companion.xlsx"'
+            "  python scripts/seed_from_snapshot.py"
         )
     prior = {}
     for tid, t in teams.items():

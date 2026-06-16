@@ -73,11 +73,10 @@ jobs:
 
           # --- SQLite backend (pre-migration): run + commit wc.db back ---
           CHANGED=false
-          # Ephemeral runner: rebuild wc.db from the committed workbook if absent
+          # Ephemeral runner: rebuild wc.db from the committed seed snapshot if absent
           if [ ! -f wc.db ]; then
-            echo "No wc.db in repo yet; seeding from the workbook."
-            python scripts/seed_from_xlsx.py
-            python scripts/predict.py
+            echo "No wc.db in repo yet; seeding from data/seed_snapshot.json."
+            python scripts/seed_from_snapshot.py
             CHANGED=true
           fi
 

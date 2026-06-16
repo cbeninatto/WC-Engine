@@ -1,0 +1,806 @@
+{
+  "team_forms": {
+    "argentina": {
+      "played": 17,
+      "wins": 11,
+      "draws": 6,
+      "losses": 0,
+      "gf": 27,
+      "ga": 8,
+      "pass_acc": 80.0,
+      "pressing": 6.0,
+      "sos": 1.12
+    },
+    "australia": {
+      "played": 20,
+      "wins": 11,
+      "draws": 4,
+      "losses": 5,
+      "gf": 34,
+      "ga": 16,
+      "pass_acc": 80.0,
+      "pressing": 6.0,
+      "sos": 0.72
+    },
+    "belgium": {
+      "played": 8,
+      "wins": 6,
+      "draws": 2,
+      "losses": 0,
+      "gf": 25,
+      "ga": 6,
+      "pass_acc": 80.0,
+      "pressing": 6.0,
+      "sos": 0.96
+    },
+    "brazil": {
+      "played": 18,
+      "wins": 15,
+      "draws": 3,
+      "losses": 0,
+      "gf": 44,
+      "ga": 5,
+      "pass_acc": 80.0,
+      "pressing": 6.0,
+      "sos": 1.12
+    },
+    "cameroon": {
+      "played": 9,
+      "wins": 6,
+      "draws": 0,
+      "losses": 3,
+      "gf": 13,
+      "ga": 5,
+      "pass_acc": 80.0,
+      "pressing": 6.0,
+      "sos": 0.72
+    },
+    "canada": {
+      "played": 20,
+      "wins": 13,
+      "draws": 4,
+      "losses": 3,
+      "gf": 49,
+      "ga": 8,
+      "pass_acc": 80.0,
+      "pressing": 6.0,
+      "sos": 0.72
+    },
+    "costa-rica": {
+      "played": 16,
+      "wins": 9,
+      "draws": 4,
+      "losses": 3,
+      "gf": 15,
+      "ga": 8,
+      "pass_acc": 80.0,
+      "pressing": 6.0,
+      "sos": 0.72
+    },
+    "croatia": {
+      "played": 10,
+      "wins": 7,
+      "draws": 2,
+      "losses": 1,
+      "gf": 21,
+      "ga": 4,
+      "pass_acc": 80.0,
+      "pressing": 6.0,
+      "sos": 0.96
+    },
+    "denmark": {
+      "played": 11,
+      "wins": 9,
+      "draws": 0,
+      "losses": 2,
+      "gf": 30,
+      "ga": 5,
+      "pass_acc": 80.0,
+      "pressing": 6.0,
+      "sos": 0.96
+    },
+    "ecuador": {
+      "played": 19,
+      "wins": 7,
+      "draws": 5,
+      "losses": 7,
+      "gf": 28,
+      "ga": 22,
+      "pass_acc": 80.0,
+      "pressing": 6.0,
+      "sos": 1.12
+    },
+    "england": {
+      "played": 10,
+      "wins": 8,
+      "draws": 2,
+      "losses": 0,
+      "gf": 39,
+      "ga": 3,
+      "pass_acc": 80.0,
+      "pressing": 6.0,
+      "sos": 0.96
+    },
+    "france": {
+      "played": 8,
+      "wins": 5,
+      "draws": 3,
+      "losses": 0,
+      "gf": 18,
+      "ga": 3,
+      "pass_acc": 80.0,
+      "pressing": 6.0,
+      "sos": 0.96
+    },
+    "germany": {
+      "played": 10,
+      "wins": 9,
+      "draws": 0,
+      "losses": 1,
+      "gf": 36,
+      "ga": 4,
+      "pass_acc": 80.0,
+      "pressing": 6.0,
+      "sos": 0.96
+    },
+    "ghana": {
+      "played": 10,
+      "wins": 5,
+      "draws": 4,
+      "losses": 1,
+      "gf": 9,
+      "ga": 4,
+      "pass_acc": 80.0,
+      "pressing": 6.0,
+      "sos": 0.72
+    },
+    "iran": {
+      "played": 20,
+      "wins": 14,
+      "draws": 2,
+      "losses": 4,
+      "gf": 49,
+      "ga": 11,
+      "pass_acc": 80.0,
+      "pressing": 6.0,
+      "sos": 0.72
+    },
+    "japan": {
+      "played": 20,
+      "wins": 16,
+      "draws": 1,
+      "losses": 3,
+      "gf": 68,
+      "ga": 8,
+      "pass_acc": 80.0,
+      "pressing": 6.0,
+      "sos": 0.72
+    },
+    "mexico": {
+      "played": 15,
+      "wins": 8,
+      "draws": 5,
+      "losses": 2,
+      "gf": 17,
+      "ga": 8,
+      "pass_acc": 80.0,
+      "pressing": 6.0,
+      "sos": 0.72
+    },
+    "morocco": {
+      "played": 9,
+      "wins": 7,
+      "draws": 2,
+      "losses": 0,
+      "gf": 26,
+      "ga": 4,
+      "pass_acc": 80.0,
+      "pressing": 6.0,
+      "sos": 0.72
+    },
+    "netherlands": {
+      "played": 10,
+      "wins": 7,
+      "draws": 2,
+      "losses": 1,
+      "gf": 33,
+      "ga": 8,
+      "pass_acc": 80.0,
+      "pressing": 6.0,
+      "sos": 0.96
+    },
+    "poland": {
+      "played": 11,
+      "wins": 7,
+      "draws": 2,
+      "losses": 2,
+      "gf": 32,
+      "ga": 11,
+      "pass_acc": 80.0,
+      "pressing": 6.0,
+      "sos": 0.96
+    },
+    "portugal": {
+      "played": 11,
+      "wins": 8,
+      "draws": 2,
+      "losses": 1,
+      "gf": 25,
+      "ga": 8,
+      "pass_acc": 80.0,
+      "pressing": 6.0,
+      "sos": 0.96
+    },
+    "qatar": {
+      "played": 9,
+      "wins": 8,
+      "draws": 1,
+      "losses": 0,
+      "gf": 19,
+      "ga": 1,
+      "pass_acc": 80.0,
+      "pressing": 6.0,
+      "sos": 0.72
+    },
+    "saudi-arabia": {
+      "played": 20,
+      "wins": 15,
+      "draws": 4,
+      "losses": 1,
+      "gf": 37,
+      "ga": 11,
+      "pass_acc": 80.0,
+      "pressing": 6.0,
+      "sos": 0.72
+    },
+    "senegal": {
+      "played": 9,
+      "wins": 7,
+      "draws": 1,
+      "losses": 1,
+      "gf": 19,
+      "ga": 6,
+      "pass_acc": 80.0,
+      "pressing": 6.0,
+      "sos": 0.72
+    },
+    "serbia": {
+      "played": 10,
+      "wins": 8,
+      "draws": 2,
+      "losses": 0,
+      "gf": 25,
+      "ga": 11,
+      "pass_acc": 80.0,
+      "pressing": 6.0,
+      "sos": 0.96
+    },
+    "south-korea": {
+      "played": 20,
+      "wins": 14,
+      "draws": 5,
+      "losses": 1,
+      "gf": 40,
+      "ga": 6,
+      "pass_acc": 80.0,
+      "pressing": 6.0,
+      "sos": 0.72
+    },
+    "spain": {
+      "played": 8,
+      "wins": 6,
+      "draws": 1,
+      "losses": 1,
+      "gf": 15,
+      "ga": 5,
+      "pass_acc": 80.0,
+      "pressing": 6.0,
+      "sos": 0.96
+    },
+    "switzerland": {
+      "played": 10,
+      "wins": 7,
+      "draws": 3,
+      "losses": 0,
+      "gf": 23,
+      "ga": 2,
+      "pass_acc": 80.0,
+      "pressing": 6.0,
+      "sos": 0.96
+    },
+    "tunisia": {
+      "played": 9,
+      "wins": 6,
+      "draws": 2,
+      "losses": 1,
+      "gf": 13,
+      "ga": 2,
+      "pass_acc": 80.0,
+      "pressing": 6.0,
+      "sos": 0.72
+    },
+    "united-states": {
+      "played": 15,
+      "wins": 7,
+      "draws": 5,
+      "losses": 3,
+      "gf": 21,
+      "ga": 10,
+      "pass_acc": 80.0,
+      "pressing": 6.0,
+      "sos": 0.72
+    },
+    "uruguay": {
+      "played": 19,
+      "wins": 9,
+      "draws": 4,
+      "losses": 6,
+      "gf": 23,
+      "ga": 22,
+      "pass_acc": 80.0,
+      "pressing": 6.0,
+      "sos": 1.12
+    },
+    "wales": {
+      "played": 11,
+      "wins": 7,
+      "draws": 3,
+      "losses": 1,
+      "gf": 19,
+      "ga": 11,
+      "pass_acc": 80.0,
+      "pressing": 6.0,
+      "sos": 0.96
+    }
+  },
+  "finals": [
+    {
+      "home_id": "argentina",
+      "away_id": "france",
+      "home_goals": 2,
+      "away_goals": 2,
+      "kickoff": "2022-12-18"
+    },
+    {
+      "home_id": "croatia",
+      "away_id": "morocco",
+      "home_goals": 2,
+      "away_goals": 1,
+      "kickoff": "2022-12-17"
+    },
+    {
+      "home_id": "france",
+      "away_id": "morocco",
+      "home_goals": 2,
+      "away_goals": 0,
+      "kickoff": "2022-12-14"
+    },
+    {
+      "home_id": "argentina",
+      "away_id": "croatia",
+      "home_goals": 3,
+      "away_goals": 0,
+      "kickoff": "2022-12-13"
+    },
+    {
+      "home_id": "england",
+      "away_id": "france",
+      "home_goals": 1,
+      "away_goals": 2,
+      "kickoff": "2022-12-10"
+    },
+    {
+      "home_id": "morocco",
+      "away_id": "portugal",
+      "home_goals": 1,
+      "away_goals": 0,
+      "kickoff": "2022-12-10"
+    },
+    {
+      "home_id": "netherlands",
+      "away_id": "argentina",
+      "home_goals": 2,
+      "away_goals": 2,
+      "kickoff": "2022-12-09"
+    },
+    {
+      "home_id": "croatia",
+      "away_id": "brazil",
+      "home_goals": 0,
+      "away_goals": 0,
+      "kickoff": "2022-12-09"
+    },
+    {
+      "home_id": "portugal",
+      "away_id": "switzerland",
+      "home_goals": 6,
+      "away_goals": 1,
+      "kickoff": "2022-12-06"
+    },
+    {
+      "home_id": "morocco",
+      "away_id": "spain",
+      "home_goals": 0,
+      "away_goals": 0,
+      "kickoff": "2022-12-06"
+    },
+    {
+      "home_id": "brazil",
+      "away_id": "south-korea",
+      "home_goals": 4,
+      "away_goals": 1,
+      "kickoff": "2022-12-05"
+    },
+    {
+      "home_id": "japan",
+      "away_id": "croatia",
+      "home_goals": 1,
+      "away_goals": 1,
+      "kickoff": "2022-12-05"
+    },
+    {
+      "home_id": "england",
+      "away_id": "senegal",
+      "home_goals": 3,
+      "away_goals": 0,
+      "kickoff": "2022-12-04"
+    },
+    {
+      "home_id": "france",
+      "away_id": "poland",
+      "home_goals": 3,
+      "away_goals": 1,
+      "kickoff": "2022-12-04"
+    },
+    {
+      "home_id": "argentina",
+      "away_id": "australia",
+      "home_goals": 2,
+      "away_goals": 1,
+      "kickoff": "2022-12-03"
+    },
+    {
+      "home_id": "netherlands",
+      "away_id": "united-states",
+      "home_goals": 3,
+      "away_goals": 1,
+      "kickoff": "2022-12-03"
+    },
+    {
+      "home_id": "cameroon",
+      "away_id": "brazil",
+      "home_goals": 1,
+      "away_goals": 0,
+      "kickoff": "2022-12-02"
+    },
+    {
+      "home_id": "serbia",
+      "away_id": "switzerland",
+      "home_goals": 2,
+      "away_goals": 3,
+      "kickoff": "2022-12-02"
+    },
+    {
+      "home_id": "ghana",
+      "away_id": "uruguay",
+      "home_goals": 0,
+      "away_goals": 2,
+      "kickoff": "2022-12-02"
+    },
+    {
+      "home_id": "south-korea",
+      "away_id": "portugal",
+      "home_goals": 2,
+      "away_goals": 1,
+      "kickoff": "2022-12-02"
+    },
+    {
+      "home_id": "costa-rica",
+      "away_id": "germany",
+      "home_goals": 2,
+      "away_goals": 4,
+      "kickoff": "2022-12-01"
+    },
+    {
+      "home_id": "japan",
+      "away_id": "spain",
+      "home_goals": 2,
+      "away_goals": 1,
+      "kickoff": "2022-12-01"
+    },
+    {
+      "home_id": "canada",
+      "away_id": "morocco",
+      "home_goals": 1,
+      "away_goals": 2,
+      "kickoff": "2022-12-01"
+    },
+    {
+      "home_id": "croatia",
+      "away_id": "belgium",
+      "home_goals": 0,
+      "away_goals": 0,
+      "kickoff": "2022-12-01"
+    },
+    {
+      "home_id": "poland",
+      "away_id": "argentina",
+      "home_goals": 0,
+      "away_goals": 2,
+      "kickoff": "2022-11-30"
+    },
+    {
+      "home_id": "saudi-arabia",
+      "away_id": "mexico",
+      "home_goals": 1,
+      "away_goals": 2,
+      "kickoff": "2022-11-30"
+    },
+    {
+      "home_id": "australia",
+      "away_id": "denmark",
+      "home_goals": 1,
+      "away_goals": 0,
+      "kickoff": "2022-11-30"
+    },
+    {
+      "home_id": "tunisia",
+      "away_id": "france",
+      "home_goals": 1,
+      "away_goals": 0,
+      "kickoff": "2022-11-30"
+    },
+    {
+      "home_id": "iran",
+      "away_id": "united-states",
+      "home_goals": 0,
+      "away_goals": 1,
+      "kickoff": "2022-11-29"
+    },
+    {
+      "home_id": "wales",
+      "away_id": "england",
+      "home_goals": 0,
+      "away_goals": 3,
+      "kickoff": "2022-11-29"
+    },
+    {
+      "home_id": "ecuador",
+      "away_id": "senegal",
+      "home_goals": 1,
+      "away_goals": 2,
+      "kickoff": "2022-11-29"
+    },
+    {
+      "home_id": "netherlands",
+      "away_id": "qatar",
+      "home_goals": 2,
+      "away_goals": 0,
+      "kickoff": "2022-11-29"
+    },
+    {
+      "home_id": "portugal",
+      "away_id": "uruguay",
+      "home_goals": 2,
+      "away_goals": 0,
+      "kickoff": "2022-11-28"
+    },
+    {
+      "home_id": "brazil",
+      "away_id": "switzerland",
+      "home_goals": 1,
+      "away_goals": 0,
+      "kickoff": "2022-11-28"
+    },
+    {
+      "home_id": "south-korea",
+      "away_id": "ghana",
+      "home_goals": 2,
+      "away_goals": 3,
+      "kickoff": "2022-11-28"
+    },
+    {
+      "home_id": "cameroon",
+      "away_id": "serbia",
+      "home_goals": 3,
+      "away_goals": 3,
+      "kickoff": "2022-11-28"
+    },
+    {
+      "home_id": "spain",
+      "away_id": "germany",
+      "home_goals": 1,
+      "away_goals": 1,
+      "kickoff": "2022-11-27"
+    },
+    {
+      "home_id": "croatia",
+      "away_id": "canada",
+      "home_goals": 4,
+      "away_goals": 1,
+      "kickoff": "2022-11-27"
+    },
+    {
+      "home_id": "belgium",
+      "away_id": "morocco",
+      "home_goals": 0,
+      "away_goals": 2,
+      "kickoff": "2022-11-27"
+    },
+    {
+      "home_id": "japan",
+      "away_id": "costa-rica",
+      "home_goals": 0,
+      "away_goals": 1,
+      "kickoff": "2022-11-27"
+    },
+    {
+      "home_id": "argentina",
+      "away_id": "mexico",
+      "home_goals": 2,
+      "away_goals": 0,
+      "kickoff": "2022-11-26"
+    },
+    {
+      "home_id": "france",
+      "away_id": "denmark",
+      "home_goals": 2,
+      "away_goals": 1,
+      "kickoff": "2022-11-26"
+    },
+    {
+      "home_id": "poland",
+      "away_id": "saudi-arabia",
+      "home_goals": 2,
+      "away_goals": 0,
+      "kickoff": "2022-11-26"
+    },
+    {
+      "home_id": "tunisia",
+      "away_id": "australia",
+      "home_goals": 0,
+      "away_goals": 1,
+      "kickoff": "2022-11-26"
+    },
+    {
+      "home_id": "england",
+      "away_id": "united-states",
+      "home_goals": 0,
+      "away_goals": 0,
+      "kickoff": "2022-11-25"
+    },
+    {
+      "home_id": "netherlands",
+      "away_id": "ecuador",
+      "home_goals": 1,
+      "away_goals": 1,
+      "kickoff": "2022-11-25"
+    },
+    {
+      "home_id": "qatar",
+      "away_id": "senegal",
+      "home_goals": 1,
+      "away_goals": 3,
+      "kickoff": "2022-11-25"
+    },
+    {
+      "home_id": "wales",
+      "away_id": "iran",
+      "home_goals": 0,
+      "away_goals": 2,
+      "kickoff": "2022-11-25"
+    },
+    {
+      "home_id": "brazil",
+      "away_id": "serbia",
+      "home_goals": 2,
+      "away_goals": 0,
+      "kickoff": "2022-11-24"
+    },
+    {
+      "home_id": "portugal",
+      "away_id": "ghana",
+      "home_goals": 3,
+      "away_goals": 2,
+      "kickoff": "2022-11-24"
+    },
+    {
+      "home_id": "uruguay",
+      "away_id": "south-korea",
+      "home_goals": 0,
+      "away_goals": 0,
+      "kickoff": "2022-11-24"
+    },
+    {
+      "home_id": "switzerland",
+      "away_id": "cameroon",
+      "home_goals": 1,
+      "away_goals": 0,
+      "kickoff": "2022-11-24"
+    },
+    {
+      "home_id": "belgium",
+      "away_id": "canada",
+      "home_goals": 1,
+      "away_goals": 0,
+      "kickoff": "2022-11-23"
+    },
+    {
+      "home_id": "spain",
+      "away_id": "costa-rica",
+      "home_goals": 7,
+      "away_goals": 0,
+      "kickoff": "2022-11-23"
+    },
+    {
+      "home_id": "germany",
+      "away_id": "japan",
+      "home_goals": 1,
+      "away_goals": 2,
+      "kickoff": "2022-11-23"
+    },
+    {
+      "home_id": "morocco",
+      "away_id": "croatia",
+      "home_goals": 0,
+      "away_goals": 0,
+      "kickoff": "2022-11-23"
+    },
+    {
+      "home_id": "france",
+      "away_id": "australia",
+      "home_goals": 4,
+      "away_goals": 1,
+      "kickoff": "2022-11-22"
+    },
+    {
+      "home_id": "mexico",
+      "away_id": "poland",
+      "home_goals": 0,
+      "away_goals": 0,
+      "kickoff": "2022-11-22"
+    },
+    {
+      "home_id": "denmark",
+      "away_id": "tunisia",
+      "home_goals": 0,
+      "away_goals": 0,
+      "kickoff": "2022-11-22"
+    },
+    {
+      "home_id": "argentina",
+      "away_id": "saudi-arabia",
+      "home_goals": 1,
+      "away_goals": 2,
+      "kickoff": "2022-11-22"
+    },
+    {
+      "home_id": "united-states",
+      "away_id": "wales",
+      "home_goals": 1,
+      "away_goals": 1,
+      "kickoff": "2022-11-21"
+    },
+    {
+      "home_id": "senegal",
+      "away_id": "netherlands",
+      "home_goals": 0,
+      "away_goals": 2,
+      "kickoff": "2022-11-21"
+    },
+    {
+      "home_id": "england",
+      "away_id": "iran",
+      "home_goals": 6,
+      "away_goals": 2,
+      "kickoff": "2022-11-21"
+    },
+    {
+      "home_id": "qatar",
+      "away_id": "ecuador",
+      "home_goals": 0,
+      "away_goals": 2,
+      "kickoff": "2022-11-20"
+    }
+  ]
+}

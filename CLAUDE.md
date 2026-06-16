@@ -31,12 +31,13 @@ backtest scored with Brier / log-loss). We never fine-tune Claude itself.
 - `lib/db.py` — all DB access, **dual-backend**: SQLite by default, Postgres (Supabase)
   when `DATABASE_URL` is set. Translates placeholders + coerces timestamps so callers are
   backend-agnostic. `lib/notify.py` — optional Telegram control plane.
-- `agents/` — runtime workers. `results_monitor.py` + `telegram_bot.py` (Anthropic API) and
-  `tuner.py` (scipy backtest, proposes a `model_params` version) are built; squad monitor
-  and ingest are next (see Roadmap).
-- `scripts/` — `seed_from_xlsx.py` (one-time bridge from the workbook), `predict.py`
-  (exposes `recompute()`), `scoreboard.py` (grade forecasts vs finals; `--save` records the
-  baseline), `migrate_to_postgres.py` (copy `wc.db` → Supabase).
+- `agents/` — runtime workers. `results_monitor.py` + `telegram_bot.py` (Anthropic API),
+  `tuner.py` (scipy backtest, proposes a `model_params` version), and `ingest.py` (SportDB
+  result feed) are built; the squad monitor is next (see Roadmap).
+- `scripts/` — `seed_from_snapshot.py` (canonical seed, from `data/seed_snapshot.json`) +
+  `snapshot_db.py` (freeze a new baseline); `seed_from_xlsx.py` is the deprecated workbook
+  bridge. `predict.py` (exposes `recompute()`), `scoreboard.py` (grade forecasts vs finals;
+  `--save` records the baseline), `migrate_to_postgres.py` (copy `wc.db` → Supabase).
 - `app.py` + `webapp/` — FastAPI + Tailwind dashboard/control panel. `api/index.py` +
   `vercel.json` deploy it to Vercel; control actions fire GitHub Actions when serverless.
 - `db/schema.sql` (SQLite) + `db/schema_postgres.sql` (Supabase) — the schema, two dialects.
@@ -61,12 +62,12 @@ Code helpers live in `.claude/` — subagents
 ## Strength of schedule (the heart of it)
 SoS is per-team and **evidence-based**, not just per-confederation. Confederation
 defaults are in `params.CONFED_SOS` (CONMEBOL 1.12 … OFC 0.55); overrides live in
-`team_form.sos`, set from real strong-opposition results (friendlies, AFCON 2025, Copa
-América 2024). Example: Japan earns a higher SoS for beating Germany/Brazil; Norway's
-perfect qualifying was discounted after losing 5-1 to Austria. `team_form.notes` records
-the provenance for each team. These overrides + provenance are persisted in
-`data/sos_overrides.json` and re-applied by `seed_from_xlsx.py` (the workbook has no SoS
-column), so a reseed reproduces the curated SoS instead of dropping everyone to defaults.
+`team_form.sos`, derived from real strong-opposition results by `agents/sos_sourcer.py`
+(scores each team's last-N official matches vs rated opposition; cross-confederation weighs
+most). `team_form.notes` records the provenance (real scorelines) for each team. The applied
+SoS lives in `team_form.sos`, is mirrored to `data/sos_overrides.json` as the record, and is
+captured in `data/seed_snapshot.json` so a reseed reproduces it. NOTE: the sourcer is
+window-limited (`--since`), so pre-window cross-confederation wins are under-weighted.
 `scripts/audit_sos.py` flags teams whose SoS looks unsupported by the evidence.
 
 ## Guardrails (non-negotiable)
@@ -80,10 +81,15 @@ column), so a reseed reproduces the curated SoS instead of dropping everyone to 
 
 ## Run
     pip install -r requirements.txt
-    python scripts/seed_from_xlsx.py            # build wc.db from the workbook
+    python scripts/seed_from_snapshot.py        # build wc.db from data/seed_snapshot.json (canonical)
+    python scripts/snapshot_db.py               # freeze the current DB as a new seed baseline
+    python agents/build_team_form.py            # rebuild team_form from real SportDB results (propose; --apply to commit)
+    python agents/sos_sourcer.py --all          # evidence-based SoS for every team (propose; --apply to commit)
     python scripts/predict.py                   # compute ratings + predictions
     python scripts/scoreboard.py                # grade forecasts vs finals (Brier/log-loss/RPS)
-    python agents/tuner.py                      # backtest + propose a tuned model_params (proposes only)
+    python scripts/build_holdout.py             # build data/holdout/wc2022.json (real out-of-sample set)
+    python agents/tuner.py --holdout data/holdout/wc2022.json   # tune on real OOS data (proposes only)
+    python agents/sos_sourcer.py --dry-run      # propose evidence-based SoS overrides (proposes only)
     ANTHROPIC_API_KEY=... python agents/results_monitor.py   # fetch finals, re-rate
     python app.py                               # dashboard at http://127.0.0.1:8000
                                                 # (WC_WEB_PORT=8765 if 8000 is busy)
@@ -91,10 +97,31 @@ column), so a reseed reproduces the curated SoS instead of dropping everyone to 
 ## Roadmap (next agents, in order)
 1. `agents/squad_monitor.py` — watch injury/lineup news; when a key player is out, write a
    `power_adjustment` to `squad_status` (proposed). Fixes the model's biggest blind spot.
-2. `agents/ingest.py` — research/scraper agent: fetch & normalize new competitive results.
+
+Built: `agents/ingest.py` — pulls finished World Cup results from SportDB.dev (a REST proxy
+over Flashscore; key `SPORTDB_API_KEY`, free tier 3 RPS) and records them. Maps Flashscore
+team names to our slugs via an accent-stripping normalizer + alias table, filters to the
+finals window so shared-feed qualifiers can't collide with a finals fixture, and re-rates via
+`recompute()`. Observed finals auto-commit (guardrail #1). It's also wired to the dashboard's
+"Run results monitor" button. Run: `python agents/ingest.py` (`--dry-run` to preview).
 
 Built: `agents/tuner.py` — backtests via `engine/backtest.py`, scipy-optimizes a bounded
 knob subset, proposes a new `model_params` version vs a baseline (proposes only; never
-edits `DEFAULT_PARAMS`). Held-out past tournaments (Euro 2024 / WC 2022) aren't in the repo
-yet, so it defaults to backtesting the recorded WC2026 finals and flags that as a small
-in-sample set — pass `--holdout <file>` when real past-tournament data exists.
+edits `DEFAULT_PARAMS`). Without `--holdout` it backtests the recorded WC2026 finals and flags
+that as a small in-sample set; pass `--holdout data/holdout/wc2022.json` for a real OOS tune.
+
+Built: `scripts/build_holdout.py` — builds a real out-of-sample backtest set from a past World
+Cup via SportDB: the finals window + each finalist's pre-tournament form reconstructed from its
+real qualifier results in the same feed (leakage-free). 90-minute scores, so a shootout reads
+as a draw; missing tactical inputs use the engine's own defaults — no fabrication. Writes
+`data/holdout/wc<season>.json` (the `--holdout` shape). `--season` parameterized (add Euro 2024,
+WC 2018…). Finding: WC2022 alone shows the model is overconfident but can't pin the magnitude —
+one tournament gives a degenerate tune, so add more before changing `logistic_scale`.
+
+Built: `agents/sos_sourcer.py` — proposes evidence-based SoS overrides for teams on a bare
+confederation default. Pulls each team's real results from reachable SportDB feeds (WC
+qualifiers + continental cups + friendlies; unreachable feeds reported, never faked), scores
+them vs rated opposition (cross-confederation weighs most), and writes a conservative SoS +
+provenance quoting the real scorelines to `data/sos_overrides_proposed.json` + a `proposed`
+agent_run. Proposes only (guardrail #1); teams without enough evidence keep their default
+(guardrail #2). Run: `python agents/sos_sourcer.py --dry-run`.

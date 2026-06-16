@@ -138,30 +138,59 @@ function renderStandings(groups) {
         </tbody></table></div>`).join("");
 }
 
-function bar(wh, dr, wa) {
+// One labeled outcome: team/Draw + its probability. The favorite is highlighted.
+function probPill(label, p, c, fav) {
+  return `<div class="flex-1 min-w-0 rounded-md border ${fav ? c.ring + ' ring-1' : 'border-edge'}
+      bg-ink/40 px-2 py-1.5">
+    <div class="flex items-center gap-1.5 text-[11px] ${c.text}">
+      <span class="inline-block w-2 h-2 rounded-full ${c.dot} shrink-0"></span>
+      <span class="truncate">${esc(label)}</span>
+    </div>
+    <div class="text-base font-bold ${fav ? 'text-white' : 'text-slate-300'} tabular-nums">${pct(p)}</div>
+  </div>`;
+}
+function stackedBar(wh, dr, wa) {
   const w = x => (x||0)*100;
-  return `<div class="flex h-2 rounded overflow-hidden w-40">
+  return `<div class="flex h-1.5 rounded overflow-hidden w-full">
     <div style="width:${w(wh)}%" class="bg-sky-500"></div>
-    <div style="width:${w(dr)}%" class="bg-slate-500"></div>
+    <div style="width:${w(dr)}%" class="bg-slate-400"></div>
     <div style="width:${w(wa)}%" class="bg-rose-500"></div></div>`;
 }
+// Projected scoreline: the expected goals rounded to whole goals (e.g. 2–1).
+function projScore(h, a) {
+  if (h == null || a == null) return "";
+  return `${Math.round(h)}–${Math.round(a)}`;
+}
+// Home win / Draw / Away win — the three possible results, each with its probability.
+const OUTCOME_COLORS = {
+  home:  { dot: "bg-sky-500",   text: "text-sky-300",   ring: "ring-sky-500" },
+  draw:  { dot: "bg-slate-400", text: "text-slate-300", ring: "ring-slate-400" },
+  away:  { dot: "bg-rose-500",  text: "text-rose-300",  ring: "ring-rose-500" },
+};
 function renderUpcoming(matches) {
   const up = matches.filter(m => m.status !== "final" && m.win_home != null).slice(0, 12);
-  $("#upcoming").innerHTML = up.length ? up.map(m => `
-    <div class="bg-panel border ${m.overdue?'border-amber-600/60':'border-edge'} rounded-lg
-      px-4 py-2 flex items-center justify-between gap-4">
-      <div class="text-sm">
-        <span class="text-slate-500 text-xs mr-2">${m.kickoff||''} · ${m.group}</span>
-        <span class="text-white">${esc(m.home)}</span>
-        <span class="text-slate-500">vs</span>
-        <span class="text-white">${esc(m.away)}</span>
-        ${m.overdue?'<span class="ml-2 text-amber-400 text-xs">⏳ overdue</span>':''}
+  $("#upcoming").innerHTML = up.length ? up.map(m => {
+    const best = Math.max(m.win_home, m.draw, m.win_away);
+    return `<div class="bg-panel border ${m.overdue?'border-amber-600/60':'border-edge'} rounded-lg px-4 py-3">
+      <div class="flex items-center justify-between gap-4 mb-2">
+        <div class="text-sm">
+          <span class="text-slate-500 text-xs mr-2">${m.kickoff||''} · ${m.group}</span>
+          <span class="text-white font-medium">${esc(m.home)}</span>
+          <span class="text-slate-500"> vs </span>
+          <span class="text-white font-medium">${esc(m.away)}</span>
+          ${m.overdue?'<span class="ml-2 text-amber-400 text-xs">⏳ overdue</span>':''}
+        </div>
+        <span class="text-xs text-slate-500 shrink-0">proj
+          <span class="text-slate-200 font-semibold tabular-nums">${projScore(m.pred_home_goals, m.pred_away_goals)}</span></span>
       </div>
-      <div class="flex items-center gap-3">
-        <span class="text-xs text-slate-400 tabular-nums">${pct(m.win_home)} / ${pct(m.draw)} / ${pct(m.win_away)}</span>
-        ${bar(m.win_home, m.draw, m.win_away)}
-        <span class="text-xs text-slate-500 w-14 text-right">${m.pred_home_goals}–${m.pred_away_goals}</span>
-      </div></div>`).join("")
+      <div class="flex items-stretch gap-2 mb-1.5">
+        ${probPill(m.home, m.win_home, OUTCOME_COLORS.home, m.win_home === best)}
+        ${probPill("Draw", m.draw,     OUTCOME_COLORS.draw, m.draw === best)}
+        ${probPill(m.away, m.win_away, OUTCOME_COLORS.away, m.win_away === best)}
+      </div>
+      ${stackedBar(m.win_home, m.draw, m.win_away)}
+    </div>`;
+  }).join("")
     : `<p class="text-slate-500 text-sm">No upcoming matches with predictions.</p>`;
 }
 

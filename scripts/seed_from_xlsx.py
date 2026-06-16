@@ -1,5 +1,10 @@
 """Seed the local DB from the existing Excel engine.
 
+DEPRECATED as the canonical seed: the workbook has been retired in favor of a DB snapshot.
+Use `scripts/seed_from_snapshot.py` (source: `data/seed_snapshot.json`) for /reseed and fresh
+clones. This remains only as a one-time bridge if all you have is the original Excel file —
+note it seeds the workbook's stale Form_L20, NOT the SportDB-sourced form/SoS in the snapshot.
+
 One-time bridge: reads Form_L20 + Tactics + Predictions from the workbook you already
 built and validated, so you don't re-transcribe 48 teams. After this, the agents own
 the data.

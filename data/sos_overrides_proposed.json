@@ -1,0 +1,160 @@
+{
+  "_comment": "PROPOSED evidence-based SoS overrides from agents/sos_sourcer.py (real SportDB results). NOT applied. Review each note, then merge accepted entries into data/sos_overrides.json and re-run scripts/seed_from_xlsx.py + predict.py.",
+  "overrides": {
+    "south-korea": {
+      "name": "South Korea",
+      "sos": 0.69,
+      "notes": "SoS 0.69 (lowered from AFC default 0.72): 5 rated results vs strong/mid sides over 14 rated games, avg -0.54/game. L 0-4 vs Ivory Coast(STRONG,X) [Friendlies]; L 0-1 vs Austria(STRONG,X) [Friendlies]; W 2-0 vs United States(WEAK,X) [Friendlies]; D 2-2 vs Mexico(MID,X) [Friendlies]; L 0-5 vs Brazil(MID,X) [Friendlies]. [src: SportDB; X=cross-confederation; PROPOSED, awaiting approval]"
+    },
+    "australia": {
+      "name": "Australia",
+      "sos": 0.7,
+      "notes": "SoS 0.7 (lowered from AFC default 0.72): 6 rated results vs strong/mid sides over 11 rated games, avg -0.30/game. L 0-3 vs Colombia(STRONG,X) [Friendlies]; W 1-0 vs Japan(STRONG) [WC2026 qualifiers]; W 1-0 vs New Zealand(WEAK,X) [Friendlies]; W 3-1 vs New Zealand(WEAK,X) [Friendlies]; W 1-0 vs Canada(MID,X) [Friendlies]. [src: SportDB; X=cross-confederation; PROPOSED, awaiting approval]"
+    },
+    "japan": {
+      "name": "Japan",
+      "sos": 0.69,
+      "notes": "SoS 0.69 (lowered from AFC default 0.72): 5 rated results vs strong/mid sides over 12 rated games, avg -0.48/game. W 1-0 vs England(STRONG,X) [Friendlies]; D 0-0 vs Mexico(MID,X) [Friendlies]; L 0-2 vs United States(WEAK,X) [Friendlies]; D 2-2 vs Paraguay(WEAK,X) [Friendlies]; W 3-2 vs Brazil(MID,X) [Friendlies]. [src: SportDB; X=cross-confederation; PROPOSED, awaiting approval]"
+    },
+    "saudi-arabia": {
+      "name": "Saudi Arabia",
+      "sos": 0.71,
+      "notes": "SoS 0.71 (lowered from AFC default 0.72): 9 rated results vs strong/mid sides over 11 rated games, avg -0.14/game. W 1-0 vs Ivory Coast(STRONG,X) [Friendlies]; D 0-0 vs Senegal(STRONG,X) [Friendlies]; D 0-0 vs Japan(STRONG) [WC2026 qualifiers]; D 1-1 vs Czechia(MID,X) [Friendlies]; L 0-2 vs Algeria(MID,X) [Friendlies]. [src: SportDB; X=cross-confederation; PROPOSED, awaiting approval]"
+    },
+    "iraq": {
+      "name": "Iraq",
+      "sos": 0.71,
+      "notes": "SoS 0.71 (lowered from AFC default 0.72): 4 rated results vs strong/mid sides over 7 rated games, avg -0.21/game. D 1-1 vs Spain(STRONG,X) [Friendlies]; W 2-1 vs Japan(STRONG) [Asian Cup]; L 0-1 vs South Korea(MID) [Friendlies]; L 2-3 vs Jordan(WEAK) [Asian Cup]; L 0-2 vs South Korea(MID) [WC2026 qualifiers]. [src: SportDB; X=cross-confederation; PROPOSED, awaiting approval]"
+    },
+    "jordan": {
+      "name": "Jordan",
+      "sos": 0.66,
+      "notes": "SoS 0.66 (lowered from AFC default 0.72): 6 rated results vs strong/mid sides over 13 rated games, avg -0.92/game. L 0-2 vs Colombia(STRONG,X) [Friendlies]; L 1-6 vs Japan(STRONG) [Friendlies]; L 2-3 vs Tunisia(WEAK,X) [Friendlies]; L 1-4 vs Switzerland(MID,X) [Friendlies]; W 2-1 vs Qatar(WEAK) [Friendlies]. [src: SportDB; X=cross-confederation; PROPOSED, awaiting approval]"
+    },
+    "uzbekistan": {
+      "name": "Uzbekistan",
+      "sos": 0.69,
+      "notes": "SoS 0.69 (lowered from AFC default 0.72): 7 rated results vs strong/mid sides over 10 rated games, avg -0.42/game. L 1-2 vs Netherlands(STRONG,X) [Friendlies]; L 1-2 vs Uruguay(MID,X) [Friendlies]; W 2-0 vs Egypt(MID,X) [Friendlies]; L 0-2 vs Canada(MID,X) [Friendlies]; D 1-1 vs Australia(MID) [Asian Cup]. [src: SportDB; X=cross-confederation; PROPOSED, awaiting approval]"
+    },
+    "south-africa": {
+      "name": "South Africa",
+      "sos": 0.69,
+      "notes": "SoS 0.69 (lowered from CAF default 0.72): 4 rated results vs strong/mid sides over 7 rated games, avg -0.50/game. W 2-0 vs Morocco(STRONG) [AFCON]; D 1-1 vs Panama(WEAK,X) [Friendlies]; L 1-2 vs Panama(WEAK,X) [Friendlies]; D 0-0 vs Tunisia(WEAK) [AFCON]; D 0-0 vs Cape Verde(MID) [AFCON]. [src: SportDB; X=cross-confederation; PROPOSED, awaiting approval]"
+    },
+    "tunisia": {
+      "name": "Tunisia",
+      "sos": 0.7,
+      "notes": "SoS 0.7 (lowered from CAF default 0.72): 9 rated results vs strong/mid sides over 13 rated games, avg -0.27/game. D 0-0 vs Croatia(STRONG,X) [Friendlies]; L 0-1 vs Austria(STRONG,X) [Friendlies]; L 0-5 vs Belgium(STRONG,X) [Friendlies]; L 0-2 vs Morocco(STRONG) [Friendlies]; D 0-0 vs New Zealand(WEAK,X) [Friendlies]. [src: SportDB; X=cross-confederation; PROPOSED, awaiting approval]"
+    },
+    "egypt": {
+      "name": "Egypt",
+      "sos": 0.7,
+      "notes": "SoS 0.7 (lowered from CAF default 0.72): 6 rated results vs strong/mid sides over 12 rated games, avg -0.33/game. L 2-4 vs Croatia(STRONG,X) [Friendlies]; D 0-0 vs Spain(STRONG,X) [Friendlies]; W 1-0 vs New Zealand(WEAK,X) [Friendlies]; L 0-2 vs Uzbekistan(WEAK,X) [Friendlies]; W 4-0 vs Saudi Arabia(WEAK,X) [Friendlies]. [src: SportDB; X=cross-confederation; PROPOSED, awaiting approval]"
+    },
+    "cape-verde": {
+      "name": "Cape Verde",
+      "sos": 0.69,
+      "notes": "SoS 0.69 (lowered from CAF default 0.72): 3 rated results vs strong/mid sides over 6 rated games, avg -0.50/game. D 0-0 vs Iran(MID,X) [Friendlies]; L 0-2 vs Tunisia(WEAK) [Friendlies]; W 2-1 vs Ghana(WEAK) [AFCON]; D 2-2 vs Egypt(MID) [AFCON]; D 0-0 vs South Africa(WEAK) [AFCON]. [src: SportDB; X=cross-confederation; PROPOSED, awaiting approval]"
+    },
+    "senegal": {
+      "name": "Senegal",
+      "sos": 0.71,
+      "notes": "SoS 0.71 (lowered from CAF default 0.72): 4 rated results vs strong/mid sides over 6 rated games, avg -0.25/game. W 3-1 vs England(STRONG,X) [Friendlies]; D 1-1 vs Ivory Coast(STRONG) [AFCON]; L 0-2 vs Brazil(MID,X) [Friendlies]; L 2-3 vs United States(WEAK,X) [Friendlies]; D 0-0 vs Saudi Arabia(WEAK,X) [Friendlies]. [src: SportDB; X=cross-confederation; PROPOSED, awaiting approval]"
+    },
+    "ghana": {
+      "name": "Ghana",
+      "sos": 0.68,
+      "notes": "SoS 0.68 (lowered from CAF default 0.72): 7 rated results vs strong/mid sides over 7 rated games, avg -0.64/game. L 0-2 vs Japan(STRONG,X) [Friendlies]; L 1-5 vs Austria(STRONG,X) [Friendlies]; L 1-2 vs Germany(STRONG,X) [Friendlies]; L 0-1 vs South Korea(MID,X) [Friendlies]; L 0-2 vs Mexico(MID,X) [Friendlies]. [src: SportDB; X=cross-confederation; PROPOSED, awaiting approval]"
+    },
+    "mexico": {
+      "name": "Mexico",
+      "sos": 0.71,
+      "notes": "SoS 0.71 (lowered from CONCACAF default 0.72): 14 rated results vs strong/mid sides over 19 rated games, avg -0.13/game. D 0-0 vs Japan(STRONG,X) [Friendlies]; L 0-4 vs Colombia(STRONG,X) [Friendlies]; D 0-0 vs Portugal(STRONG,X) [Friendlies]; D 1-1 vs Belgium(STRONG,X) [Friendlies]; L 0-4 vs Uruguay(MID,X) [Friendlies]. [src: SportDB; X=cross-confederation; PROPOSED, awaiting approval]"
+    },
+    "united-states": {
+      "name": "United States",
+      "sos": 0.7,
+      "notes": "SoS 0.7 (lowered from CONCACAF default 0.72): 16 rated results vs strong/mid sides over 20 rated games, avg -0.28/game. L 1-5 vs Colombia(STRONG,X) [Friendlies]; W 2-0 vs Japan(STRONG,X) [Friendlies]; L 2-5 vs Belgium(STRONG,X) [Friendlies]; L 0-2 vs Portugal(STRONG,X) [Friendlies]; W 3-2 vs Senegal(STRONG,X) [Friendlies]. [src: SportDB; X=cross-confederation; PROPOSED, awaiting approval]"
+    },
+    "panama": {
+      "name": "Panama",
+      "sos": 0.64,
+      "notes": "SoS 0.64 (lowered from CONCACAF default 0.72): 5 rated results vs strong/mid sides over 11 rated games, avg -1.27/game. L 0-5 vs Colombia(STRONG,X) [Copa America 2024]; L 0-1 vs Paraguay(WEAK,X) [Friendlies]; L 1-3 vs Uruguay(MID,X) [Copa America 2024]; D 1-1 vs South Africa(WEAK,X) [Friendlies]; W 2-1 vs South Africa(WEAK,X) [Friendlies]. [src: SportDB; X=cross-confederation; PROPOSED, awaiting approval]"
+    },
+    "paraguay": {
+      "name": "Paraguay",
+      "sos": 1.1,
+      "notes": "SoS 1.1 (lowered from CONMEBOL default 1.12): 10 rated results vs strong/mid sides over 12 rated games, avg -0.27/game. D 2-2 vs Japan(STRONG,X) [Friendlies]; L 1-2 vs Morocco(STRONG,X) [Friendlies]; L 1-2 vs Colombia(STRONG) [Copa America 2024]; D 2-2 vs Colombia(STRONG) [WC2026 qualifiers]; W 1-0 vs Panama(WEAK,X) [Friendlies]. [src: SportDB; X=cross-confederation; PROPOSED, awaiting approval]"
+    },
+    "uruguay": {
+      "name": "Uruguay",
+      "sos": 1.11,
+      "notes": "SoS 1.11 (lowered from CONMEBOL default 1.12): 9 rated results vs strong/mid sides over 14 rated games, avg -0.23/game. L 1-2 vs Ivory Coast(STRONG,X) [Friendlies]; D 1-1 vs England(STRONG,X) [Friendlies]; L 0-1 vs Colombia(STRONG) [Copa America 2024]; L 0-1 vs Argentina(STRONG) [WC2026 qualifiers]; W 4-0 vs Mexico(MID,X) [Friendlies]. [src: SportDB; X=cross-confederation; PROPOSED, awaiting approval]"
+    },
+    "switzerland": {
+      "name": "Switzerland",
+      "sos": 0.98,
+      "notes": "SoS 0.98 (raised from UEFA default 0.96): 7 rated results vs strong/mid sides over 12 rated games, avg +0.31/game. D 1-1 vs Austria(STRONG) [Friendlies]; D 1-1 vs Germany(STRONG) [Euro 2024]; D 1-1 vs England(STRONG) [Euro 2024]; L 3-4 vs Germany(STRONG) [Friendlies]; D 0-0 vs Norway(STRONG) [Friendlies]. [src: SportDB; X=cross-confederation; PROPOSED, awaiting approval]"
+    },
+    "bosnia-and-herzegovina": {
+      "name": "Bosnia and Herzegovina",
+      "sos": 0.95,
+      "notes": "SoS 0.95 (lowered from UEFA default 0.96): 3 rated results vs strong/mid sides over 4 rated games, avg -0.25/game. L 0-3 vs England(STRONG) [Friendlies]; L 1-2 vs Austria(STRONG) [WC2026 qualifiers]; D 1-1 vs Austria(STRONG) [WC2026 qualifiers]; D 1-1 vs Panama(WEAK,X) [Friendlies]. [src: SportDB; X=cross-confederation; PROPOSED, awaiting approval]"
+    },
+    "germany": {
+      "name": "Germany",
+      "sos": 1.0,
+      "notes": "SoS 1.0 (raised from UEFA default 0.96): 5 rated results vs strong/mid sides over 8 rated games, avg +0.69/game. W 2-0 vs France(STRONG) [Friendlies]; W 2-1 vs Netherlands(STRONG) [Friendlies]; D 1-1 vs Spain(STRONG) [Euro 2024]; W 2-1 vs Ghana(WEAK,X) [Friendlies]; W 2-1 vs United States(WEAK,X) [Friendlies]. [src: SportDB; X=cross-confederation; PROPOSED, awaiting approval]"
+    },
+    "netherlands": {
+      "name": "Netherlands",
+      "sos": 0.97,
+      "notes": "SoS 0.97 (raised from UEFA default 0.96): 9 rated results vs strong/mid sides over 11 rated games, avg +0.25/game. L 1-2 vs Germany(STRONG) [Friendlies]; D 0-0 vs France(STRONG) [Euro 2024]; L 2-3 vs Austria(STRONG) [Euro 2024]; L 1-2 vs England(STRONG) [Euro 2024]; W 2-1 vs Norway(STRONG) [Friendlies]. [src: SportDB; X=cross-confederation; PROPOSED, awaiting approval]"
+    },
+    "sweden": {
+      "name": "Sweden",
+      "sos": 0.93,
+      "notes": "SoS 0.93 (lowered from UEFA default 0.96): 5 rated results vs strong/mid sides over 5 rated games, avg -0.45/game. L 2-5 vs Portugal(STRONG) [Friendlies]; L 1-3 vs Norway(STRONG) [Friendlies]; W 4-3 vs Algeria(MID,X) [Friendlies]; L 0-2 vs Switzerland(MID) [WC2026 qualifiers]; L 1-4 vs Switzerland(MID) [WC2026 qualifiers]. [src: SportDB; X=cross-confederation; PROPOSED, awaiting approval]"
+    },
+    "belgium": {
+      "name": "Belgium",
+      "sos": 0.99,
+      "notes": "SoS 0.99 (raised from UEFA default 0.96): 4 rated results vs strong/mid sides over 6 rated games, avg +0.50/game. D 2-2 vs England(STRONG) [Friendlies]; L 0-1 vs France(STRONG) [Euro 2024]; W 2-0 vs Croatia(STRONG) [Friendlies]; W 5-2 vs United States(WEAK,X) [Friendlies]; D 1-1 vs Mexico(MID,X) [Friendlies]. [src: SportDB; X=cross-confederation; PROPOSED, awaiting approval]"
+    },
+    "spain": {
+      "name": "Spain",
+      "sos": 1.0,
+      "notes": "SoS 1.0 (raised from UEFA default 0.96): 9 rated results vs strong/mid sides over 10 rated games, avg +0.60/game. L 0-1 vs Colombia(STRONG,X) [Friendlies]; W 3-0 vs Croatia(STRONG) [Euro 2024]; D 1-1 vs Germany(STRONG) [Euro 2024]; W 2-1 vs France(STRONG) [Euro 2024]; W 2-1 vs England(STRONG) [Euro 2024]. [src: SportDB; X=cross-confederation; PROPOSED, awaiting approval]"
+    },
+    "france": {
+      "name": "France",
+      "sos": 1.02,
+      "notes": "SoS 1.02 (raised from UEFA default 0.96): 10 rated results vs strong/mid sides over 10 rated games, avg +0.97/game. W 3-1 vs Colombia(STRONG,X) [Friendlies]; L 1-2 vs Ivory Coast(STRONG,X) [Friendlies]; L 0-2 vs Germany(STRONG) [Friendlies]; W 1-0 vs Austria(STRONG) [Euro 2024]; D 0-0 vs Netherlands(STRONG) [Euro 2024]. [src: SportDB; X=cross-confederation; PROPOSED, awaiting approval]"
+    },
+    "norway": {
+      "name": "Norway",
+      "sos": 0.95,
+      "notes": "SoS 0.95 (lowered from UEFA default 0.96): 4 rated results vs strong/mid sides over 6 rated games, avg -0.17/game. D 1-1 vs Morocco(STRONG,X) [Friendlies]; L 1-2 vs Netherlands(STRONG) [Friendlies]; D 1-1 vs New Zealand(WEAK,X) [Friendlies]; L 1-2 vs Czechia(MID) [Friendlies]; D 0-0 vs Switzerland(MID) [Friendlies]. [src: SportDB; X=cross-confederation; PROPOSED, awaiting approval]"
+    },
+    "austria": {
+      "name": "Austria",
+      "sos": 0.97,
+      "notes": "SoS 0.97 (raised from UEFA default 0.96): 6 rated results vs strong/mid sides over 10 rated games, avg +0.12/game. L 0-1 vs France(STRONG) [Euro 2024]; W 3-2 vs Netherlands(STRONG) [Euro 2024]; W 5-1 vs Ghana(WEAK,X) [Friendlies]; W 1-0 vs South Korea(MID,X) [Friendlies]; W 1-0 vs Tunisia(WEAK,X) [Friendlies]. [src: SportDB; X=cross-confederation; PROPOSED, awaiting approval]"
+    },
+    "portugal": {
+      "name": "Portugal",
+      "sos": 0.98,
+      "notes": "SoS 0.98 (raised from UEFA default 0.96): 5 rated results vs strong/mid sides over 7 rated games, avg +0.29/game. L 1-2 vs Croatia(STRONG) [Friendlies]; D 0-0 vs France(STRONG) [Euro 2024]; D 0-0 vs Mexico(MID,X) [Friendlies]; W 2-0 vs United States(WEAK,X) [Friendlies]; W 5-2 vs Sweden(WEAK) [Friendlies]. [src: SportDB; X=cross-confederation; PROPOSED, awaiting approval]"
+    },
+    "england": {
+      "name": "England",
+      "sos": 0.97,
+      "notes": "SoS 0.97 (raised from UEFA default 0.96): 8 rated results vs strong/mid sides over 10 rated games, avg +0.15/game. L 1-3 vs Senegal(STRONG,X) [Friendlies]; L 0-1 vs Japan(STRONG,X) [Friendlies]; D 2-2 vs Belgium(STRONG) [Friendlies]; W 2-1 vs Netherlands(STRONG) [Euro 2024]; L 1-2 vs Spain(STRONG) [Euro 2024]. [src: SportDB; X=cross-confederation; PROPOSED, awaiting approval]"
+    },
+    "croatia": {
+      "name": "Croatia",
+      "sos": 0.98,
+      "notes": "SoS 0.98 (raised from UEFA default 0.96): 8 rated results vs strong/mid sides over 9 rated games, avg +0.31/game. W 2-1 vs Colombia(STRONG,X) [Friendlies]; W 2-1 vs Portugal(STRONG) [Friendlies]; L 0-3 vs Spain(STRONG) [Euro 2024]; L 0-2 vs Belgium(STRONG) [Friendlies]; D 0-0 vs Tunisia(WEAK,X) [Friendlies]. [src: SportDB; X=cross-confederation; PROPOSED, awaiting approval]"
+    }
+  }
+}

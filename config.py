@@ -18,6 +18,10 @@ SCHEMA_PG_PATH = str(ROOT / "db" / "schema_postgres.sql")  # Postgres/Supabase D
 # Model used by the runtime agents (results monitor, squad monitor, ingest).
 AGENT_MODEL = os.environ.get("WC_AGENT_MODEL", "claude-sonnet-4-6")
 
+# Ingest agent (agents/ingest.py) pulls real results from SportDB.dev (a REST proxy over
+# Flashscore). It reads SPORTDB_API_KEY from .env (sent as the X-API-Key header).
+SPORTDB_API_KEY = os.environ.get("SPORTDB_API_KEY")
+
 # Path to the existing Excel engine, used once to seed the DB.
 XLSX_PATH = os.environ.get(
     "WC_XLSX_PATH", str(ROOT.parent / "WorldCup2026_Analytics_Companion.xlsx")
