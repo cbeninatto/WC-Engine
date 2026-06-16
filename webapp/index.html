@@ -1,87 +1,585 @@
 <!doctype html>
 <html lang="en" class="dark">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>WC Engine</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = { darkMode: "class",
-      theme: { extend: { colors: { ink: "#0b0f17", panel: "#131a26", edge: "#22304a" } } } };
-  </script>
-</head>
-<body class="bg-ink text-slate-200 min-h-screen">
-  <div class="max-w-6xl mx-auto p-5">
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>WC Engine</title>
 
-    <!-- header -->
-    <header class="flex items-center justify-between mb-5">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+/* =========================================================================
+   01 · DESIGN TOKENS  (the single source of truth — WC Engine DS v2027.1)
+   ========================================================================= */
+:root {
+  --ink-0: #060912; --ink-1: #0a1020; --ink-2: #10182b;
+  --ink-3: #161f37; --ink-4: #1d2845; --ink-5: #243156;
+
+  --edge-soft:  rgba(120, 150, 220, 0.06);
+  --edge:       rgba(120, 150, 220, 0.12);
+  --edge-strong:rgba(140, 170, 240, 0.22);
+
+  --t-hi: #f2f5fc; --t-body: #c8d1e6; --t-mute: #8693b1; --t-faint: #5a6480;
+
+  --home: #38bdf8; --home-soft: rgba(56, 189, 248, 0.14);
+  --draw: #94a3b8; --draw-soft: rgba(148, 163, 184, 0.14);
+  --away: #fb7185; --away-soft: rgba(251, 113, 133, 0.14);
+  --pos:  #34d399; --pos-soft:  rgba(52, 211, 153, 0.12);
+  --warn: #fbbf24; --warn-soft: rgba(251, 191, 36, 0.14);
+  --engine: #a78bfa; --engine-soft: rgba(167, 139, 250, 0.14);
+  --neutral: #64748b;
+
+  --accent: var(--home); --accent-soft: rgba(56, 189, 248, 0.14); --accent-strong: #0ea5e9;
+
+  --s-1:4px; --s-2:8px; --s-3:12px; --s-4:16px; --s-5:20px; --s-6:24px;
+  --s-8:32px; --s-10:40px; --s-12:48px;
+
+  --r-xs:4px; --r-sm:6px; --r-md:10px; --r-lg:14px; --r-xl:18px; --r-2xl:24px; --r-full:999px;
+
+  --sh-subtle: 0 1px 2px rgba(0,0,0,.5);
+  --sh-card:   0 4px 12px -2px rgba(0,0,0,.45), 0 0 0 1px var(--edge-soft);
+  --sh-raised: 0 12px 32px -8px rgba(0,0,0,.55), 0 0 0 1px var(--edge);
+  --hi-inset:  inset 0 1px 0 rgba(255,255,255,0.04);
+
+  --ease-out: cubic-bezier(.2, 0, 0, 1);
+  --ease-snap: cubic-bezier(.34, 1.56, .64, 1);
+  --t-fast:120ms; --t-norm:200ms; --t-slow:320ms;
+
+  --font-sans: 'Outfit', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, 'SF Mono', monospace;
+  --container: 1180px;
+}
+
+/* =========================================================================
+   02 · RESET & BASE
+   ========================================================================= */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+body {
+  font-family: var(--font-sans); font-size: 14px; line-height: 1.55;
+  color: var(--t-body); background: var(--ink-0);
+  font-feature-settings: "ss01", "cv11";
+  -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
+  min-height: 100vh; overflow-x: hidden;
+}
+body::before {
+  content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 0;
+  background:
+    radial-gradient(900px 600px at 12% -8%,  rgba(56,189,248,.07), transparent 60%),
+    radial-gradient(700px 500px at 92% 4%,   rgba(167,139,250,.06), transparent 60%),
+    radial-gradient(800px 500px at 50% 110%, rgba(52,211,153,.04), transparent 60%);
+}
+a { color: inherit; text-decoration: none; }
+button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
+input { font: inherit; color: inherit; }
+table { border-collapse: collapse; }
+::selection { background: var(--accent-soft); color: var(--t-hi); }
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--ink-4); border-radius: var(--r-full); border: 2px solid var(--ink-0); }
+::-webkit-scrollbar-thumb:hover { background: var(--ink-5); }
+
+/* Utilities */
+.num { font-family: var(--font-mono); font-variant-numeric: tabular-nums; font-feature-settings: "tnum"; }
+.muted { color: var(--t-mute); } .faint { color: var(--t-faint); }
+.t-hi { color: var(--t-hi); } .pos { color: var(--pos); } .away { color: var(--away); }
+.row { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+.spacer { flex: 1; }
+.hidden { display: none !important; }
+
+/* =========================================================================
+   03 · LAYOUT
+   ========================================================================= */
+.shell { position: relative; z-index: 1; }
+.container { max-width: var(--container); margin: 0 auto; padding: 24px 24px 64px; }
+@media (min-width: 768px) { .container { padding: 32px 40px 80px; } }
+
+/* App header */
+.app-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 16px; }
+.app-head-title { display: flex; align-items: center; gap: 12px; }
+.app-head-title .logo {
+  width: 32px; height: 32px; border-radius: var(--r-md);
+  background: linear-gradient(135deg, var(--accent), var(--engine));
+  display: inline-flex; align-items: center; justify-content: center; color: #00131c;
+  box-shadow: 0 0 16px -4px var(--accent), 0 0 0 1px rgba(255,255,255,.08) inset;
+}
+.app-head-title h1 { font-size: 18px; font-weight: 600; color: var(--t-hi); letter-spacing: -.01em; }
+.app-head-title .sub { font-size: 12px; color: var(--t-mute); }
+.app-head-meta { display: flex; align-items: center; gap: 16px; font-size: 12px; color: var(--t-mute); flex-wrap: wrap; }
+.app-head-meta .sep { width: 1px; height: 14px; background: var(--edge); }
+
+/* Tab bar */
+.tabbar { display: flex; gap: 4px; padding: 4px; background: var(--ink-2); border: 1px solid var(--edge-soft); border-radius: var(--r-md); width: fit-content; }
+.tab {
+  display: inline-flex; align-items: center; gap: 8px; padding: 8px 14px;
+  font-size: 13px; font-weight: 500; color: var(--t-mute); border-radius: var(--r-sm);
+  transition: all var(--t-fast) var(--ease-out); position: relative;
+}
+.tab:hover { color: var(--t-hi); background: var(--ink-3); }
+.tab--active { background: var(--ink-4); color: var(--t-hi); box-shadow: 0 1px 0 var(--edge-strong) inset, 0 2px 8px rgba(0,0,0,.3); }
+.tab--active::after { content: ""; position: absolute; left: 14px; right: 14px; bottom: -4px; height: 2px; background: var(--accent); border-radius: var(--r-full); box-shadow: 0 0 12px var(--accent); }
+.tab .count {
+  display: inline-flex; align-items: center; justify-content: center; min-width: 18px; height: 18px; padding: 0 5px;
+  font-family: var(--font-mono); font-size: 10px; font-weight: 600;
+  background: var(--away); color: #2a0a10; border-radius: var(--r-full); box-shadow: 0 0 12px -2px var(--away);
+}
+.tab svg { width: 14px; height: 14px; }
+
+/* Section heading */
+.sh { display: flex; justify-content: space-between; align-items: center; margin: 28px 0 14px; flex-wrap: wrap; gap: 8px; }
+.sh-l { display: flex; align-items: center; gap: 10px; }
+.sh h2 { font-size: 14px; font-weight: 600; color: var(--t-hi); letter-spacing: -.005em; }
+.sh-l .ico { width: 20px; height: 20px; border-radius: var(--r-sm); display: inline-flex; align-items: center; justify-content: center; background: var(--ink-3); color: var(--accent); }
+.sh-l .ico svg { width: 12px; height: 12px; }
+.sh-r { display: flex; gap: 8px; align-items: center; }
+
+/* =========================================================================
+   04 · BUTTONS / BADGES / PILLS / STATUS / FIELDS
+   ========================================================================= */
+.btn { display: inline-flex; align-items: center; gap: 8px; padding: 0 14px; height: 36px; border-radius: var(--r-md); font-size: 13px; font-weight: 500; border: 1px solid transparent; white-space: nowrap; transition: all var(--t-fast) var(--ease-out); }
+.btn svg { width: 14px; height: 14px; }
+.btn:hover { transform: translateY(-1px); } .btn:active { transform: translateY(0); }
+.btn:disabled { opacity: .6; cursor: default; transform: none; }
+.btn--sm { height: 28px; padding: 0 10px; font-size: 12px; }
+.btn--primary { background: var(--accent); color: #00131c; font-weight: 600; box-shadow: 0 0 0 1px rgba(255,255,255,.08) inset, 0 4px 12px -4px rgba(56,189,248,.5); }
+.btn--primary:hover { background: #5cc7fb; box-shadow: 0 0 0 1px rgba(255,255,255,.12) inset, 0 6px 16px -4px rgba(56,189,248,.6); }
+.btn--secondary { background: var(--ink-3); color: var(--t-hi); border-color: var(--edge); }
+.btn--secondary:hover { background: var(--ink-4); border-color: var(--edge-strong); }
+.btn--ghost { color: var(--t-body); }
+.btn--ghost:hover { background: var(--ink-2); color: var(--t-hi); }
+.btn--success { background: var(--pos); color: #002413; font-weight: 600; box-shadow: 0 0 0 1px rgba(255,255,255,.1) inset, 0 4px 12px -4px rgba(52,211,153,.4); }
+.btn--success:hover { background: #5be2a8; }
+.btn--danger { background: var(--away-soft); color: var(--away); border-color: rgba(251,113,133,.3); }
+.btn--danger:hover { background: rgba(251,113,133,.22); }
+
+.badge { display: inline-flex; align-items: center; gap: 6px; padding: 3px 8px; font-size: 10.5px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; border-radius: var(--r-sm); border: 1px solid transparent; }
+.badge svg { width: 11px; height: 11px; }
+.badge--hi { background: var(--ink-3); color: var(--t-hi); border-color: var(--edge); }
+.badge--mute { background: var(--ink-2); color: var(--t-mute); border-color: var(--edge-soft); }
+.badge--home { background: var(--home-soft); color: var(--home); border-color: rgba(56,189,248,.25); }
+.badge--draw { background: var(--draw-soft); color: var(--draw); border-color: rgba(148,163,184,.2); }
+.badge--away { background: var(--away-soft); color: var(--away); border-color: rgba(251,113,133,.25); }
+.badge--pos { background: var(--pos-soft); color: var(--pos); border-color: rgba(52,211,153,.25); }
+.badge--warn { background: var(--warn-soft); color: var(--warn); border-color: rgba(251,191,36,.25); }
+.badge--engine { background: var(--engine-soft); color: var(--engine); border-color: rgba(167,139,250,.25); }
+
+.pill { display: inline-flex; align-items: center; gap: 8px; padding: 8px 14px; border-radius: var(--r-md); background: var(--ink-2); border: 1px solid var(--edge-soft); font-size: 13px; font-weight: 500; transition: all var(--t-fast) var(--ease-out); }
+.pill .lbl { color: var(--t-mute); font-weight: 500; }
+.pill .val { font-family: var(--font-mono); color: var(--t-hi); font-weight: 600; }
+.pill--home { background: var(--home-soft); border-color: rgba(56,189,248,.3); } .pill--home .lbl { color: var(--home); }
+.pill--draw { background: var(--draw-soft); border-color: rgba(148,163,184,.25); } .pill--draw .lbl { color: var(--draw); }
+.pill--away { background: var(--away-soft); border-color: rgba(251,113,133,.3); } .pill--away .lbl { color: var(--away); }
+.pill--fav { box-shadow: 0 0 0 1.5px currentColor inset, 0 0 16px -4px currentColor; }
+
+.pbar { display: flex; height: 8px; border-radius: var(--r-full); overflow: hidden; background: var(--ink-3); }
+.pbar > span { transition: width var(--t-slow) var(--ease-out); }
+.pbar .h { background: var(--home); } .pbar .d { background: var(--draw); } .pbar .a { background: var(--away); }
+
+.field { display: inline-flex; align-items: center; background: var(--ink-2); border: 1px solid var(--edge); border-radius: var(--r-md); height: 32px; padding: 0 10px; font-family: var(--font-mono); font-size: 14px; color: var(--t-hi); width: 48px; text-align: center; transition: all var(--t-fast) var(--ease-out); }
+.field:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+.field::-webkit-outer-spin-button, .field::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+.field[type=number] { -moz-appearance: textfield; }
+
+.status { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; color: var(--t-mute); }
+.status .dot { width: 6px; height: 6px; border-radius: 50%; }
+.status--ok { color: var(--pos); } .status--ok .dot { background: var(--pos); box-shadow: 0 0 8px var(--pos); }
+.status--err { color: var(--away); } .status--err .dot { background: var(--away); }
+.status--work { color: var(--accent); } .status--work .dot { background: var(--accent); animation: pulse 1.2s ease-in-out infinite; }
+.status--idle { color: var(--t-mute); } .status--idle .dot { background: var(--t-faint); }
+@keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: .35; } }
+
+.msg { font-size: 12px; color: var(--t-mute); }
+.msg--ok { color: var(--pos); } .msg--err { color: var(--away); }
+
+/* =========================================================================
+   05 · STAT CARDS
+   ========================================================================= */
+.stat-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+@media (min-width: 768px) { .stat-grid { grid-template-columns: repeat(4, 1fr); } }
+.stat { background: linear-gradient(180deg, var(--ink-2), var(--ink-1)); border: 1px solid var(--edge); border-radius: var(--r-lg); padding: 16px 18px; position: relative; overflow: hidden; box-shadow: var(--sh-card), var(--hi-inset); }
+.stat::before { content: ""; position: absolute; top: 0; left: 18px; right: 18px; height: 1px; background: linear-gradient(90deg, transparent, var(--edge-strong), transparent); }
+.stat--alert { border-color: rgba(251,113,133,.3); } .stat--alert::before { background: linear-gradient(90deg, transparent, var(--away), transparent); }
+.stat--warn { border-color: rgba(251,191,36,.3); } .stat--warn::before { background: linear-gradient(90deg, transparent, var(--warn), transparent); }
+.stat--pos { border-color: rgba(52,211,153,.25); } .stat--pos::before { background: linear-gradient(90deg, transparent, var(--pos), transparent); }
+.stat-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+.stat-label { font-size: 11px; font-weight: 600; color: var(--t-mute); letter-spacing: .1em; text-transform: uppercase; }
+.stat-ico { width: 22px; height: 22px; border-radius: var(--r-sm); display: inline-flex; align-items: center; justify-content: center; color: var(--t-mute); }
+.stat-ico svg { width: 12px; height: 12px; }
+.stat--alert .stat-ico { background: var(--away-soft); color: var(--away); }
+.stat--warn .stat-ico { background: var(--warn-soft); color: var(--warn); }
+.stat--pos .stat-ico { background: var(--pos-soft); color: var(--pos); }
+.stat-value { font-family: var(--font-mono); font-size: 30px; font-weight: 500; color: var(--t-hi); line-height: 1; letter-spacing: -.02em; font-variant-numeric: tabular-nums; }
+.stat-foot { display: flex; justify-content: space-between; align-items: center; margin-top: 8px; gap: 8px; }
+
+/* =========================================================================
+   06 · GROUP STANDINGS
+   ========================================================================= */
+.groups { display: grid; grid-template-columns: 1fr; gap: 14px; }
+@media (min-width: 640px) { .groups { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 1024px) { .groups { grid-template-columns: repeat(3, 1fr); } }
+.group { background: var(--ink-1); border: 1px solid var(--edge); border-radius: var(--r-lg); overflow: hidden; box-shadow: var(--sh-card); }
+.group-head { display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; background: var(--ink-2); border-bottom: 1px solid var(--edge-soft); }
+.group-name { font-size: 13px; font-weight: 600; color: var(--t-hi); display: flex; align-items: center; gap: 8px; }
+.group-name .chip-mini { display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; border-radius: var(--r-sm); background: var(--ink-3); color: var(--t-mute); font-family: var(--font-mono); font-size: 10px; font-weight: 600; }
+.group-meta { font-size: 11px; color: var(--t-mute); font-family: var(--font-mono); }
+.group table { width: 100%; }
+.group th { font-size: 10px; font-weight: 600; color: var(--t-faint); text-align: right; padding: 8px 4px 4px; letter-spacing: .08em; text-transform: uppercase; }
+.group th:first-child { text-align: left; padding-left: 14px; }
+.group th:last-child { padding-right: 14px; }
+.group td { font-family: var(--font-mono); font-size: 12.5px; text-align: right; padding: 7px 4px; color: var(--t-body); border-top: 1px solid var(--edge-soft); font-variant-numeric: tabular-nums; }
+.group td:first-child { text-align: left; padding-left: 14px; font-family: var(--font-sans); font-weight: 500; color: var(--t-hi); }
+.group td:last-child { padding-right: 14px; }
+.group tr.qual td { background: linear-gradient(90deg, var(--pos-soft), transparent 80%); }
+.group tr.qual td:first-child { position: relative; }
+.group tr.qual td:first-child::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 2px; background: var(--pos); }
+.crest { display: inline-flex; align-items: center; gap: 8px; }
+.crest-mark { width: 18px; height: 18px; border-radius: 4px; background: var(--ink-3); display: inline-flex; align-items: center; justify-content: center; font-size: 9px; font-weight: 700; color: var(--t-mute); font-family: var(--font-sans); flex-shrink: 0; }
+
+/* =========================================================================
+   07 · MATCH CARDS
+   ========================================================================= */
+.matches { display: grid; grid-template-columns: 1fr; gap: 12px; }
+@media (min-width: 768px) { .matches { grid-template-columns: repeat(2, 1fr); } }
+.match { background: var(--ink-1); border: 1px solid var(--edge); border-radius: var(--r-lg); padding: 16px 18px; display: flex; flex-direction: column; gap: 14px; position: relative; overflow: hidden; box-shadow: var(--sh-card); transition: all var(--t-norm) var(--ease-out); }
+.match:hover { border-color: var(--edge-strong); transform: translateY(-1px); }
+.match--overdue { border-color: rgba(251,191,36,.3); }
+.match--overdue::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, var(--warn), transparent); }
+.match-head { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+.match-meta { display: flex; align-items: center; gap: 8px; font-size: 11px; color: var(--t-mute); font-family: var(--font-mono); flex-wrap: wrap; }
+.match-proj { display: flex; align-items: center; gap: 6px; font-size: 11px; color: var(--t-mute); white-space: nowrap; }
+.match-proj .v { color: var(--t-hi); font-family: var(--font-mono); font-weight: 600; font-size: 13px; }
+.match-body { display: flex; align-items: center; gap: 12px; }
+.match-team { flex: 1; display: flex; align-items: center; gap: 10px; min-width: 0; }
+.match-team--away { justify-content: flex-end; flex-direction: row-reverse; text-align: right; }
+.match-team .crest { width: 28px; height: 28px; border-radius: var(--r-sm); background: var(--ink-3); display: inline-flex; align-items: center; justify-content: center; font-family: var(--font-sans); font-size: 10px; font-weight: 700; color: var(--t-mute); flex-shrink: 0; }
+.match-team .name { font-size: 13px; font-weight: 500; color: var(--t-hi); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.match-vs { font-family: var(--font-mono); font-size: 11px; color: var(--t-faint); padding: 0 4px; }
+.match-probs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.match-probs .pill { justify-content: center; padding: 6px 4px; }
+.match-probs .pill .val { font-size: 14px; }
+
+/* =========================================================================
+   08 · DATA TABLES
+   ========================================================================= */
+.split { display: grid; grid-template-columns: 1fr; gap: 14px; }
+@media (min-width: 1024px) { .split { grid-template-columns: 1.4fr 1fr; align-items: start; } }
+.dt { background: var(--ink-1); border: 1px solid var(--edge); border-radius: var(--r-lg); overflow: hidden; box-shadow: var(--sh-card); }
+.dt-head { padding: 14px 18px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--edge-soft); }
+.dt-scroll { max-height: 30rem; overflow-y: auto; }
+.dt table { width: 100%; }
+.card-title { font-size: 11px; font-weight: 600; color: var(--t-mute); letter-spacing: .12em; text-transform: uppercase; }
+.card-title-icon { display: inline-flex; align-items: center; gap: 8px; }
+.dt th { text-align: left; font-size: 10.5px; font-weight: 600; color: var(--t-faint); text-transform: uppercase; letter-spacing: .08em; padding: 10px 14px; background: var(--ink-2); border-bottom: 1px solid var(--edge-soft); position: sticky; top: 0; z-index: 1; }
+.dt th.num, .dt td.num { text-align: right; font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+.dt td { padding: 11px 14px; font-size: 13px; color: var(--t-body); border-bottom: 1px solid var(--edge-soft); }
+.dt tr:last-child td { border-bottom: 0; }
+.dt tbody tr:hover td { background: rgba(56,189,248,.02); }
+.dt td.team { display: flex; align-items: center; gap: 10px; color: var(--t-hi); font-weight: 500; }
+.dt td.team .crest { width: 22px; height: 22px; border-radius: 4px; background: var(--ink-3); display: inline-flex; align-items: center; justify-content: center; font-size: 9px; font-weight: 700; color: var(--t-mute); }
+.dt .delta { font-family: var(--font-mono); font-size: 11.5px; color: var(--t-faint); }
+.dt .delta--up { color: var(--pos); } .dt .delta--down { color: var(--away); }
+.dt .rank { font-family: var(--font-mono); color: var(--t-faint); font-size: 11.5px; }
+
+/* Performance points table */
+.points-table { width: 100%; }
+.points-table th { text-align: left; font-size: 10.5px; font-weight: 600; color: var(--t-faint); text-transform: uppercase; letter-spacing: .08em; padding: 10px 14px; background: var(--ink-2); border-bottom: 1px solid var(--edge-soft); }
+.points-table td { padding: 12px 14px; font-size: 13px; border-bottom: 1px solid var(--edge-soft); white-space: nowrap; }
+.points-table tr:last-child td { border-bottom: 0; }
+.points-table td.match { color: var(--t-hi); font-weight: 500; white-space: normal; }
+.points-table td.match .sub { font-size: 10.5px; color: var(--t-faint); font-family: var(--font-mono); display: block; margin-top: 2px; }
+.score-cell { font-family: var(--font-mono); font-size: 14px; font-weight: 600; color: var(--t-hi); }
+.score-cell .vs { color: var(--t-faint); margin: 0 3px; font-weight: 400; }
+.pts { display: inline-flex; align-items: center; gap: 6px; padding: 3px 8px; font-family: var(--font-mono); font-size: 12px; font-weight: 600; border-radius: var(--r-sm); background: var(--ink-3); color: var(--t-hi); }
+.pts--pos { background: var(--pos-soft); color: var(--pos); }
+.pts--neg { background: var(--ink-2); color: var(--t-mute); }
+.pts--hi { background: var(--home-soft); color: var(--home); }
+
+/* =========================================================================
+   09 · PERFORMANCE — POINTS HERO + METRIC GRID
+   ========================================================================= */
+.points-hero { display: grid; grid-template-columns: 1fr; gap: 12px; }
+@media (min-width: 768px) { .points-hero { grid-template-columns: 1fr 1fr 1fr; } }
+.points-card { background: linear-gradient(180deg, var(--ink-2), var(--ink-1)); border: 1px solid var(--edge); border-radius: var(--r-lg); padding: 20px 22px; display: flex; flex-direction: column; gap: 6px; position: relative; overflow: hidden; box-shadow: var(--sh-card); }
+.points-card::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: var(--edge); }
+.points-card--you::before { background: linear-gradient(90deg, transparent, var(--home), transparent); }
+.points-card--engine::before { background: linear-gradient(90deg, transparent, var(--engine), transparent); }
+.points-card--lead::before { background: linear-gradient(90deg, transparent, var(--pos), transparent); }
+.points-card-head { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
+.points-card-head .ico { width: 22px; height: 22px; border-radius: var(--r-sm); display: inline-flex; align-items: center; justify-content: center; background: var(--ink-3); }
+.points-card-head .ico svg { width: 12px; height: 12px; }
+.points-card--you .ico { background: var(--home-soft); color: var(--home); }
+.points-card--engine .ico { background: var(--engine-soft); color: var(--engine); }
+.points-card--lead .ico { background: var(--pos-soft); color: var(--pos); }
+.points-card-label { font-size: 11px; font-weight: 600; color: var(--t-mute); letter-spacing: .1em; text-transform: uppercase; }
+.points-card-value { font-family: var(--font-mono); font-size: 40px; font-weight: 500; color: var(--t-hi); letter-spacing: -.02em; line-height: 1; font-variant-numeric: tabular-nums; }
+.points-card-value .unit { font-size: 16px; color: var(--t-mute); margin-left: 6px; }
+.points-card-sub { font-size: 12px; color: var(--t-mute); }
+.points-card-sub .v { color: var(--t-hi); font-family: var(--font-mono); font-weight: 600; }
+
+.metric-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+@media (min-width: 768px) { .metric-grid { grid-template-columns: repeat(3, 1fr); } }
+@media (min-width: 1024px) { .metric-grid { grid-template-columns: repeat(6, 1fr); } }
+.metric { background: var(--ink-1); border: 1px solid var(--edge); border-radius: var(--r-md); padding: 14px 16px; display: flex; flex-direction: column; gap: 6px; box-shadow: var(--sh-subtle); }
+.metric-label { font-size: 10px; font-weight: 600; color: var(--t-mute); text-transform: uppercase; letter-spacing: .1em; }
+.metric-value { font-family: var(--font-mono); font-size: 22px; font-weight: 500; color: var(--t-hi); font-variant-numeric: tabular-nums; line-height: 1.1; letter-spacing: -.01em; }
+.metric-foot { display: flex; align-items: center; gap: 6px; font-size: 10.5px; font-family: var(--font-mono); color: var(--t-mute); }
+.metric-foot .baseline { color: var(--t-mute); text-decoration: line-through; text-decoration-color: var(--edge-strong); }
+.metric-foot--pos .delta { color: var(--pos); } .metric-foot--neg .delta { color: var(--away); }
+
+/* =========================================================================
+   10 · PICK EDITOR
+   ========================================================================= */
+.picks { display: grid; gap: 8px; }
+.pick { display: grid; grid-template-columns: 1fr auto; gap: 16px; padding: 14px 16px; background: var(--ink-1); border: 1px solid var(--edge); border-radius: var(--r-lg); align-items: center; transition: all var(--t-fast) var(--ease-out); }
+.pick:hover { border-color: var(--edge-strong); }
+.pick-l { display: flex; align-items: center; gap: 16px; min-width: 0; }
+.pick-time { font-family: var(--font-mono); font-size: 12px; color: var(--t-mute); min-width: 84px; }
+.pick-match { flex: 1; min-width: 0; }
+.pick-match .name { font-size: 13px; font-weight: 500; color: var(--t-hi); }
+.pick-match .sub { font-size: 11px; color: var(--t-faint); font-family: var(--font-mono); }
+.pick-r { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; justify-content: flex-end; }
+.score-edit { display: inline-flex; align-items: center; gap: 6px; }
+.score-edit .sep { font-family: var(--font-mono); color: var(--t-faint); font-size: 14px; }
+.score-edit .proj { font-family: var(--font-mono); font-size: 12px; color: var(--t-mute); margin-left: 8px; white-space: nowrap; }
+.score-edit .proj b { color: var(--t-hi); font-weight: 600; }
+.pick-save { display: inline-flex; align-items: center; gap: 6px; font-size: 11.5px; color: var(--t-mute); min-width: 52px; }
+.pick-save svg { width: 12px; height: 12px; }
+.pick-save--ok { color: var(--pos); } .pick-save--err { color: var(--away); }
+
+/* =========================================================================
+   11 · PROPOSALS
+   ========================================================================= */
+.proposals { display: grid; gap: 14px; }
+.proposal { background: linear-gradient(180deg, var(--ink-2), var(--ink-1)); border: 1px solid var(--edge); border-radius: var(--r-lg); padding: 20px; display: flex; flex-direction: column; gap: 16px; box-shadow: var(--sh-card); position: relative; overflow: hidden; }
+.proposal::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; }
+.proposal--tuning::before { background: var(--warn); box-shadow: 0 0 12px var(--warn-soft); }
+.proposal--sched::before { background: var(--accent); box-shadow: 0 0 12px var(--accent-soft); }
+.proposal--form::before { background: var(--engine); box-shadow: 0 0 12px var(--engine-soft); }
+.proposal--audit::before { background: var(--neutral); }
+.proposal-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; }
+.proposal-title-block { flex: 1; min-width: 0; }
+.proposal-title { font-size: 15px; font-weight: 600; color: var(--t-hi); margin-bottom: 4px; }
+.proposal-desc { font-size: 12.5px; color: var(--t-mute); line-height: 1.5; }
+.proposal-actions { display: flex; gap: 8px; flex-shrink: 0; flex-wrap: wrap; justify-content: flex-end; }
+.proposal-diff { display: flex; gap: 16px; flex-wrap: wrap; }
+.metric-mini { display: flex; flex-direction: column; gap: 4px; padding: 10px 14px; background: var(--ink-2); border: 1px solid var(--edge-soft); border-radius: var(--r-md); min-width: 110px; }
+.metric-mini .lbl { font-size: 10px; font-weight: 600; color: var(--t-faint); letter-spacing: .1em; text-transform: uppercase; }
+.metric-mini .vals { display: flex; align-items: baseline; gap: 6px; font-family: var(--font-mono); }
+.metric-mini .from { font-size: 12px; color: var(--t-mute); text-decoration: line-through; text-decoration-color: var(--away); }
+.metric-mini .arrow { color: var(--t-faint); }
+.metric-mini .to { font-size: 14px; color: var(--t-hi); font-weight: 600; }
+.metric-mini--pos .to { color: var(--pos); } .metric-mini--pos .from { text-decoration-color: var(--pos); }
+.prop-details { background: var(--ink-2); border: 1px solid var(--edge-soft); border-radius: var(--r-md); padding: 10px 14px; }
+.prop-details summary { font-size: 12px; color: var(--t-mute); cursor: pointer; list-style: none; display: flex; align-items: center; gap: 6px; }
+.prop-details summary::-webkit-details-marker { display: none; }
+.prop-details summary::before { content: "▸"; color: var(--t-faint); transition: transform var(--t-fast); }
+.prop-details[open] summary::before { content: "▾"; }
+.prop-details summary:hover { color: var(--t-body); }
+.kv-grid { margin-top: 10px; display: grid; grid-template-columns: 1fr; gap: 4px 16px; font-size: 12px; }
+@media (min-width: 640px) { .kv-grid { grid-template-columns: 1fr 1fr; } }
+.kv { display: flex; justify-content: space-between; gap: 12px; }
+.kv .k { color: var(--t-faint); } .kv .v { color: var(--t-body); font-family: var(--font-mono); }
+.src-line { margin-top: 8px; font-size: 12px; }
+.proposal-foot { display: flex; justify-content: space-between; align-items: center; padding-top: 12px; border-top: 1px solid var(--edge-soft); gap: 8px; flex-wrap: wrap; }
+.proposal-author { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--t-mute); }
+.proposal-author .av { width: 22px; height: 22px; border-radius: var(--r-sm); background: var(--ink-3); display: inline-flex; align-items: center; justify-content: center; color: var(--t-hi); font-size: 10px; font-weight: 600; }
+.proposal-time { font-size: 11px; color: var(--t-faint); font-family: var(--font-mono); }
+
+/* App footer */
+.app-foot { margin-top: 32px; padding-top: 16px; border-top: 1px solid var(--edge-soft); display: flex; justify-content: space-between; align-items: center; font-size: 11.5px; color: var(--t-faint); flex-wrap: wrap; gap: 8px; }
+.app-foot .trust { display: inline-flex; align-items: center; gap: 6px; }
+.app-foot .trust .ico { color: var(--pos); }
+</style>
+</head>
+<body>
+<div class="shell">
+<div class="container">
+
+  <!-- App header -->
+  <div class="app-head">
+    <div class="app-head-title">
+      <span class="logo">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M6 9H4a2 2 0 0 1-2-2V5h4M18 9h2a2 2 0 0 0 2-2V5h-4M6 3v18M18 3v18M3 6h4M3 18h4M17 6h4M17 18h4M8 12h8M8 16h8"/></svg>
+      </span>
       <div>
-        <h1 class="text-2xl font-bold text-white">⚽ WC Engine</h1>
-        <p class="text-slate-400 text-sm">World Cup 2026 prediction dashboard ·
-          <span id="today">—</span></p>
+        <h1>WC Engine</h1>
+        <div class="sub">World Cup 2026 prediction dashboard · <span id="today">—</span></div>
       </div>
-      <button onclick="load()" class="px-3 py-2 rounded-lg bg-panel border border-edge
-        hover:border-sky-500 text-sm">↻ Refresh</button>
-    </header>
+    </div>
+    <div class="app-head-meta">
+      <span>Local · wc.db</span>
+      <span class="sep"></span>
+      <button class="btn btn--secondary btn--sm" onclick="load()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/></svg>
+        Refresh
+      </button>
+    </div>
+  </div>
+
+  <!-- Tab bar -->
+  <div style="margin-bottom: 24px;">
+    <div class="tabbar">
+      <button class="tab tab--active" data-tab="dashboard" onclick="showTab('dashboard')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>
+        Dashboard
+      </button>
+      <button class="tab" data-tab="performance" onclick="showTab('performance')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/></svg>
+        Performance
+      </button>
+      <button class="tab" data-tab="proposals" onclick="showTab('proposals')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg>
+        Proposals
+        <span id="tab-prop-badge" class="count hidden">0</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- ================= DASHBOARD ================= -->
+  <div id="panel-dashboard" class="tab-panel">
 
     <!-- controls -->
-    <section class="flex flex-wrap gap-3 mb-5">
-      <button id="btn-monitor" onclick="act('run-monitor', this)"
-        class="px-4 py-2 rounded-lg bg-sky-600 hover:bg-sky-500 text-white font-medium text-sm">
-        ⤓ Run results monitor</button>
-      <button id="btn-recompute" onclick="act('recompute', this)"
-        class="px-4 py-2 rounded-lg bg-panel border border-edge hover:border-sky-500 text-sm">
-        ↻ Recompute predictions</button>
-      <span id="action-msg" class="text-sm text-slate-400 self-center"></span>
-    </section>
-
-    <!-- stat cards -->
-    <section id="stats" class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6"></section>
-
-    <!-- proposals -->
-    <section id="proposals-wrap" class="mb-6 hidden">
-      <h2 class="text-lg font-semibold text-white mb-2">⚑ Proposals awaiting approval</h2>
-      <div id="proposals" class="space-y-2"></div>
-    </section>
-
-    <!-- standings -->
-    <section class="mb-6">
-      <h2 class="text-lg font-semibold text-white mb-3">Group standings</h2>
-      <div id="standings" class="grid md:grid-cols-2 xl:grid-cols-3 gap-4"></div>
-    </section>
-
-    <!-- predictions for pending -->
-    <section class="mb-6">
-      <h2 class="text-lg font-semibold text-white mb-3">Upcoming — model probabilities</h2>
-      <div id="upcoming" class="space-y-2"></div>
-    </section>
-
-    <div class="grid lg:grid-cols-2 gap-6">
-      <!-- ratings -->
-      <section>
-        <h2 class="text-lg font-semibold text-white mb-3">Power ratings</h2>
-        <div id="ratings" class="bg-panel border border-edge rounded-xl overflow-hidden"></div>
-      </section>
-      <!-- results -->
-      <section>
-        <h2 class="text-lg font-semibold text-white mb-3">Results</h2>
-        <div id="results" class="bg-panel border border-edge rounded-xl divide-y divide-edge
-          max-h-[28rem] overflow-y-auto"></div>
-      </section>
+    <div class="row" style="margin-bottom: 20px;">
+      <button id="btn-monitor" class="btn btn--primary" onclick="act('run-monitor', this)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5M12 15V3"/></svg>
+        Run results monitor
+      </button>
+      <button id="btn-recompute" class="btn btn--secondary" onclick="act('recompute', this)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/></svg>
+        Recompute predictions
+      </button>
+      <span id="action-msg" class="msg"></span>
     </div>
 
-    <footer class="text-center text-slate-600 text-xs mt-8">
-      Local engine · reads <code>wc.db</code> · agents propose, you approve
-    </footer>
+    <div id="stats" class="stat-grid"></div>
+
+    <div class="sh">
+      <div class="sh-l">
+        <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h2M18 9h2a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2h-2M6 3v18M18 3v18M3 6h4M3 18h4M17 6h4M17 18h4"/></svg></span>
+        <h2>Group standings</h2>
+      </div>
+    </div>
+    <div id="standings" class="groups"></div>
+
+    <div class="sh">
+      <div class="sh-l">
+        <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></span>
+        <h2>Upcoming · model probabilities</h2>
+      </div>
+    </div>
+    <div id="upcoming" class="matches"></div>
+
+    <div class="split" style="margin-top: 32px;">
+      <div id="ratings" class="dt"></div>
+      <div id="results" class="dt"></div>
+    </div>
+
+    <div class="app-foot">
+      <span class="trust">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="12" height="12"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>
+        Local engine · reads wc.db · agents propose, you approve
+      </span>
+    </div>
   </div>
+
+  <!-- ================= PERFORMANCE ================= -->
+  <div id="panel-performance" class="tab-panel hidden">
+
+    <div class="sh" style="margin-top: 0;">
+      <div class="sh-l">
+        <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3 7h7l-5.5 4 2 7L12 16l-6.5 4 2-7L2 9h7z"/></svg></span>
+        <h2>Fantasy points · you vs the engine</h2>
+      </div>
+      <div class="sh-r"><span id="fan-msg" class="msg"></span></div>
+    </div>
+    <p class="muted" style="font-size: 13px; margin-bottom: 14px;">Your scoreline picks scored by the league rules, alongside the engine's own rounded pick (leakage-free walk-forward).</p>
+    <div id="fantasy-summary" class="points-hero" style="margin-bottom: 14px;"></div>
+    <div id="fantasy-table" class="dt"></div>
+
+    <div class="sh">
+      <div class="sh-l">
+        <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 14l4-4 4 3 5-5"/></svg></span>
+        <h2>Engine forecast accuracy</h2>
+        <span class="badge badge--mute">vs naive ⅓ baseline</span>
+      </div>
+    </div>
+    <p class="muted" style="font-size: 13px; margin-bottom: 14px;">How the engine's W/D/L probabilities grade against results. Lower Brier / log-loss / RPS is better.</p>
+    <div id="model-metrics" class="metric-grid"></div>
+
+    <div class="sh">
+      <div class="sh-l">
+        <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.12 2.12 0 0 1 3 3L12 15l-4 1 1-4z"/></svg></span>
+        <h2>Your picks · upcoming fixtures</h2>
+      </div>
+    </div>
+    <p class="muted" style="font-size: 13px; margin-bottom: 14px;">Enter a scoreline and press Save. <span class="faint">“proj” is the engine's suggestion.</span></p>
+    <div id="picks-editor" class="picks"></div>
+
+    <div class="app-foot">
+      <span class="trust">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="12" height="12"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>
+        Local engine · reads wc.db · agents propose, you approve
+      </span>
+    </div>
+  </div>
+
+  <!-- ================= PROPOSALS ================= -->
+  <div id="panel-proposals" class="tab-panel hidden">
+    <div class="sh" style="margin-top: 0;">
+      <div class="sh-l">
+        <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg></span>
+        <h2>Proposals awaiting approval</h2>
+      </div>
+    </div>
+    <p class="muted" style="font-size: 13px; margin-bottom: 8px;">Agent-proposed changes — approve to commit, reject to discard. Each leads with its before→after proof.</p>
+    <p id="prop-msg" class="msg" style="min-height: 1.25rem; margin-bottom: 12px;"></p>
+    <div id="proposals" class="proposals"></div>
+    <p id="proposals-empty" class="muted hidden" style="font-size: 13px;">Nothing awaiting approval right now.</p>
+
+    <div class="app-foot">
+      <span class="trust">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="12" height="12"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>
+        Local engine · reads wc.db · agents propose, you approve
+      </span>
+    </div>
+  </div>
+
+</div>
+</div>
 
 <script>
 const $ = s => document.querySelector(s);
 const pct = x => x == null ? "—" : Math.round(x * 100) + "%";
 const esc = s => String(s).replace(/[&<>]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));
+const num = (x, d=2) => x == null ? "—" : Number(x).toFixed(d);
+const crest = name => {
+  const p = String(name).trim().split(/\s+/);
+  return (p.length > 1 ? p[0][0] + p[1][0] : String(name).slice(0, 2)).toUpperCase();
+};
+
+// Inline Lucide-style icons reused from JS-rendered markup.
+const I = {
+  results: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>`,
+  pending: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>`,
+  clock: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>`,
+  flag: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg>`,
+  ratings: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 15l4-4 4 3 5-6"/></svg>`,
+  resultsTable: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>`,
+  user: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a6 6 0 0 1 6-6h4a6 6 0 0 1 6 6v1"/></svg>`,
+  cpu: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="6" width="12" height="12" rx="2"/><path d="M9 2v2M15 2v2M9 20v2M15 20v2M2 9h2M2 15h2M20 9h2M20 15h2"/></svg>`,
+  trend: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17l6-6 4 4 8-8"/><path d="M14 7h7v7"/></svg>`,
+  check: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg>`,
+  x: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg>`,
+};
+
+let STATE = null;
+let currentTab = "dashboard";
 
 async function load() {
   const s = await (await fetch("/api/state")).json();
+  STATE = s;
   $("#today").textContent = "today " + s.today;
   renderStats(s.counts);
   renderProposals(s.proposals);
@@ -89,161 +587,416 @@ async function load() {
   renderUpcoming(s.matches);
   renderRatings(s.ratings);
   renderResults(s.matches);
+  renderPicksEditor();
+  if (currentTab === "performance") loadScoreboard();
 }
 
-function card(label, value, tone="text-white") {
-  return `<div class="bg-panel border border-edge rounded-xl p-4">
-    <div class="text-3xl font-bold ${tone}">${value}</div>
-    <div class="text-slate-400 text-sm mt-1">${label}</div></div>`;
+// --- stat cards ---------------------------------------------------------
+function statCard({ label, value, sub, tone, icon, onclick }) {
+  const cls = tone ? " stat--" + tone : "";
+  const attrs = onclick ? ` onclick="${onclick}" role="button" tabindex="0" style="cursor:pointer"` : "";
+  return `<div class="stat${cls}"${attrs}>
+    <div class="stat-head"><span class="stat-label">${label}</span><span class="stat-ico">${icon || ""}</span></div>
+    <div class="stat-value">${value}</div>
+    <div class="stat-foot"><span class="faint" style="font-size:11px">${sub || ""}</span></div>
+  </div>`;
 }
 function renderStats(c) {
   $("#stats").innerHTML =
-    card("Results in", c.finals) +
-    card("Pending", c.pending) +
-    card("Overdue", c.overdue, c.overdue ? "text-amber-400" : "text-white") +
-    card("Proposals", c.proposals, c.proposals ? "text-rose-400" : "text-white");
+    statCard({ label: "Results in", value: c.finals, sub: "finals recorded", icon: I.results }) +
+    statCard({ label: "Pending", value: c.pending, sub: "scheduled fixtures", icon: I.pending }) +
+    statCard({ label: "Overdue", value: c.overdue, sub: c.overdue ? "past kickoff, no result" : "none overdue",
+              tone: c.overdue ? "warn" : "", icon: I.clock }) +
+    statCard({ label: "Proposals", value: c.proposals,
+              sub: c.proposals ? '<span class="away">view queue →</span>' : "none pending",
+              tone: c.proposals ? "alert" : "", icon: I.flag, onclick: c.proposals ? "showTab('proposals')" : "" });
 }
 
-function renderProposals(ps) {
-  const wrap = $("#proposals-wrap");
-  if (!ps.length) { wrap.classList.add("hidden"); return; }
-  wrap.classList.remove("hidden");
-  $("#proposals").innerHTML = ps.map(p => `
-    <div class="bg-panel border border-rose-700/50 rounded-lg p-3 flex items-center justify-between">
-      <div class="text-sm"><span class="text-rose-300 font-medium">${esc(p.agent)}</span>
-        · ${esc(p.action)} <span class="text-slate-500">${esc(p.payload||"")}</span></div>
-      <div class="flex gap-2">
-        <button onclick="decide(${p.id},'approve')"
-          class="px-3 py-1 rounded bg-emerald-600 hover:bg-emerald-500 text-white text-xs">Approve</button>
-        <button onclick="decide(${p.id},'reject')"
-          class="px-3 py-1 rounded bg-slate-700 hover:bg-slate-600 text-xs">Reject</button>
-      </div></div>`).join("");
+function showTab(name) {
+  currentTab = name;
+  document.querySelectorAll(".tab-panel").forEach(p => p.classList.toggle("hidden", p.id !== "panel-" + name));
+  document.querySelectorAll(".tab").forEach(b => b.classList.toggle("tab--active", b.dataset.tab === name));
+  if (name === "performance") loadScoreboard();
 }
 
+// --- standings ----------------------------------------------------------
 function renderStandings(groups) {
-  $("#standings").innerHTML = groups.map(g => `
-    <div class="bg-panel border border-edge rounded-xl overflow-hidden">
-      <div class="px-3 py-2 bg-edge/40 text-white font-semibold text-sm">Group ${g.group}</div>
-      <table class="w-full text-sm">
-        <thead class="text-slate-500 text-xs">
-          <tr><th class="text-left px-3 py-1">Team</th><th>P</th><th>W</th><th>D</th>
-          <th>L</th><th>GD</th><th class="pr-3">Pts</th></tr></thead>
-        <tbody>${g.rows.map((r,i) => `
-          <tr class="${i<2?'bg-emerald-900/20':''}">
-            <td class="px-3 py-1">${esc(r.team)}</td>
-            <td class="text-center">${r.P}</td><td class="text-center">${r.W}</td>
-            <td class="text-center">${r.D}</td><td class="text-center">${r.L}</td>
-            <td class="text-center">${r.GD>0?'+':''}${r.GD}</td>
-            <td class="text-center pr-3 font-semibold text-white">${r.Pts}</td></tr>`).join("")}
-        </tbody></table></div>`).join("");
+  $("#standings").innerHTML = groups.map(g => {
+    const n = g.rows.length;
+    const played = Math.round(g.rows.reduce((s, r) => s + r.P, 0) / 2);
+    const total = n * (n - 1) / 2;
+    return `<div class="group">
+      <div class="group-head">
+        <div class="group-name"><span class="chip-mini">${esc(g.group)}</span> Group ${esc(g.group)}</div>
+        <div class="group-meta">${played} / ${total} played</div>
+      </div>
+      <table>
+        <thead><tr><th>Team</th><th>P</th><th>W</th><th>D</th><th>L</th><th>GD</th><th>Pts</th></tr></thead>
+        <tbody>${g.rows.map((r, i) => `
+          <tr class="${i < 2 ? "qual" : ""}">
+            <td><div class="crest"><span class="crest-mark">${crest(r.team)}</span>${esc(r.team)}</div></td>
+            <td>${r.P}</td><td>${r.W}</td><td>${r.D}</td><td>${r.L}</td>
+            <td>${r.GD > 0 ? "+" : ""}${r.GD}</td>
+            <td><b class="t-hi">${r.Pts}</b></td>
+          </tr>`).join("")}
+        </tbody>
+      </table>
+    </div>`;
+  }).join("");
 }
 
-// One labeled outcome: team/Draw + its probability. The favorite is highlighted.
-function probPill(label, p, c, fav) {
-  return `<div class="flex-1 min-w-0 rounded-md border ${fav ? c.ring + ' ring-1' : 'border-edge'}
-      bg-ink/40 px-2 py-1.5">
-    <div class="flex items-center gap-1.5 text-[11px] ${c.text}">
-      <span class="inline-block w-2 h-2 rounded-full ${c.dot} shrink-0"></span>
-      <span class="truncate">${esc(label)}</span>
-    </div>
-    <div class="text-base font-bold ${fav ? 'text-white' : 'text-slate-300'} tabular-nums">${pct(p)}</div>
-  </div>`;
-}
-function stackedBar(wh, dr, wa) {
-  const w = x => (x||0)*100;
-  return `<div class="flex h-1.5 rounded overflow-hidden w-full">
-    <div style="width:${w(wh)}%" class="bg-sky-500"></div>
-    <div style="width:${w(dr)}%" class="bg-slate-400"></div>
-    <div style="width:${w(wa)}%" class="bg-rose-500"></div></div>`;
-}
-// Projected scoreline: the expected goals rounded to whole goals (e.g. 2–1).
+// --- upcoming match cards -----------------------------------------------
 function projScore(h, a) {
   if (h == null || a == null) return "";
   return `${Math.round(h)}–${Math.round(a)}`;
 }
-// Home win / Draw / Away win — the three possible results, each with its probability.
-const OUTCOME_COLORS = {
-  home:  { dot: "bg-sky-500",   text: "text-sky-300",   ring: "ring-sky-500" },
-  draw:  { dot: "bg-slate-400", text: "text-slate-300", ring: "ring-slate-400" },
-  away:  { dot: "bg-rose-500",  text: "text-rose-300",  ring: "ring-rose-500" },
-};
+function probPill(val, kind, fav) {
+  return `<span class="pill pill--${kind}${fav ? " pill--fav" : ""}"><span class="val">${pct(val)}</span></span>`;
+}
 function renderUpcoming(matches) {
   const up = matches.filter(m => m.status !== "final" && m.win_home != null).slice(0, 12);
   $("#upcoming").innerHTML = up.length ? up.map(m => {
     const best = Math.max(m.win_home, m.draw, m.win_away);
-    return `<div class="bg-panel border ${m.overdue?'border-amber-600/60':'border-edge'} rounded-lg px-4 py-3">
-      <div class="flex items-center justify-between gap-4 mb-2">
-        <div class="text-sm">
-          <span class="text-slate-500 text-xs mr-2">${m.kickoff||''} · ${m.group}</span>
-          <span class="text-white font-medium">${esc(m.home)}</span>
-          <span class="text-slate-500"> vs </span>
-          <span class="text-white font-medium">${esc(m.away)}</span>
-          ${m.overdue?'<span class="ml-2 text-amber-400 text-xs">⏳ overdue</span>':''}
+    const w = x => (x || 0) * 100;
+    return `<div class="match${m.overdue ? " match--overdue" : ""}">
+      <div class="match-head">
+        <div class="match-meta">
+          <span>${esc(m.group || "")}</span><span>·</span><span>${esc(m.kickoff || "")}</span>
+          ${m.overdue ? '<span>·</span><span style="color:var(--warn)">⏳ overdue</span>' : ""}
         </div>
-        <span class="text-xs text-slate-500 shrink-0">proj
-          <span class="text-slate-200 font-semibold tabular-nums">${projScore(m.pred_home_goals, m.pred_away_goals)}</span></span>
+        <div class="match-proj">proj <span class="v">${projScore(m.pred_home_goals, m.pred_away_goals)}</span></div>
       </div>
-      <div class="flex items-stretch gap-2 mb-1.5">
-        ${probPill(m.home, m.win_home, OUTCOME_COLORS.home, m.win_home === best)}
-        ${probPill("Draw", m.draw,     OUTCOME_COLORS.draw, m.draw === best)}
-        ${probPill(m.away, m.win_away, OUTCOME_COLORS.away, m.win_away === best)}
+      <div class="match-body">
+        <div class="match-team"><span class="crest">${crest(m.home)}</span><span class="name">${esc(m.home)}</span></div>
+        <span class="match-vs">vs</span>
+        <div class="match-team match-team--away"><span class="crest">${crest(m.away)}</span><span class="name">${esc(m.away)}</span></div>
       </div>
-      ${stackedBar(m.win_home, m.draw, m.win_away)}
+      <div class="match-probs">
+        ${probPill(m.win_home, "home", m.win_home === best)}
+        ${probPill(m.draw, "draw", m.draw === best)}
+        ${probPill(m.win_away, "away", m.win_away === best)}
+      </div>
+      <div class="pbar"><span class="h" style="width:${w(m.win_home)}%"></span><span class="d" style="width:${w(m.draw)}%"></span><span class="a" style="width:${w(m.win_away)}%"></span></div>
     </div>`;
-  }).join("")
-    : `<p class="text-slate-500 text-sm">No upcoming matches with predictions.</p>`;
+  }).join("") : `<p class="muted" style="font-size:13px">No upcoming matches with predictions.</p>`;
 }
 
+// --- ratings + results --------------------------------------------------
 function renderRatings(rs) {
   $("#ratings").innerHTML = `
-    <table class="w-full text-sm">
-      <thead class="text-slate-500 text-xs"><tr>
-        <th class="text-left px-3 py-2">#</th><th class="text-left">Team</th>
-        <th class="text-right">Prior</th><th class="text-right">Power</th>
-        <th class="text-right pr-3">Δ</th></tr></thead>
-      <tbody class="divide-y divide-edge">${rs.map((r,i) => `
-        <tr><td class="px-3 py-1.5 text-slate-500">${i+1}</td>
-          <td>${esc(r.team)} <span class="text-slate-600 text-xs">${r.confederation}</span></td>
-          <td class="text-right text-slate-400">${r.prior_power?.toFixed(1) ?? '—'}</td>
-          <td class="text-right text-white font-medium">${r.power.toFixed(1)}</td>
-          <td class="text-right pr-3 ${r.delta>0?'text-emerald-400':r.delta<0?'text-rose-400':'text-slate-500'}">
-            ${r.delta>0?'+':''}${r.delta || 0}</td></tr>`).join("")}
-      </tbody></table>`;
+    <div class="dt-head">
+      <div class="card-title card-title-icon" style="color:var(--accent)">${I.ratings} Power ratings</div>
+      <span class="status status--idle" style="font-size:11px"><span class="dot"></span> ${rs.length} teams</span>
+    </div>
+    <div class="dt-scroll">
+    <table>
+      <thead><tr><th>#</th><th>Team</th><th class="num">Prior</th><th class="num">Live</th><th class="num">Δ</th></tr></thead>
+      <tbody>${rs.map((r, i) => `
+        <tr>
+          <td class="rank">${i + 1}</td>
+          <td class="team"><span class="crest">${crest(r.team)}</span>${esc(r.team)} <span class="faint" style="font-size:11px">${esc(r.confederation || "")}</span></td>
+          <td class="num">${r.prior_power != null ? r.prior_power.toFixed(1) : "—"}</td>
+          <td class="num t-hi">${r.power.toFixed(1)}</td>
+          <td class="num"><span class="delta ${r.delta > 0 ? "delta--up" : r.delta < 0 ? "delta--down" : ""}">${r.delta > 0 ? "+" : ""}${r.delta || 0}</span></td>
+        </tr>`).join("")}
+      </tbody>
+    </table></div>`;
 }
-
 function renderResults(matches) {
   const fin = matches.filter(m => m.status === "final");
-  $("#results").innerHTML = fin.length ? fin.map(m => `
-    <div class="px-4 py-2 flex items-center justify-between text-sm">
-      <div><span class="text-slate-500 text-xs mr-2">${m.kickoff||''} · ${m.group}</span>
-        <span class="text-white">${esc(m.home)}</span>
-        <span class="font-bold text-white mx-1">${m.home_goals}–${m.away_goals}</span>
-        <span class="text-white">${esc(m.away)}</span></div>
-      <span class="text-xs ${m.source?.includes('agent')?'text-sky-400':'text-slate-600'}">${esc(m.source||'')}</span>
-    </div>`).join("")
-    : `<p class="text-slate-500 text-sm p-4">No results yet.</p>`;
+  $("#results").innerHTML = `
+    <div class="dt-head">
+      <div class="card-title card-title-icon" style="color:var(--pos)">${I.resultsTable} Results</div>
+      <span class="status ${fin.length ? "status--ok" : "status--idle"}" style="font-size:11px"><span class="dot"></span> ${fin.length} final</span>
+    </div>
+    <div class="dt-scroll">
+    ${fin.length ? `<table>
+      <thead><tr><th>Time</th><th>Grp</th><th>Match</th><th class="num">Score</th></tr></thead>
+      <tbody>${fin.map(m => `
+        <tr>
+          <td class="num faint">${esc(m.kickoff || "")}</td>
+          <td><span class="badge badge--mute">${esc(m.group || "")}</span></td>
+          <td>${esc(m.home)} <span class="faint">v</span> ${esc(m.away)}</td>
+          <td class="num"><b class="t-hi">${m.home_goals}–${m.away_goals}</b></td>
+        </tr>`).join("")}
+      </tbody></table>` : `<p class="muted" style="font-size:13px; padding:16px">No results yet.</p>`}
+    </div>`;
 }
 
+// --- Performance: fantasy + model metrics + pick editor ------------------
+const FAN_CATS = {
+  exact:  { label: "Exact",      badge: "badge--pos",    pts: "pts--pos" },
+  saldo:  { label: "Win+margin", badge: "badge--home",   pts: "pts--hi" },
+  draw:   { label: "Draw",       badge: "badge--draw",   pts: "pts--neg" },
+  gols:   { label: "Win+goals",  badge: "badge--engine", pts: "pts--hi" },
+  winner: { label: "Winner",     badge: "badge--warn",   pts: "pts--neg" },
+  miss:   { label: "Miss",       badge: "badge--mute",   pts: "pts--neg" },
+};
+
+async function loadScoreboard() {
+  try {
+    const d = await (await fetch("/api/scoreboard")).json();
+    renderFantasy(d.fantasy);
+    renderModelMetrics(d.model);
+  } catch (e) { $("#fan-msg").textContent = "✗ " + e; $("#fan-msg").className = "msg msg--err"; }
+}
+
+function pointsCard(kind, label, value, sub, icon) {
+  return `<div class="points-card points-card--${kind}">
+    <div class="points-card-head"><span class="ico">${icon}</span><span class="points-card-label">${label}</span></div>
+    <div class="points-card-value">${value}<span class="unit">pts</span></div>
+    <div class="points-card-sub">${sub}</div>
+  </div>`;
+}
+function fanCell(o) {
+  if (!o) return `<span class="faint">—</span>`;
+  const c = FAN_CATS[o.category] || FAN_CATS.miss;
+  return `<span class="score-cell">${o.pick[0]}<span class="vs">–</span>${o.pick[1]}</span>
+    <span class="pts ${c.pts}" style="margin-left:8px">${o.points}</span>
+    <span class="badge ${c.badge}" style="margin-left:6px">${c.label}</span>`;
+}
+function renderFantasy(f) {
+  const you = f.you, eng = f.engine, lead = you.points - eng.points;
+  $("#fantasy-summary").innerHTML =
+    pointsCard("you", "You", you.points, `<span class="v">${you.games}</span> games scored`, I.user) +
+    pointsCard("engine", "Engine", eng.points, `<span class="v">${eng.games}</span> games scored`, I.cpu) +
+    pointsCard("lead", lead >= 0 ? "Your lead" : "Engine lead", (lead > 0 ? "+" : "") + lead,
+               lead === 0 ? "dead level" : (lead > 0 ? "you're ahead" : "engine ahead"), I.trend);
+
+  const rows = f.rows.map(r => `
+    <tr>
+      <td class="match">${esc(r.home)} <span class="faint">v</span> ${esc(r.away)}<span class="sub">${esc(r.group || "")} · ${esc(r.kickoff || "")}</span></td>
+      <td>${fanCell(r.you)}</td>
+      <td><span class="score-cell">${r.actual[0]}<span class="vs">–</span>${r.actual[1]}</span></td>
+      <td>${fanCell(r.engine)}</td>
+    </tr>`).join("");
+  $("#fantasy-table").innerHTML = f.rows.length ? `
+    <table class="points-table">
+      <thead><tr><th>Match</th><th>You</th><th>Final</th><th>Engine</th></tr></thead>
+      <tbody>${rows}</tbody>
+    </table>` : `<p class="muted" style="font-size:13px; padding:16px">No graded matches yet.</p>`;
+}
+
+function metricCard(label, value, foot) {
+  return `<div class="metric"><span class="metric-label">${label}</span>
+    <span class="metric-value">${value}</span>${foot || ""}</div>`;
+}
+function baselineFoot(value, base) {
+  const better = value < base;
+  const delta = value - base;
+  return `<span class="metric-foot ${better ? "metric-foot--pos" : "metric-foot--neg"}">
+    <span class="baseline">${base.toFixed(3)}</span>
+    <span class="delta">${delta >= 0 ? "+" : ""}${delta.toFixed(3)}</span></span>`;
+}
+function renderModelMetrics(m) {
+  if (!m || !m.n) {
+    $("#model-metrics").innerHTML = `<p class="muted" style="grid-column:1/-1; font-size:13px">No graded matches yet.</p>`;
+    return;
+  }
+  $("#model-metrics").innerHTML =
+    metricCard("Winner acc", (m.winner_acc * 100).toFixed(0) + "%", `<span class="metric-foot">${m.winner_hits}/${m.n} correct</span>`) +
+    metricCard("Exact scores", m.exact_hits, `<span class="metric-foot">of ${m.n} games</span>`) +
+    metricCard("Brier", m.brier.toFixed(3), baselineFoot(m.brier, m.base_brier)) +
+    metricCard("Log-loss", m.log_loss.toFixed(3), baselineFoot(m.log_loss, m.base_log_loss)) +
+    metricCard("RPS", m.rps.toFixed(3), baselineFoot(m.rps, m.base_rps)) +
+    metricCard("Draws", `${m.pred_draws}/${m.actual_draws}`, `<span class="metric-foot">predicted / actual</span>`);
+}
+
+function renderPicksEditor() {
+  if (!STATE) return;
+  const ups = STATE.matches.filter(m => m.status !== "final");
+  const numInput = (id, side, val) =>
+    `<input id="pick-${side}-${id}" class="field" type="number" min="0" value="${val == null ? "" : val}" />`;
+  $("#picks-editor").innerHTML = ups.length ? ups.map(m => `
+    <div class="pick">
+      <div class="pick-l">
+        <span class="pick-time">${esc(m.kickoff || "")}</span>
+        <div class="pick-match">
+          <div class="name">${esc(m.home)} <span class="faint">v</span> ${esc(m.away)}</div>
+          <div class="sub">Group ${esc(m.group || "")}</div>
+        </div>
+      </div>
+      <div class="pick-r">
+        <div class="score-edit">
+          ${numInput(m.id, "h", m.user_home)}<span class="sep">–</span>${numInput(m.id, "a", m.user_away)}
+          <span class="proj">proj <b>${projScore(m.pred_home_goals, m.pred_away_goals) || "—"}</b></span>
+        </div>
+        <button class="btn btn--secondary btn--sm" onclick="savePick('${m.id}')">Save</button>
+        <span id="pick-msg-${m.id}" class="pick-save"></span>
+      </div>
+    </div>`).join("") : `<p class="muted" style="font-size:13px">No upcoming fixtures.</p>`;
+}
+
+async function savePick(id) {
+  const hv = $("#pick-h-" + id).value.trim(), av = $("#pick-a-" + id).value.trim();
+  const span = $("#pick-msg-" + id);
+  const setMsg = (t, ok) => { span.textContent = t; span.className = "pick-save " + (ok ? "pick-save--ok" : "pick-save--err"); };
+  if ((hv === "") !== (av === "")) { setMsg("enter both", false); return; }
+  const body = { match_id: id, pred_home: hv === "" ? null : Number(hv), pred_away: av === "" ? null : Number(av) };
+  setMsg("…", true);
+  try {
+    const r = await fetch("/api/predictions", { method: "POST",
+      headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
+    const d = await r.json().catch(() => ({}));
+    if (!r.ok) { setMsg("✗ " + (d.detail || r.status), false); return; }
+    setMsg(d.action === "cleared" ? "cleared" : "✓ saved", true);
+    const m = STATE && STATE.matches.find(x => x.id === id);
+    if (m) { m.user_home = body.pred_home; m.user_away = body.pred_away; }
+  } catch (e) { setMsg("✗ " + e, false); }
+}
+
+// --- proposals ----------------------------------------------------------
+const PROP_KINDS = {
+  propose_params:        { rail: "tuning", badge: "badge--warn",   label: "Model tuning" },
+  propose_sos_overrides: { rail: "sched",  badge: "badge--home",   label: "Schedule strength" },
+  propose_team_form:     { rail: "form",   badge: "badge--engine", label: "Team form" },
+  flag_sos_outliers:     { rail: "audit",  badge: "badge--mute",   label: "Data audit" },
+};
+
+function metricMini(label, before, after, lowerBetter = true) {
+  const improved = before != null && after != null && (lowerBetter ? after < before : after > before);
+  const vals = before == null
+    ? `<span class="to">${num(after)}</span>`
+    : `<span class="from">${num(before)}</span><span class="arrow">→</span><span class="to">${num(after)}</span>`;
+  return `<div class="metric-mini${improved ? " metric-mini--pos" : ""}">
+    <span class="lbl">${esc(label)}</span><div class="vals">${vals}</div></div>`;
+}
+function kvDetails(label, obj, fmt = (v => v)) {
+  const keys = obj ? Object.keys(obj) : [];
+  if (!keys.length) return "";
+  const rows = Object.entries(obj).map(([k, v]) =>
+    `<div class="kv"><span class="k">${esc(k)}</span><span class="v">${esc(String(fmt(v)))}</span></div>`).join("");
+  return `<details class="prop-details"><summary>${esc(label)} · ${keys.length}</summary><div class="kv-grid">${rows}</div></details>`;
+}
+function sourcesDetails(pl) {
+  const reached = pl.sources_reached || [], skipped = pl.sources_skipped || [];
+  if (!reached.length && !skipped.length) return "";
+  return `<details class="prop-details"><summary>Data sources</summary>
+    <div style="margin-top:8px; display:grid; gap:4px;">
+      ${reached.length ? `<div class="src-line"><span class="pos">✓ reached:</span> <span class="muted">${reached.map(esc).join(", ")}</span></div>` : ""}
+      ${skipped.length ? `<div class="src-line"><span style="color:var(--warn)">⚠ skipped:</span> <span class="muted">${skipped.map(esc).join(", ")}</span></div>` : ""}
+    </div></details>`;
+}
+
+function describeProposal(p) {
+  let pl = {};
+  try { pl = JSON.parse(p.payload || "{}"); } catch (e) {}
+  let title = `${esc(p.agent)} · ${esc(p.action)}`, summary = "", metricsHtml = "", detailsHtml = "";
+
+  if (p.action === "propose_params") {
+    const b = pl.baseline || {}, c = pl.candidate || {};
+    title = `Retune model parameters (v${pl.version ?? "?"})`;
+    summary = `Optimize the power formula for ${esc(pl.objective || "fit")} on ${pl.n ?? "?"} past matches `
+      + `(${esc(pl.source || "?")}). Approving makes this the active model.`;
+    metricsHtml = `<div class="proposal-diff">
+      ${metricMini("Brier", b.brier, c.brier)}${metricMini("Log-loss", b.log_loss, c.log_loss)}${metricMini("RPS", b.rps, c.rps)}</div>`;
+    detailsHtml = kvDetails("New knob values", pl.knobs, v => num(v, 3));
+  } else if (p.action === "propose_sos_overrides") {
+    const teams = pl.proposed || {}, n = Object.keys(teams).length;
+    title = `Update strength-of-schedule for ${n} team${n === 1 ? "" : "s"}`;
+    summary = `Evidence-based SoS from real results since ${esc(pl.since || "?")}. `
+      + `${n} updated, ${pl.kept_default ?? "?"} kept on the confederation default.`;
+    detailsHtml = kvDetails("Proposed SoS per team", teams, v => num(v, 2)) + sourcesDetails(pl);
+  } else if (p.action === "propose_team_form") {
+    title = `Rebuild team form for ${pl.rebuilt ?? "?"} teams`;
+    summary = `Recompute each team's form from its last ${pl.window ?? "?"} official matches since `
+      + `${esc(pl.since || "?")}. ${pl.rebuilt ?? "?"} rebuilt, ${pl.kept_existing ?? 0} kept as-is.`;
+    detailsHtml = sourcesDetails(pl);
+  } else if (p.action === "flag_sos_outliers") {
+    const contra = pl.results_contradicted || [];
+    title = `Data audit — ${contra.length} team${contra.length === 1 ? "" : "s"} contradicted by results`;
+    summary = `${pl.on_default_sos ?? 0} teams are still on a confederation default; `
+      + `${contra.length} have a SoS that recent results disagree with`
+      + (contra.length ? `: ${contra.slice(0, 4).map(t => esc(t.team)).join(", ")}` : "")
+      + `. Review-only — this is a report, not a data change.`;
+    detailsHtml = contra.length ? `<details class="prop-details"><summary>Flagged teams · ${contra.length}</summary>
+      <div class="kv-grid">${contra.map(t =>
+        `<div class="kv"><span class="k">${esc(t.team)}</span>
+         <span class="v" style="color:${t.swing > 0 ? "var(--pos)" : "var(--away)"}">swing ${t.swing > 0 ? "+" : ""}${t.swing}${t.on_default ? " · default" : ""}</span></div>`).join("")}</div></details>` : "";
+  } else {
+    summary = esc((p.payload || "").slice(0, 160));
+  }
+  return { title, summary, metricsHtml, detailsHtml };
+}
+
+function renderProposals(ps) {
+  const badge = $("#tab-prop-badge");
+  badge.textContent = ps.length;
+  badge.classList.toggle("hidden", !ps.length);
+  $("#proposals-empty").classList.toggle("hidden", !!ps.length);
+
+  const seen = {};  // ps is newest-first; flag repeat runs of the same action as superseded
+  $("#proposals").innerHTML = ps.map(p => {
+    const d = describeProposal(p);
+    const k = PROP_KINDS[p.action] || { rail: "audit", badge: "badge--mute", label: p.action };
+    const older = seen[p.action]; seen[p.action] = true;
+    const av = (p.agent || "?").slice(0, 1).toUpperCase();
+    return `
+    <div id="prop-${p.id}" class="proposal proposal--${k.rail}">
+      <div class="proposal-head">
+        <div class="proposal-title-block">
+          <div class="row" style="gap:8px; margin-bottom:8px;">
+            <span class="badge ${k.badge}">${esc(k.label)}</span>
+            ${older ? '<span class="badge badge--warn" title="A newer run of this agent is also pending">older run</span>' : ""}
+          </div>
+          <div class="proposal-title">${d.title}</div>
+          <div class="proposal-desc">${d.summary}</div>
+        </div>
+        <div class="proposal-actions">
+          <button class="btn btn--success" onclick="decide(${p.id},'approve')">${I.check} Approve</button>
+          <button class="btn btn--danger" onclick="decide(${p.id},'reject')">${I.x} Reject</button>
+        </div>
+      </div>
+      ${d.metricsHtml || ""}
+      ${d.detailsHtml || ""}
+      <div class="proposal-foot">
+        <div class="proposal-author"><span class="av">${esc(av)}</span><span>${esc(p.agent || "")}</span></div>
+        <span class="proposal-time">${esc(p.created_at || "")}</span>
+      </div>
+    </div>`;
+  }).join("");
+}
+
+// --- actions ------------------------------------------------------------
 async function act(endpoint, btn) {
   const msg = $("#action-msg");
-  const old = btn.textContent;
-  btn.disabled = true; btn.classList.add("opacity-60");
-  btn.textContent = "Working…"; msg.textContent = "running " + endpoint + "…";
+  const old = btn.innerHTML;
+  btn.disabled = true;
+  btn.innerHTML = "Working…"; msg.textContent = "running " + endpoint + "…"; msg.className = "msg";
   try {
     const r = await (await fetch("/api/" + endpoint, { method: "POST" })).json();
     msg.textContent = (r.ok ? "✓ " : "✗ ") + (r.output || "").split("\n").pop();
-    msg.className = "text-sm self-center " + (r.ok ? "text-emerald-400" : "text-rose-400");
+    msg.className = "msg " + (r.ok ? "msg--ok" : "msg--err");
     await load();
   } catch (e) {
-    msg.textContent = "✗ " + e; msg.className = "text-sm self-center text-rose-400";
+    msg.textContent = "✗ " + e; msg.className = "msg msg--err";
   } finally {
-    btn.disabled = false; btn.classList.remove("opacity-60"); btn.textContent = old;
+    btn.disabled = false; btn.innerHTML = old;
   }
 }
 
+function setPropMsg(text, ok) {
+  const el = $("#prop-msg");
+  if (el) { el.textContent = text; el.className = "msg " + (ok ? "msg--ok" : "msg--err"); }
+}
+
 async function decide(id, action) {
-  await fetch(`/api/proposals/${id}/${action}`, { method: "POST" });
-  await load();
+  const card = document.getElementById("prop-" + id);
+  if (card) card.querySelectorAll("button").forEach(b => { b.disabled = true; });
+  setPropMsg("Working…", true);
+  try {
+    const res = await fetch(`/api/proposals/${id}/${action}`, { method: "POST" });
+    let data = {}; try { data = await res.json(); } catch (e) {}
+    if (res.ok) {
+      setPropMsg(`✓ Proposal #${id} ${action === "approve" ? "approved" : "rejected"}.`, true);
+    } else {
+      setPropMsg(`✗ Could not ${action} #${id}: ${data.detail || res.status}` +
+        (res.status === 404 ? " — it may already be resolved; refreshing." : ""), false);
+    }
+  } catch (e) {
+    setPropMsg("✗ " + e, false);
+  }
+  await load();  // resync to true server state regardless of outcome
 }
 
 load();
