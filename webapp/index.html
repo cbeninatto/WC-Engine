@@ -387,6 +387,12 @@ table { border-collapse: collapse; }
 .proposal-author .av { width: 22px; height: 22px; border-radius: var(--r-sm); background: var(--ink-3); display: inline-flex; align-items: center; justify-content: center; color: var(--t-hi); font-size: 10px; font-weight: 600; }
 .proposal-time { font-size: 11px; color: var(--t-faint); font-family: var(--font-mono); }
 
+/* Simulation — champion-odds bar */
+.obar-wrap { display: flex; align-items: center; gap: 10px; min-width: 150px; }
+.obar-track { flex: 1; height: 8px; background: var(--ink-3); border-radius: var(--r-full); overflow: hidden; }
+.obar-fill { height: 100%; background: linear-gradient(90deg, var(--accent), var(--engine)); border-radius: var(--r-full); }
+.obar-val { font-family: var(--font-mono); font-size: 12px; color: var(--t-hi); width: 46px; text-align: right; }
+
 /* App footer */
 .app-foot { margin-top: 32px; padding-top: 16px; border-top: 1px solid var(--edge-soft); display: flex; justify-content: space-between; align-items: center; font-size: 11.5px; color: var(--t-faint); flex-wrap: wrap; gap: 8px; }
 .app-foot .trust { display: inline-flex; align-items: center; gap: 6px; }
@@ -428,6 +434,10 @@ table { border-collapse: collapse; }
       <button class="tab" data-tab="performance" onclick="showTab('performance')">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/></svg>
         Performance
+      </button>
+      <button class="tab" data-tab="simulation" onclick="showTab('simulation')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6M18 9h1.5a2.5 2.5 0 0 0 0-5H18M4 22h16M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22M18 2H6v7a6 6 0 0 0 12 0z"/></svg>
+        Simulation
       </button>
       <button class="tab" data-tab="proposals" onclick="showTab('proposals')">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg>
@@ -525,6 +535,32 @@ table { border-collapse: collapse; }
     </div>
   </div>
 
+  <!-- ================= SIMULATION ================= -->
+  <div id="panel-simulation" class="tab-panel hidden">
+    <div class="sh" style="margin-top: 0;">
+      <div class="sh-l">
+        <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6M18 9h1.5a2.5 2.5 0 0 0 0-5H18M4 22h16M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22M18 2H6v7a6 6 0 0 0 12 0z"/></svg></span>
+        <h2>Tournament simulation</h2>
+      </div>
+      <div class="sh-r">
+        <span id="sim-status" class="msg"></span>
+        <button class="btn btn--secondary btn--sm" onclick="loadSimulation(true)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/></svg>
+          Re-run
+        </button>
+      </div>
+    </div>
+    <p class="muted" style="font-size: 13px; margin-bottom: 14px;">A Monte&nbsp;Carlo over the rest of the tournament — it finishes the group stage, fills the official Round-of-32 bracket (top two per group + the 8 best third-placed teams), and plays out every knockout tie. Each team's odds to reach each round and win the cup. <span class="faint">Knockout ties resolve on the 90′ result; a draw goes to extra time / penalties weighted by strength.</span></p>
+    <div id="sim-table" class="dt"></div>
+
+    <div class="app-foot">
+      <span class="trust">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="12" height="12"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>
+        Leakage-free · simulates from live ratings + recorded results only
+      </span>
+    </div>
+  </div>
+
   <!-- ================= PROPOSALS ================= -->
   <div id="panel-proposals" class="tab-panel hidden">
     <div class="sh" style="margin-top: 0;">
@@ -572,10 +608,12 @@ const I = {
   trend: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17l6-6 4 4 8-8"/><path d="M14 7h7v7"/></svg>`,
   check: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg>`,
   x: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg>`,
+  trophy: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6M18 9h1.5a2.5 2.5 0 0 0 0-5H18M4 22h16M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22M18 2H6v7a6 6 0 0 0 12 0z"/></svg>`,
 };
 
 let STATE = null;
 let currentTab = "dashboard";
+let SIM_LOADED = false;
 
 async function load() {
   const s = await (await fetch("/api/state")).json();
@@ -588,7 +626,9 @@ async function load() {
   renderRatings(s.ratings);
   renderResults(s.matches);
   renderPicksEditor();
+  SIM_LOADED = false;  // ratings/results may have moved; the sim is now stale
   if (currentTab === "performance") loadScoreboard();
+  if (currentTab === "simulation") loadSimulation(true);
 }
 
 // --- stat cards ---------------------------------------------------------
@@ -617,6 +657,7 @@ function showTab(name) {
   document.querySelectorAll(".tab-panel").forEach(p => p.classList.toggle("hidden", p.id !== "panel-" + name));
   document.querySelectorAll(".tab").forEach(b => b.classList.toggle("tab--active", b.dataset.tab === name));
   if (name === "performance") loadScoreboard();
+  if (name === "simulation") loadSimulation();
 }
 
 // --- standings ----------------------------------------------------------
@@ -843,6 +884,57 @@ async function savePick(id) {
     const m = STATE && STATE.matches.find(x => x.id === id);
     if (m) { m.user_home = body.pred_home; m.user_away = body.pred_away; }
   } catch (e) { setMsg("✗ " + e, false); }
+}
+
+// --- tournament simulation ---------------------------------------------
+async function loadSimulation(force) {
+  if (SIM_LOADED && !force) return;
+  $("#sim-status").innerHTML = `<span class="status status--work"><span class="dot"></span> simulating…</span>`;
+  try {
+    const d = await (await fetch("/api/simulate")).json();
+    if (d.ok === false) {
+      $("#sim-status").innerHTML = `<span class="msg msg--err">✗ ${esc(d.error || "simulation failed")}</span>`;
+      return;
+    }
+    SIM_LOADED = true;
+    renderSimulation(d);
+  } catch (e) {
+    $("#sim-status").innerHTML = `<span class="msg msg--err">✗ ${esc(String(e))}</span>`;
+  }
+}
+function renderSimulation(d) {
+  $("#sim-status").innerHTML = `<span class="status status--ok"><span class="dot"></span>
+    ${d.n.toLocaleString()} trials · ${d.played} played, ${d.remaining} to play</span>`;
+  const fmt = x => x >= 0.0995 ? Math.round(x * 100) + "%" : x > 0 ? (x * 100).toFixed(1) + "%" : "·";
+  const maxChamp = Math.max(...d.teams.map(t => t.champ), 0.0001);
+  const rows = d.teams.map((t, i) => `
+    <tr>
+      <td class="rank">${i + 1}</td>
+      <td class="team"><span class="crest">${crest(t.team)}</span>${esc(t.team)}</td>
+      <td><span class="badge badge--mute">${esc(t.group)}</span></td>
+      <td class="num faint">${t.power.toFixed(1)}</td>
+      <td class="num">${fmt(t.r16)}</td>
+      <td class="num">${fmt(t.qf)}</td>
+      <td class="num">${fmt(t.sf)}</td>
+      <td class="num">${fmt(t.final)}</td>
+      <td>
+        <div class="obar-wrap">
+          <div class="obar-track"><div class="obar-fill" style="width:${(t.champ / maxChamp * 100).toFixed(1)}%"></div></div>
+          <span class="obar-val">${t.champ > 0 ? (t.champ * 100).toFixed(1) + "%" : "·"}</span>
+        </div>
+      </td>
+    </tr>`).join("");
+  $("#sim-table").innerHTML = `
+    <div class="dt-head">
+      <div class="card-title card-title-icon" style="color:var(--warn)">${I.trophy} Win probability</div>
+      <span class="status status--idle" style="font-size:11px"><span class="dot"></span> ${d.teams.length} teams</span>
+    </div>
+    <table>
+      <thead><tr><th>#</th><th>Team</th><th>Grp</th><th class="num">Pow</th>
+        <th class="num">R16</th><th class="num">QF</th><th class="num">SF</th>
+        <th class="num">Final</th><th>Champion</th></tr></thead>
+      <tbody>${rows}</tbody>
+    </table>`;
 }
 
 // --- proposals ----------------------------------------------------------
