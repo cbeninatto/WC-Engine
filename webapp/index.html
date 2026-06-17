@@ -891,9 +891,13 @@ async function loadSimulation(force) {
   if (SIM_LOADED && !force) return;
   $("#sim-status").innerHTML = `<span class="status status--work"><span class="dot"></span> simulating…</span>`;
   try {
-    const d = await (await fetch("/api/simulate")).json();
-    if (d.ok === false) {
-      $("#sim-status").innerHTML = `<span class="msg msg--err">✗ ${esc(d.error || "simulation failed")}</span>`;
+    const res = await fetch("/api/simulate");
+    let d = {};
+    try { d = await res.json(); } catch (e) {}
+    if (!res.ok || d.ok === false || d.n == null) {
+      const why = (d.error || d.detail || "HTTP " + res.status) +
+        (res.status === 404 ? " — restart the app to load /api/simulate" : "");
+      $("#sim-status").innerHTML = `<span class="msg msg--err">✗ ${esc(why)}</span>`;
       return;
     }
     SIM_LOADED = true;
