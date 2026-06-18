@@ -7,49 +7,54 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..600;1,9..144,300..600&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 
 <style>
 /* =========================================================================
-   01 · DESIGN TOKENS  (the single source of truth — WC Engine DS v2027.1)
+   01 · DESIGN TOKENS  (the single source of truth — WC Engine DS v2027.3 · Stadium Dusk)
    ========================================================================= */
 :root {
-  --ink-0: #060912; --ink-1: #0a1020; --ink-2: #10182b;
-  --ink-3: #161f37; --ink-4: #1d2845; --ink-5: #243156;
+  --ink-0: #0d0b08; --ink-1: #14110d; --ink-2: #1c1813;
+  --ink-3: #251f18; --ink-4: #2e2620; --ink-5: #392f27;
 
-  --edge-soft:  rgba(120, 150, 220, 0.06);
-  --edge:       rgba(120, 150, 220, 0.12);
-  --edge-strong:rgba(140, 170, 240, 0.22);
+  --edge-soft:  rgba(220, 195, 150, 0.05);
+  --edge:       rgba(220, 195, 150, 0.10);
+  --edge-strong:rgba(235, 210, 165, 0.20);
+  --edge-amber: rgba(245, 184, 66, 0.35);
 
-  --t-hi: #f2f5fc; --t-body: #c8d1e6; --t-mute: #8693b1; --t-faint: #5a6480;
+  --t-hi: #f6f0e4; --t-body: #d5c9b6; --t-mute: #8a7d68; --t-faint: #5b5040;
 
-  --home: #38bdf8; --home-soft: rgba(56, 189, 248, 0.14);
-  --draw: #94a3b8; --draw-soft: rgba(148, 163, 184, 0.14);
-  --away: #fb7185; --away-soft: rgba(251, 113, 133, 0.14);
-  --pos:  #34d399; --pos-soft:  rgba(52, 211, 153, 0.12);
-  --warn: #fbbf24; --warn-soft: rgba(251, 191, 36, 0.14);
-  --engine: #a78bfa; --engine-soft: rgba(167, 139, 250, 0.14);
-  --neutral: #64748b;
+  --home: #f5b842; --home-soft: rgba(245, 184, 66, 0.14); --home-strong: #ffc857;
+  --draw: #8a7d68; --draw-soft: rgba(138, 125, 104, 0.14);
+  --away: #6b8cc4; --away-soft: rgba(107, 140, 196, 0.14);
+  --pos:  #94d680; --pos-soft:  rgba(148, 214, 128, 0.12); --pos-strong: #b8e89e;
+  --warn: #ff6b4a; --warn-soft: rgba(255, 107, 74, 0.14);
+  --engine: #d4859c; --engine-soft: rgba(212, 133, 156, 0.14);
+  --neutral: #6b6052;
 
-  --accent: var(--home); --accent-soft: rgba(56, 189, 248, 0.14); --accent-strong: #0ea5e9;
+  --accent: var(--home); --accent-soft: var(--home-soft); --accent-strong: var(--home-strong);
 
   --s-1:4px; --s-2:8px; --s-3:12px; --s-4:16px; --s-5:20px; --s-6:24px;
-  --s-8:32px; --s-10:40px; --s-12:48px;
+  --s-7:28px; --s-8:32px; --s-10:40px; --s-12:48px; --s-16:64px; --s-20:80px; --s-24:96px; --s-32:128px;
 
-  --r-xs:4px; --r-sm:6px; --r-md:10px; --r-lg:14px; --r-xl:18px; --r-2xl:24px; --r-full:999px;
+  --r-xs:4px; --r-sm:6px; --r-md:10px; --r-lg:14px; --r-xl:18px; --r-2xl:28px; --r-full:999px;
 
   --sh-subtle: 0 1px 2px rgba(0,0,0,.5);
-  --sh-card:   0 4px 12px -2px rgba(0,0,0,.45), 0 0 0 1px var(--edge-soft);
-  --sh-raised: 0 12px 32px -8px rgba(0,0,0,.55), 0 0 0 1px var(--edge);
-  --hi-inset:  inset 0 1px 0 rgba(255,255,255,0.04);
+  --sh-card:   0 4px 12px -2px rgba(0,0,0,.5), 0 0 0 1px var(--edge-soft);
+  --sh-raised: 0 12px 32px -8px rgba(0,0,0,.6), 0 0 0 1px var(--edge);
+  --hi-inset:  inset 0 1px 0 rgba(245, 220, 170, 0.05);
+  --sh-amber:  0 0 0 1px var(--edge-amber), 0 0 32px -8px rgba(245,184,66,.35);
+  --sh-pos:    0 0 0 1px rgba(148,214,128,.30), 0 0 24px -6px rgba(148,214,128,.30);
 
   --ease-out: cubic-bezier(.2, 0, 0, 1);
-  --ease-snap: cubic-bezier(.34, 1.56, .64, 1);
+  --ease-snap: cubic-bezier(.34, 1.4, .64, 1);
   --t-fast:120ms; --t-norm:200ms; --t-slow:320ms;
 
-  --font-sans: 'Outfit', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-display: 'Fraunces', ui-serif, Georgia, serif;
+  --font-sans: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
   --font-mono: 'JetBrains Mono', ui-monospace, 'SF Mono', monospace;
-  --container: 1180px;
+
+  --rail: 240px; --topbar: 48px; --container: 1240px;
 }
 
 /* =========================================================================
@@ -67,9 +72,15 @@ body {
 body::before {
   content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 0;
   background:
-    radial-gradient(900px 600px at 12% -8%,  rgba(56,189,248,.07), transparent 60%),
-    radial-gradient(700px 500px at 92% 4%,   rgba(167,139,250,.06), transparent 60%),
-    radial-gradient(800px 500px at 50% 110%, rgba(52,211,153,.04), transparent 60%);
+    radial-gradient(1000px 650px at 10% -8%, rgba(245,184,66,.06), transparent 60%),
+    radial-gradient(820px 560px at 92% 2%,   rgba(212,133,156,.05), transparent 60%),
+    radial-gradient(900px 560px at 50% 112%, rgba(148,214,128,.03), transparent 60%);
+}
+/* Warm grain — the stadium-dusk signature, no neon bokeh. */
+body::after {
+  content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 0;
+  opacity: .5; mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/><feColorMatrix values='0 0 0 0 .96   0 0 0 0 .88   0 0 0 0 .72   0 0 0 .04 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
 }
 a { color: inherit; text-decoration: none; }
 button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
@@ -90,47 +101,115 @@ table { border-collapse: collapse; }
 .hidden { display: none !important; }
 
 /* =========================================================================
-   03 · LAYOUT
+   03 · LAYOUT — left rail + top bar (DS v2027.3)
    ========================================================================= */
 .shell { position: relative; z-index: 1; }
-.container { max-width: var(--container); margin: 0 auto; padding: 24px 24px 64px; }
-@media (min-width: 768px) { .container { padding: 32px 40px 80px; } }
 
-/* App header */
-.app-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 16px; }
-.app-head-title { display: flex; align-items: center; gap: 12px; }
-.app-head-title .logo {
-  width: 32px; height: 32px; border-radius: var(--r-md);
-  background: linear-gradient(135deg, var(--accent), var(--engine));
-  display: inline-flex; align-items: center; justify-content: center; color: #00131c;
-  box-shadow: 0 0 16px -4px var(--accent), 0 0 0 1px rgba(255,255,255,.08) inset;
+/* Left rail — fixed, carries brand + screen nav + engine status */
+.rail {
+  position: fixed; top: 0; left: 0; bottom: 0; width: var(--rail);
+  background: var(--ink-1); border-right: 1px solid var(--edge-soft);
+  display: flex; flex-direction: column; z-index: 20;
 }
-.app-head-title h1 { font-size: 18px; font-weight: 600; color: var(--t-hi); letter-spacing: -.01em; }
-.app-head-title .sub { font-size: 12px; color: var(--t-mute); }
-.app-head-meta { display: flex; align-items: center; gap: 16px; font-size: 12px; color: var(--t-mute); flex-wrap: wrap; }
-.app-head-meta .sep { width: 1px; height: 14px; background: var(--edge); }
+.rail-brand {
+  display: flex; align-items: center; gap: 12px;
+  padding: 0 20px; height: var(--topbar);
+  border-bottom: 1px solid var(--edge-soft);
+}
+.rail-monogram {
+  width: 30px; height: 30px; border-radius: var(--r-md); flex-shrink: 0;
+  background: linear-gradient(135deg, var(--accent), var(--engine)); color: #1a1206;
+  display: grid; place-items: center;
+  font-family: var(--font-display); font-weight: 600; font-size: 13px; letter-spacing: -.02em;
+  box-shadow: 0 0 20px -6px var(--accent), inset 0 0 0 1px rgba(245,220,170,.10);
+}
+.rail-name { display: flex; flex-direction: column; line-height: 1.15; min-width: 0; }
+.rail-name b { color: var(--t-hi); font-weight: 600; font-size: 12.5px; letter-spacing: -.005em; }
+.rail-name small { color: var(--t-faint); font-size: 9.5px; letter-spacing: .08em; text-transform: uppercase; margin-top: 2px; white-space: nowrap; }
 
-/* Tab bar */
-.tabbar { display: flex; gap: 4px; padding: 4px; background: var(--ink-2); border: 1px solid var(--edge-soft); border-radius: var(--r-md); width: fit-content; }
-.tab {
-  display: inline-flex; align-items: center; gap: 8px; padding: 8px 14px;
-  font-size: 13px; font-weight: 500; color: var(--t-mute); border-radius: var(--r-sm);
-  transition: all var(--t-fast) var(--ease-out); position: relative;
+.rail-section-label {
+  padding: 16px 20px 6px; font-size: 9.5px; font-weight: 600;
+  color: var(--t-faint); letter-spacing: .12em; text-transform: uppercase;
 }
-.tab:hover { color: var(--t-hi); background: var(--ink-3); }
-.tab--active { background: var(--ink-4); color: var(--t-hi); box-shadow: 0 1px 0 var(--edge-strong) inset, 0 2px 8px rgba(0,0,0,.3); }
-.tab--active::after { content: ""; position: absolute; left: 14px; right: 14px; bottom: -4px; height: 2px; background: var(--accent); border-radius: var(--r-full); box-shadow: 0 0 12px var(--accent); }
-.tab .count {
-  display: inline-flex; align-items: center; justify-content: center; min-width: 18px; height: 18px; padding: 0 5px;
+.rail-nav { display: flex; flex-direction: column; }
+.rail-link {
+  display: flex; align-items: center; gap: 12px; padding: 8px 20px;
+  color: var(--t-mute); font-size: 13px; font-weight: 500;
+  border-left: 2px solid transparent; cursor: pointer;
+  transition: color var(--t-fast) var(--ease-out), border-color var(--t-fast) var(--ease-out), background var(--t-fast) var(--ease-out);
+}
+.rail-link:hover { color: var(--t-body); background: rgba(255,255,255,.02); }
+.rail-link.active {
+  color: var(--t-hi); border-left-color: var(--accent);
+  background: linear-gradient(90deg, var(--accent-soft), transparent 100%);
+}
+.rail-link .num { font-family: var(--font-mono); font-size: 9.5px; font-weight: 600; color: var(--t-faint); letter-spacing: .04em; }
+.rail-link.active .num { color: var(--accent); }
+.rail-link svg { width: 15px; height: 15px; flex-shrink: 0; }
+.rail-link .count {
+  margin-left: auto; display: inline-flex; align-items: center; justify-content: center;
+  min-width: 18px; height: 18px; padding: 0 5px;
   font-family: var(--font-mono); font-size: 10px; font-weight: 600;
-  background: var(--away); color: #2a0a10; border-radius: var(--r-full); box-shadow: 0 0 12px -2px var(--away);
+  background: var(--warn); color: #fff; border-radius: var(--r-full); box-shadow: 0 0 12px -2px var(--warn);
 }
-.tab svg { width: 14px; height: 14px; }
+.rail-foot {
+  margin-top: auto; padding: 16px 20px; border-top: 1px solid var(--edge-soft);
+  display: flex; flex-direction: column; gap: 8px;
+}
+.rail-status { display: flex; align-items: center; gap: 8px; font-size: 10.5px; color: var(--t-mute); font-family: var(--font-mono); }
+.rail-status i { width: 6px; height: 6px; border-radius: 50%; background: var(--pos); box-shadow: 0 0 0 3px var(--pos-soft); flex-shrink: 0; }
+.rail-meta { font-size: 9.5px; color: var(--t-faint); font-family: var(--font-mono); letter-spacing: .04em; }
+
+/* Top bar — fixed, with a scroll-progress line at the bottom */
+.topbar {
+  position: fixed; top: 0; right: 0; left: var(--rail); height: var(--topbar);
+  background: rgba(13,11,8,.75); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--edge-soft);
+  display: flex; align-items: center; padding: 0 24px; z-index: 15;
+}
+@media (min-width: 768px) { .topbar { padding: 0 40px; } }
+.topbar-inner { width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+.topbar-crumbs { display: flex; align-items: center; gap: 10px; font-size: 12px; color: var(--t-mute); }
+.topbar-crumbs .num-tag { font-family: var(--font-display); font-style: italic; color: var(--accent); font-size: 14px; }
+.topbar-crumbs .sep { color: var(--t-faint); }
+.topbar-crumbs b { color: var(--t-hi); font-weight: 500; }
+.topbar-right { display: flex; align-items: center; gap: 16px; font-size: 12px; color: var(--t-mute); flex-wrap: wrap; }
+.topbar-right .live { display: inline-flex; align-items: center; gap: 6px; font-family: var(--font-mono); }
+.topbar-right .live i { width: 6px; height: 6px; border-radius: 50%; background: var(--pos); box-shadow: 0 0 0 3px var(--pos-soft); animation: pulse 2.4s var(--ease-out) infinite; }
+.scroll-progress { position: absolute; bottom: -1px; left: 0; height: 1px; width: 0%; background: var(--accent); box-shadow: 0 0 12px rgba(245,184,66,.6); transition: width 80ms linear; z-index: 16; }
+
+/* Main canvas */
+.main { margin-left: var(--rail); padding-top: var(--topbar); }
+.container { max-width: var(--container); margin: 0 auto; padding: 28px 24px 64px; }
+@media (min-width: 768px) { .container { padding: 40px 40px 80px; } }
+
+/* Screen head — compact editorial: italic numeral + title + 56px amber rule */
+.screen-head { margin-bottom: 28px; padding-bottom: 20px; border-bottom: 1px solid var(--edge); position: relative; }
+.screen-head::after { content: ""; position: absolute; bottom: -1px; left: 0; width: 56px; height: 1px; background: var(--accent); }
+.screen-head-row { display: flex; justify-content: space-between; align-items: flex-end; gap: 20px; flex-wrap: wrap; }
+.screen-head-actions { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.screen-meta { display: flex; align-items: baseline; gap: 12px; font-size: 11px; color: var(--t-faint); letter-spacing: .14em; text-transform: uppercase; font-family: var(--font-mono); font-weight: 500; }
+.screen-meta .num { font-family: var(--font-display); font-style: italic; font-weight: 400; font-size: 20px; color: var(--accent); letter-spacing: -.01em; text-transform: none; line-height: 1; }
+.screen-meta .dot { color: var(--t-faint); }
+.screen-title { font-family: var(--font-display); font-size: clamp(26px, 3vw, 36px); font-weight: 400; color: var(--t-hi); letter-spacing: -.025em; line-height: 1.06; margin: 6px 0 0; }
+.screen-sub { font-size: 14px; color: var(--t-mute); max-width: 72ch; line-height: 1.6; margin-top: 8px; }
+
+/* Responsive — collapse the rail into a horizontal strip on narrow screens */
+@media (max-width: 899px) {
+  .rail { position: static; width: 100%; border-right: 0; border-bottom: 1px solid var(--edge-soft); }
+  .rail-section-label { display: none; }
+  .rail-nav { flex-direction: row; flex-wrap: wrap; padding: 8px 12px; gap: 4px; }
+  .rail-link { border-left: 0; border-radius: var(--r-sm); padding: 8px 12px; }
+  .rail-link.active { border-left: 0; background: var(--ink-3); box-shadow: inset 0 -2px 0 var(--accent); }
+  .rail-foot { display: none; }
+  .topbar { position: static; left: 0; height: auto; padding: 10px 24px; }
+  .main { margin-left: 0; padding-top: 0; }
+}
 
 /* Section heading */
 .sh { display: flex; justify-content: space-between; align-items: center; margin: 28px 0 14px; flex-wrap: wrap; gap: 8px; }
 .sh-l { display: flex; align-items: center; gap: 10px; }
-.sh h2 { font-size: 14px; font-weight: 600; color: var(--t-hi); letter-spacing: -.005em; }
+.sh h2 { font-family: var(--font-display); font-size: 17px; font-weight: 500; color: var(--t-hi); letter-spacing: -.015em; }
 .sh-l .ico { width: 20px; height: 20px; border-radius: var(--r-sm); display: inline-flex; align-items: center; justify-content: center; background: var(--ink-3); color: var(--accent); }
 .sh-l .ico svg { width: 12px; height: 12px; }
 .sh-r { display: flex; gap: 8px; align-items: center; }
@@ -143,34 +222,34 @@ table { border-collapse: collapse; }
 .btn:hover { transform: translateY(-1px); } .btn:active { transform: translateY(0); }
 .btn:disabled { opacity: .6; cursor: default; transform: none; }
 .btn--sm { height: 28px; padding: 0 10px; font-size: 12px; }
-.btn--primary { background: var(--accent); color: #00131c; font-weight: 600; box-shadow: 0 0 0 1px rgba(255,255,255,.08) inset, 0 4px 12px -4px rgba(56,189,248,.5); }
-.btn--primary:hover { background: #5cc7fb; box-shadow: 0 0 0 1px rgba(255,255,255,.12) inset, 0 6px 16px -4px rgba(56,189,248,.6); }
+.btn--primary { background: var(--accent); color: #1a1206; font-weight: 600; box-shadow: 0 0 0 1px rgba(255,200,87,.4) inset, 0 4px 12px -4px rgba(245,184,66,.5); }
+.btn--primary:hover { background: var(--accent-strong); box-shadow: 0 0 0 1px rgba(255,200,87,.6) inset, 0 6px 16px -4px rgba(245,184,66,.6); }
 .btn--secondary { background: var(--ink-3); color: var(--t-hi); border-color: var(--edge); }
 .btn--secondary:hover { background: var(--ink-4); border-color: var(--edge-strong); }
 .btn--ghost { color: var(--t-body); }
 .btn--ghost:hover { background: var(--ink-2); color: var(--t-hi); }
-.btn--success { background: var(--pos); color: #002413; font-weight: 600; box-shadow: 0 0 0 1px rgba(255,255,255,.1) inset, 0 4px 12px -4px rgba(52,211,153,.4); }
-.btn--success:hover { background: #5be2a8; }
-.btn--danger { background: var(--away-soft); color: var(--away); border-color: rgba(251,113,133,.3); }
-.btn--danger:hover { background: rgba(251,113,133,.22); }
+.btn--success { background: var(--pos); color: #0e2b08; font-weight: 600; box-shadow: 0 0 0 1px rgba(220,255,200,.12) inset, 0 4px 12px -4px rgba(148,214,128,.4); }
+.btn--success:hover { background: #b8e89e; }
+.btn--danger { background: var(--warn-soft); color: var(--warn); border-color: rgba(255,107,74,.3); }
+.btn--danger:hover { background: rgba(255,107,74,.22); }
 
 .badge { display: inline-flex; align-items: center; gap: 6px; padding: 3px 8px; font-size: 10.5px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; border-radius: var(--r-sm); border: 1px solid transparent; }
 .badge svg { width: 11px; height: 11px; }
 .badge--hi { background: var(--ink-3); color: var(--t-hi); border-color: var(--edge); }
 .badge--mute { background: var(--ink-2); color: var(--t-mute); border-color: var(--edge-soft); }
-.badge--home { background: var(--home-soft); color: var(--home); border-color: rgba(56,189,248,.25); }
-.badge--draw { background: var(--draw-soft); color: var(--draw); border-color: rgba(148,163,184,.2); }
-.badge--away { background: var(--away-soft); color: var(--away); border-color: rgba(251,113,133,.25); }
-.badge--pos { background: var(--pos-soft); color: var(--pos); border-color: rgba(52,211,153,.25); }
-.badge--warn { background: var(--warn-soft); color: var(--warn); border-color: rgba(251,191,36,.25); }
-.badge--engine { background: var(--engine-soft); color: var(--engine); border-color: rgba(167,139,250,.25); }
+.badge--home { background: var(--home-soft); color: var(--home); border-color: rgba(245,184,66,.25); }
+.badge--draw { background: var(--draw-soft); color: var(--draw); border-color: rgba(138,125,104,.25); }
+.badge--away { background: var(--away-soft); color: var(--away); border-color: rgba(107,140,196,.25); }
+.badge--pos { background: var(--pos-soft); color: var(--pos); border-color: rgba(148,214,128,.25); }
+.badge--warn { background: var(--warn-soft); color: var(--warn); border-color: rgba(255,107,74,.25); }
+.badge--engine { background: var(--engine-soft); color: var(--engine); border-color: rgba(212,133,156,.25); }
 
 .pill { display: inline-flex; align-items: center; gap: 8px; padding: 8px 14px; border-radius: var(--r-md); background: var(--ink-2); border: 1px solid var(--edge-soft); font-size: 13px; font-weight: 500; transition: all var(--t-fast) var(--ease-out); }
 .pill .lbl { color: var(--t-mute); font-weight: 500; }
 .pill .val { font-family: var(--font-mono); color: var(--t-hi); font-weight: 600; }
-.pill--home { background: var(--home-soft); border-color: rgba(56,189,248,.3); } .pill--home .lbl { color: var(--home); }
-.pill--draw { background: var(--draw-soft); border-color: rgba(148,163,184,.25); } .pill--draw .lbl { color: var(--draw); }
-.pill--away { background: var(--away-soft); border-color: rgba(251,113,133,.3); } .pill--away .lbl { color: var(--away); }
+.pill--home { background: var(--home-soft); border-color: rgba(245,184,66,.3); } .pill--home .lbl { color: var(--home); }
+.pill--draw { background: var(--draw-soft); border-color: rgba(138,125,104,.25); } .pill--draw .lbl { color: var(--draw); }
+.pill--away { background: var(--away-soft); border-color: rgba(107,140,196,.3); } .pill--away .lbl { color: var(--away); }
 .pill--fav { box-shadow: 0 0 0 1.5px currentColor inset, 0 0 16px -4px currentColor; }
 
 .pbar { display: flex; height: 8px; border-radius: var(--r-full); overflow: hidden; background: var(--ink-3); }
@@ -185,13 +264,13 @@ table { border-collapse: collapse; }
 .status { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; color: var(--t-mute); }
 .status .dot { width: 6px; height: 6px; border-radius: 50%; }
 .status--ok { color: var(--pos); } .status--ok .dot { background: var(--pos); box-shadow: 0 0 8px var(--pos); }
-.status--err { color: var(--away); } .status--err .dot { background: var(--away); }
+.status--err { color: var(--warn); } .status--err .dot { background: var(--warn); }
 .status--work { color: var(--accent); } .status--work .dot { background: var(--accent); animation: pulse 1.2s ease-in-out infinite; }
 .status--idle { color: var(--t-mute); } .status--idle .dot { background: var(--t-faint); }
 @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: .35; } }
 
 .msg { font-size: 12px; color: var(--t-mute); }
-.msg--ok { color: var(--pos); } .msg--err { color: var(--away); }
+.msg--ok { color: var(--pos); } .msg--err { color: var(--warn); }
 
 /* =========================================================================
    05 · STAT CARDS
@@ -200,15 +279,15 @@ table { border-collapse: collapse; }
 @media (min-width: 768px) { .stat-grid { grid-template-columns: repeat(4, 1fr); } }
 .stat { background: linear-gradient(180deg, var(--ink-2), var(--ink-1)); border: 1px solid var(--edge); border-radius: var(--r-lg); padding: 16px 18px; position: relative; overflow: hidden; box-shadow: var(--sh-card), var(--hi-inset); }
 .stat::before { content: ""; position: absolute; top: 0; left: 18px; right: 18px; height: 1px; background: linear-gradient(90deg, transparent, var(--edge-strong), transparent); }
-.stat--alert { border-color: rgba(251,113,133,.3); } .stat--alert::before { background: linear-gradient(90deg, transparent, var(--away), transparent); }
-.stat--warn { border-color: rgba(251,191,36,.3); } .stat--warn::before { background: linear-gradient(90deg, transparent, var(--warn), transparent); }
-.stat--pos { border-color: rgba(52,211,153,.25); } .stat--pos::before { background: linear-gradient(90deg, transparent, var(--pos), transparent); }
+.stat--alert { border-color: rgba(148,214,128,.3); } .stat--alert::before { background: linear-gradient(90deg, transparent, var(--pos), transparent); }
+.stat--warn { border-color: rgba(245,184,66,.3); } .stat--warn::before { background: linear-gradient(90deg, transparent, var(--accent), transparent); }
+.stat--pos { border-color: rgba(148,214,128,.25); } .stat--pos::before { background: linear-gradient(90deg, transparent, var(--pos), transparent); }
 .stat-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
 .stat-label { font-size: 11px; font-weight: 600; color: var(--t-mute); letter-spacing: .1em; text-transform: uppercase; }
 .stat-ico { width: 22px; height: 22px; border-radius: var(--r-sm); display: inline-flex; align-items: center; justify-content: center; color: var(--t-mute); }
 .stat-ico svg { width: 12px; height: 12px; }
-.stat--alert .stat-ico { background: var(--away-soft); color: var(--away); }
-.stat--warn .stat-ico { background: var(--warn-soft); color: var(--warn); }
+.stat--alert .stat-ico { background: var(--pos-soft); color: var(--pos); }
+.stat--warn .stat-ico { background: var(--accent-soft); color: var(--accent); }
 .stat--pos .stat-ico { background: var(--pos-soft); color: var(--pos); }
 .stat-value { font-family: var(--font-mono); font-size: 30px; font-weight: 500; color: var(--t-hi); line-height: 1; letter-spacing: -.02em; font-variant-numeric: tabular-nums; }
 .stat-foot { display: flex; justify-content: space-between; align-items: center; margin-top: 8px; gap: 8px; }
@@ -234,6 +313,11 @@ table { border-collapse: collapse; }
 .group tr.qual td { background: linear-gradient(90deg, var(--pos-soft), transparent 80%); }
 .group tr.qual td:first-child { position: relative; }
 .group tr.qual td:first-child::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 2px; background: var(--pos); }
+/* Best third-placed team — qualifies for the Round of 32 (amber, distinct from the top-2). */
+.group tr.qual-third td { background: linear-gradient(90deg, var(--home-soft), transparent 80%); }
+.group tr.qual-third td:first-child { position: relative; }
+.group tr.qual-third td:first-child::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 2px; background: var(--home); }
+.q3 { margin-left: 6px; padding: 1px 5px; font-family: var(--font-mono); font-size: 8.5px; font-weight: 600; letter-spacing: .06em; color: var(--home); background: var(--home-soft); border: 1px solid rgba(245,184,66,.3); border-radius: var(--r-sm); vertical-align: middle; }
 .crest { display: inline-flex; align-items: center; gap: 8px; }
 .crest-mark { width: 18px; height: 18px; border-radius: 4px; background: var(--ink-3); display: inline-flex; align-items: center; justify-content: center; font-size: 9px; font-weight: 700; color: var(--t-mute); font-family: var(--font-sans); flex-shrink: 0; }
 
@@ -244,8 +328,8 @@ table { border-collapse: collapse; }
 @media (min-width: 768px) { .matches { grid-template-columns: repeat(2, 1fr); } }
 .match { background: var(--ink-1); border: 1px solid var(--edge); border-radius: var(--r-lg); padding: 16px 18px; display: flex; flex-direction: column; gap: 14px; position: relative; overflow: hidden; box-shadow: var(--sh-card); transition: all var(--t-norm) var(--ease-out); }
 .match:hover { border-color: var(--edge-strong); transform: translateY(-1px); }
-.match--overdue { border-color: rgba(251,191,36,.3); }
-.match--overdue::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, var(--warn), transparent); }
+.match--overdue { border-color: rgba(245,184,66,.3); }
+.match--overdue::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, var(--accent), transparent); }
 .match-head { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
 .match-meta { display: flex; align-items: center; gap: 8px; font-size: 11px; color: var(--t-mute); font-family: var(--font-mono); flex-wrap: wrap; }
 .match-proj { display: flex; align-items: center; gap: 6px; font-size: 11px; color: var(--t-mute); white-space: nowrap; }
@@ -259,6 +343,12 @@ table { border-collapse: collapse; }
 .match-probs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
 .match-probs .pill { justify-content: center; padding: 6px 4px; }
 .match-probs .pill .val { font-size: 14px; }
+.match-pick { display: flex; align-items: center; gap: 8px; padding-top: 12px; border-top: 1px solid var(--edge); flex-wrap: wrap; }
+.match-pick .lbl { font-size: 11px; color: var(--t-mute); font-family: var(--font-mono); text-transform: uppercase; letter-spacing: .04em; }
+.match-pick .sep { font-family: var(--font-mono); color: var(--t-faint); font-size: 14px; }
+.match-pick .field { height: 30px; width: 44px; }
+.match-pick .btn { margin-left: 6px; }
+.match-pick .pick-save { min-width: 0; }
 
 /* =========================================================================
    08 · DATA TABLES
@@ -275,11 +365,11 @@ table { border-collapse: collapse; }
 .dt th.num, .dt td.num { text-align: right; font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
 .dt td { padding: 11px 14px; font-size: 13px; color: var(--t-body); border-bottom: 1px solid var(--edge-soft); }
 .dt tr:last-child td { border-bottom: 0; }
-.dt tbody tr:hover td { background: rgba(56,189,248,.02); }
+.dt tbody tr:hover td { background: rgba(255,255,255,.02); }
 .dt td.team { display: flex; align-items: center; gap: 10px; color: var(--t-hi); font-weight: 500; }
 .dt td.team .crest { width: 22px; height: 22px; border-radius: 4px; background: var(--ink-3); display: inline-flex; align-items: center; justify-content: center; font-size: 9px; font-weight: 700; color: var(--t-mute); }
 .dt .delta { font-family: var(--font-mono); font-size: 11.5px; color: var(--t-faint); }
-.dt .delta--up { color: var(--pos); } .dt .delta--down { color: var(--away); }
+.dt .delta--up { color: var(--pos); } .dt .delta--down { color: var(--warn); }
 .dt .rank { font-family: var(--font-mono); color: var(--t-faint); font-size: 11.5px; }
 
 /* Performance points table */
@@ -326,27 +416,14 @@ table { border-collapse: collapse; }
 .metric-value { font-family: var(--font-mono); font-size: 22px; font-weight: 500; color: var(--t-hi); font-variant-numeric: tabular-nums; line-height: 1.1; letter-spacing: -.01em; }
 .metric-foot { display: flex; align-items: center; gap: 6px; font-size: 10.5px; font-family: var(--font-mono); color: var(--t-mute); }
 .metric-foot .baseline { color: var(--t-mute); text-decoration: line-through; text-decoration-color: var(--edge-strong); }
-.metric-foot--pos .delta { color: var(--pos); } .metric-foot--neg .delta { color: var(--away); }
+.metric-foot--pos .delta { color: var(--pos); } .metric-foot--neg .delta { color: var(--warn); }
 
 /* =========================================================================
-   10 · PICK EDITOR
+   10 · PICK SAVE STATUS (inline in dashboard match cards)
    ========================================================================= */
-.picks { display: grid; gap: 8px; }
-.pick { display: grid; grid-template-columns: 1fr auto; gap: 16px; padding: 14px 16px; background: var(--ink-1); border: 1px solid var(--edge); border-radius: var(--r-lg); align-items: center; transition: all var(--t-fast) var(--ease-out); }
-.pick:hover { border-color: var(--edge-strong); }
-.pick-l { display: flex; align-items: center; gap: 16px; min-width: 0; }
-.pick-time { font-family: var(--font-mono); font-size: 12px; color: var(--t-mute); min-width: 84px; }
-.pick-match { flex: 1; min-width: 0; }
-.pick-match .name { font-size: 13px; font-weight: 500; color: var(--t-hi); }
-.pick-match .sub { font-size: 11px; color: var(--t-faint); font-family: var(--font-mono); }
-.pick-r { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; justify-content: flex-end; }
-.score-edit { display: inline-flex; align-items: center; gap: 6px; }
-.score-edit .sep { font-family: var(--font-mono); color: var(--t-faint); font-size: 14px; }
-.score-edit .proj { font-family: var(--font-mono); font-size: 12px; color: var(--t-mute); margin-left: 8px; white-space: nowrap; }
-.score-edit .proj b { color: var(--t-hi); font-weight: 600; }
-.pick-save { display: inline-flex; align-items: center; gap: 6px; font-size: 11.5px; color: var(--t-mute); min-width: 52px; }
+.pick-save { display: inline-flex; align-items: center; gap: 6px; font-size: 11.5px; color: var(--t-mute); min-width: 0; }
 .pick-save svg { width: 12px; height: 12px; }
-.pick-save--ok { color: var(--pos); } .pick-save--err { color: var(--away); }
+.pick-save--ok { color: var(--pos); } .pick-save--err { color: var(--warn); }
 
 /* =========================================================================
    11 · PROPOSALS
@@ -354,8 +431,8 @@ table { border-collapse: collapse; }
 .proposals { display: grid; gap: 14px; }
 .proposal { background: linear-gradient(180deg, var(--ink-2), var(--ink-1)); border: 1px solid var(--edge); border-radius: var(--r-lg); padding: 20px; display: flex; flex-direction: column; gap: 16px; box-shadow: var(--sh-card); position: relative; overflow: hidden; }
 .proposal::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; }
-.proposal--tuning::before { background: var(--warn); box-shadow: 0 0 12px var(--warn-soft); }
-.proposal--sched::before { background: var(--accent); box-shadow: 0 0 12px var(--accent-soft); }
+.proposal--tuning::before { background: var(--accent); box-shadow: 0 0 12px var(--accent-soft); }
+.proposal--sched::before { background: var(--away); box-shadow: 0 0 12px var(--away-soft); }
 .proposal--form::before { background: var(--engine); box-shadow: 0 0 12px var(--engine-soft); }
 .proposal--audit::before { background: var(--neutral); }
 .proposal-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; }
@@ -367,7 +444,7 @@ table { border-collapse: collapse; }
 .metric-mini { display: flex; flex-direction: column; gap: 4px; padding: 10px 14px; background: var(--ink-2); border: 1px solid var(--edge-soft); border-radius: var(--r-md); min-width: 110px; }
 .metric-mini .lbl { font-size: 10px; font-weight: 600; color: var(--t-faint); letter-spacing: .1em; text-transform: uppercase; }
 .metric-mini .vals { display: flex; align-items: baseline; gap: 6px; font-family: var(--font-mono); }
-.metric-mini .from { font-size: 12px; color: var(--t-mute); text-decoration: line-through; text-decoration-color: var(--away); }
+.metric-mini .from { font-size: 12px; color: var(--t-mute); text-decoration: line-through; text-decoration-color: var(--warn); }
 .metric-mini .arrow { color: var(--t-faint); }
 .metric-mini .to { font-size: 14px; color: var(--t-hi); font-weight: 600; }
 .metric-mini--pos .to { color: var(--pos); } .metric-mini--pos .from { text-decoration-color: var(--pos); }
@@ -393,6 +470,27 @@ table { border-collapse: collapse; }
 .obar-fill { height: 100%; background: linear-gradient(90deg, var(--accent), var(--engine)); border-radius: var(--r-full); }
 .obar-val { font-family: var(--font-mono); font-size: 12px; color: var(--t-hi); width: 46px; text-align: right; }
 
+/* Simulation — projected playoff tree */
+.bracket-wrap { overflow-x: auto; padding: 4px 2px 10px; }
+.bracket { display: flex; gap: 22px; min-width: min-content; align-items: stretch; }
+.bk-col { display: flex; flex-direction: column; min-width: 178px; }
+.bk-col--champ { min-width: 156px; }
+.bk-col-head { flex: 0 0 auto; font-family: var(--font-mono); font-size: 9.5px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--t-faint); padding-bottom: 10px; margin-bottom: 4px; border-bottom: 1px solid var(--edge-soft); }
+.bk-col-body { flex: 1 1 auto; display: flex; flex-direction: column; justify-content: space-around; gap: 8px; }
+.bk-match { background: var(--ink-1); border: 1px solid var(--edge); border-radius: var(--r-md); overflow: hidden; box-shadow: var(--sh-subtle); }
+.bk-row { display: flex; align-items: center; gap: 8px; padding: 7px 10px; min-width: 0; }
+.bk-row + .bk-row { border-top: 1px solid var(--edge-soft); }
+.bk-row .seed { font-family: var(--font-mono); font-size: 9px; color: var(--t-faint); width: 20px; flex-shrink: 0; }
+.bk-row .nm { flex: 1; min-width: 0; font-size: 12px; color: var(--t-mute); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.bk-row .p { font-family: var(--font-mono); font-size: 10px; color: var(--t-faint); flex-shrink: 0; }
+.bk-row--win { background: linear-gradient(90deg, var(--accent-soft), transparent 90%); box-shadow: inset 2px 0 0 var(--accent); }
+.bk-row--win .nm { color: var(--t-hi); font-weight: 600; }
+.bk-row--win .p { color: var(--accent); }
+.bk-champ { display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 20px 14px; text-align: center; background: linear-gradient(180deg, var(--home-soft), transparent); border: 1px solid var(--edge-amber); border-radius: var(--r-lg); box-shadow: var(--sh-amber); }
+.bk-champ svg { width: 26px; height: 26px; color: var(--accent); }
+.bk-champ .nm { font-family: var(--font-display); font-size: 18px; font-weight: 500; color: var(--t-hi); letter-spacing: -.01em; }
+.bk-champ .lbl { font-family: var(--font-mono); font-size: 9px; letter-spacing: .14em; text-transform: uppercase; color: var(--accent); }
+
 /* App footer */
 .app-foot { margin-top: 32px; padding-top: 16px; border-top: 1px solid var(--edge-soft); display: flex; justify-content: space-between; align-items: center; font-size: 11.5px; color: var(--t-faint); flex-wrap: wrap; gap: 8px; }
 .app-foot .trust { display: inline-flex; align-items: center; gap: 6px; }
@@ -401,66 +499,96 @@ table { border-collapse: collapse; }
 </head>
 <body>
 <div class="shell">
-<div class="container">
 
-  <!-- App header -->
-  <div class="app-head">
-    <div class="app-head-title">
-      <span class="logo">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M6 9H4a2 2 0 0 1-2-2V5h4M18 9h2a2 2 0 0 0 2-2V5h-4M6 3v18M18 3v18M3 6h4M3 18h4M17 6h4M17 18h4M8 12h8M8 16h8"/></svg>
-      </span>
-      <div>
-        <h1>WC Engine</h1>
-        <div class="sub">World Cup 2026 prediction dashboard · <span id="today">—</span></div>
+  <!-- Left rail -->
+  <aside class="rail">
+    <div class="rail-brand">
+      <div class="rail-monogram">WC</div>
+      <div class="rail-name">
+        <b>WC Engine</b>
+        <small>v2027.3 · stadium dusk</small>
       </div>
     </div>
-    <div class="app-head-meta">
-      <span>Local · wc.db</span>
-      <span class="sep"></span>
-      <button class="btn btn--secondary btn--sm" onclick="load()">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/></svg>
-        Refresh
-      </button>
-    </div>
-  </div>
 
-  <!-- Tab bar -->
-  <div style="margin-bottom: 24px;">
-    <div class="tabbar">
-      <button class="tab tab--active" data-tab="dashboard" onclick="showTab('dashboard')">
+    <div class="rail-section-label">Screens</div>
+    <nav class="rail-nav">
+      <a class="rail-link active" data-tab="dashboard" href="#" onclick="showTab('dashboard');return false;">
+        <span class="num">01</span>
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>
         Dashboard
-      </button>
-      <button class="tab" data-tab="performance" onclick="showTab('performance')">
+      </a>
+      <a class="rail-link" data-tab="performance" href="#" onclick="showTab('performance');return false;">
+        <span class="num">02</span>
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/></svg>
         Performance
-      </button>
-      <button class="tab" data-tab="simulation" onclick="showTab('simulation')">
+      </a>
+      <a class="rail-link" data-tab="simulation" href="#" onclick="showTab('simulation');return false;">
+        <span class="num">03</span>
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6M18 9h1.5a2.5 2.5 0 0 0 0-5H18M4 22h16M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22M18 2H6v7a6 6 0 0 0 12 0z"/></svg>
         Simulation
-      </button>
-      <button class="tab" data-tab="proposals" onclick="showTab('proposals')">
+      </a>
+      <a class="rail-link" data-tab="proposals" href="#" onclick="showTab('proposals');return false;">
+        <span class="num">04</span>
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg>
         Proposals
         <span id="tab-prop-badge" class="count hidden">0</span>
-      </button>
+      </a>
+    </nav>
+
+    <div class="rail-foot">
+      <span class="rail-status"><i></i>Engine · local wc.db</span>
+      <span class="rail-meta">agents propose · you approve</span>
     </div>
-  </div>
+  </aside>
+
+  <!-- Top bar -->
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="topbar-left">
+        <div class="topbar-crumbs">
+          <span class="num-tag" id="crumb-num">§ 01</span>
+          <span class="sep">/</span>
+          <b id="crumb-section">Dashboard</b>
+        </div>
+      </div>
+      <div class="topbar-right">
+        <span class="live"><i></i>Engine running</span>
+        <span id="today">—</span>
+        <button class="btn btn--secondary btn--sm" onclick="load()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/></svg>
+          Refresh
+        </button>
+      </div>
+    </div>
+    <div class="scroll-progress" id="scrollProgress"></div>
+  </header>
+
+  <!-- Main canvas -->
+  <main class="main">
+  <div class="container">
 
   <!-- ================= DASHBOARD ================= -->
   <div id="panel-dashboard" class="tab-panel">
 
-    <!-- controls -->
-    <div class="row" style="margin-bottom: 20px;">
-      <button id="btn-monitor" class="btn btn--primary" onclick="act('run-monitor', this)">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5M12 15V3"/></svg>
-        Run results monitor
-      </button>
-      <button id="btn-recompute" class="btn btn--secondary" onclick="act('recompute', this)">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/></svg>
-        Recompute predictions
-      </button>
-      <span id="action-msg" class="msg"></span>
+    <div class="screen-head">
+      <div class="screen-head-row">
+        <div>
+          <div class="screen-meta"><span class="num">01</span><span class="dot">·</span><span>Screen · Dashboard</span></div>
+          <h2 class="screen-title">The “now” view.</h2>
+          <p class="screen-sub">Live group standings, model probabilities, power ratings and recorded results — the tournament at a glance.</p>
+        </div>
+        <div class="screen-head-actions">
+          <button id="btn-monitor" class="btn btn--primary" onclick="act('run-monitor', this)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5M12 15V3"/></svg>
+            Run results monitor
+          </button>
+          <button id="btn-recompute" class="btn btn--secondary" onclick="act('recompute', this)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/></svg>
+            Recompute predictions
+          </button>
+        </div>
+      </div>
+      <span id="action-msg" class="msg" style="display:block; margin-top:12px;"></span>
     </div>
 
     <div id="stats" class="stat-grid"></div>
@@ -469,6 +597,10 @@ table { border-collapse: collapse; }
       <div class="sh-l">
         <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h2M18 9h2a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2h-2M6 3v18M18 3v18M3 6h4M3 18h4M17 6h4M17 18h4"/></svg></span>
         <h2>Group standings</h2>
+      </div>
+      <div class="sh-r">
+        <span class="badge badge--pos">Top 2</span>
+        <span class="badge badge--home">Best 3rd → R32</span>
       </div>
     </div>
     <div id="standings" class="groups"></div>
@@ -479,6 +611,7 @@ table { border-collapse: collapse; }
         <h2>Upcoming · model probabilities</h2>
       </div>
     </div>
+    <p class="muted" style="font-size:13px; margin-bottom:14px;">Enter your scoreline pick on any fixture and press Save. <span class="faint">“proj” is the engine's suggestion.</span></p>
     <div id="upcoming" class="matches"></div>
 
     <div class="split" style="margin-top: 32px;">
@@ -496,6 +629,12 @@ table { border-collapse: collapse; }
 
   <!-- ================= PERFORMANCE ================= -->
   <div id="panel-performance" class="tab-panel hidden">
+
+    <div class="screen-head">
+      <div class="screen-meta"><span class="num">02</span><span class="dot">·</span><span>Screen · Performance</span></div>
+      <h2 class="screen-title">You vs the engine, and the engine vs itself.</h2>
+      <p class="screen-sub">Fantasy points scored by the league rules, and the engine's forecast accuracy. <span class="faint">Edit your upcoming picks on the Dashboard.</span></p>
+    </div>
 
     <div class="sh" style="margin-top: 0;">
       <div class="sh-l">
@@ -518,15 +657,6 @@ table { border-collapse: collapse; }
     <p class="muted" style="font-size: 13px; margin-bottom: 14px;">How the engine's W/D/L probabilities grade against results. Lower Brier / log-loss / RPS is better.</p>
     <div id="model-metrics" class="metric-grid"></div>
 
-    <div class="sh">
-      <div class="sh-l">
-        <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.12 2.12 0 0 1 3 3L12 15l-4 1 1-4z"/></svg></span>
-        <h2>Your picks · upcoming fixtures</h2>
-      </div>
-    </div>
-    <p class="muted" style="font-size: 13px; margin-bottom: 14px;">Enter a scoreline and press Save. <span class="faint">“proj” is the engine's suggestion.</span></p>
-    <div id="picks-editor" class="picks"></div>
-
     <div class="app-foot">
       <span class="trust">
         <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="12" height="12"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>
@@ -537,20 +667,38 @@ table { border-collapse: collapse; }
 
   <!-- ================= SIMULATION ================= -->
   <div id="panel-simulation" class="tab-panel hidden">
-    <div class="sh" style="margin-top: 0;">
-      <div class="sh-l">
-        <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6M18 9h1.5a2.5 2.5 0 0 0 0-5H18M4 22h16M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22M18 2H6v7a6 6 0 0 0 12 0z"/></svg></span>
-        <h2>Tournament simulation</h2>
-      </div>
-      <div class="sh-r">
-        <span id="sim-status" class="msg"></span>
-        <button class="btn btn--secondary btn--sm" onclick="loadSimulation(true)">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/></svg>
-          Re-run
-        </button>
+    <div class="screen-head">
+      <div class="screen-head-row">
+        <div>
+          <div class="screen-meta"><span class="num">03</span><span class="dot">·</span><span>Screen · Simulation</span></div>
+          <h2 class="screen-title">Monte Carlo to the final whistle.</h2>
+          <p class="screen-sub">It finishes the group stage, fills the official Round-of-32 bracket (top two per group + the 8 best third-placed teams), and plays out every knockout tie — each team's odds to reach each round and lift the cup. <span class="faint">Ties resolve on the 90′ result; a draw goes to extra time / penalties weighted by strength.</span></p>
+        </div>
+        <div class="screen-head-actions">
+          <span id="sim-status" class="msg"></span>
+          <button class="btn btn--secondary btn--sm" onclick="loadSimulation(true)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/></svg>
+            Re-run
+          </button>
+        </div>
       </div>
     </div>
-    <p class="muted" style="font-size: 13px; margin-bottom: 14px;">A Monte&nbsp;Carlo over the rest of the tournament — it finishes the group stage, fills the official Round-of-32 bracket (top two per group + the 8 best third-placed teams), and plays out every knockout tie. Each team's odds to reach each round and win the cup. <span class="faint">Knockout ties resolve on the 90′ result; a draw goes to extra time / penalties weighted by strength.</span></p>
+
+    <div class="sh" style="margin-top: 0;">
+      <div class="sh-l">
+        <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h12M6 3v6a6 6 0 0 0 12 0V3M12 15v6M8 21h8"/></svg></span>
+        <h2>Projected bracket · favourite advances</h2>
+      </div>
+    </div>
+    <p class="muted" style="font-size: 13px; margin-bottom: 14px;">The single most-likely path — the group stage finished on the engine's expected scorelines, then the stronger side advances each tie. Each clash shows the favourite's odds to go through. <span class="faint">Per-team odds across all paths are in the table below.</span></p>
+    <div id="sim-bracket"></div>
+
+    <div class="sh">
+      <div class="sh-l">
+        <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6M18 9h1.5a2.5 2.5 0 0 0 0-5H18M4 22h16M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22M18 2H6v7a6 6 0 0 0 12 0z"/></svg></span>
+        <h2>Round-by-round odds · all teams</h2>
+      </div>
+    </div>
     <div id="sim-table" class="dt"></div>
 
     <div class="app-foot">
@@ -563,13 +711,11 @@ table { border-collapse: collapse; }
 
   <!-- ================= PROPOSALS ================= -->
   <div id="panel-proposals" class="tab-panel hidden">
-    <div class="sh" style="margin-top: 0;">
-      <div class="sh-l">
-        <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg></span>
-        <h2>Proposals awaiting approval</h2>
-      </div>
+    <div class="screen-head">
+      <div class="screen-meta"><span class="num">04</span><span class="dot">·</span><span>Screen · Proposals</span></div>
+      <h2 class="screen-title">The approval queue. The diff is the hero.</h2>
+      <p class="screen-sub">Agent-proposed changes — approve to commit, reject to discard. Each leads with its before→after proof.</p>
     </div>
-    <p class="muted" style="font-size: 13px; margin-bottom: 8px;">Agent-proposed changes — approve to commit, reject to discard. Each leads with its before→after proof.</p>
     <p id="prop-msg" class="msg" style="min-height: 1.25rem; margin-bottom: 12px;"></p>
     <div id="proposals" class="proposals"></div>
     <p id="proposals-empty" class="muted hidden" style="font-size: 13px;">Nothing awaiting approval right now.</p>
@@ -582,7 +728,8 @@ table { border-collapse: collapse; }
     </div>
   </div>
 
-</div>
+  </div>
+  </main>
 </div>
 
 <script>
@@ -625,7 +772,6 @@ async function load() {
   renderUpcoming(s.matches);
   renderRatings(s.ratings);
   renderResults(s.matches);
-  renderPicksEditor();
   SIM_LOADED = false;  // ratings/results may have moved; the sim is now stale
   if (currentTab === "performance") loadScoreboard();
   if (currentTab === "simulation") loadSimulation(true);
@@ -648,24 +794,59 @@ function renderStats(c) {
     statCard({ label: "Overdue", value: c.overdue, sub: c.overdue ? "past kickoff, no result" : "none overdue",
               tone: c.overdue ? "warn" : "", icon: I.clock }) +
     statCard({ label: "Proposals", value: c.proposals,
-              sub: c.proposals ? '<span class="away">view queue →</span>' : "none pending",
+              sub: c.proposals ? '<span class="pos">view queue →</span>' : "none pending",
               tone: c.proposals ? "alert" : "", icon: I.flag, onclick: c.proposals ? "showTab('proposals')" : "" });
 }
 
+const TABS = {
+  dashboard:   { num: "01", label: "Dashboard" },
+  performance: { num: "02", label: "Performance" },
+  simulation:  { num: "03", label: "Simulation" },
+  proposals:   { num: "04", label: "Proposals" },
+};
 function showTab(name) {
   currentTab = name;
   document.querySelectorAll(".tab-panel").forEach(p => p.classList.toggle("hidden", p.id !== "panel-" + name));
-  document.querySelectorAll(".tab").forEach(b => b.classList.toggle("tab--active", b.dataset.tab === name));
+  document.querySelectorAll(".rail-link").forEach(b => b.classList.toggle("active", b.dataset.tab === name));
+  const t = TABS[name] || { num: "", label: name };
+  $("#crumb-num").textContent = "§ " + t.num;
+  $("#crumb-section").textContent = t.label;
+  window.scrollTo({ top: 0 });
+  updateProgress();
   if (name === "performance") loadScoreboard();
   if (name === "simulation") loadSimulation();
 }
 
+// Scroll-progress line under the top bar (DS v2027.3).
+function updateProgress() {
+  const bar = document.getElementById("scrollProgress");
+  if (!bar) return;
+  const max = document.documentElement.scrollHeight - window.innerHeight;
+  bar.style.width = (max > 0 ? (window.scrollY / max) * 100 : 0) + "%";
+}
+window.addEventListener("scroll", updateProgress, { passive: true });
+window.addEventListener("resize", updateProgress);
+
 // --- standings ----------------------------------------------------------
+// The 2026 format advances the top two of every group PLUS the 8 best third-placed teams.
+// Rank the current third-placed teams (Pts, GD, GF, then team name) and return the group
+// codes whose third currently makes the cut. Only meaningful with the full 12-group field.
+function bestThirdGroups(groups) {
+  if (groups.length !== 12) return new Set();
+  const thirds = groups.filter(g => g.rows.length >= 3).map(g => ({ group: g.group, r: g.rows[2] }));
+  thirds.sort((x, y) =>
+    (y.r.Pts - x.r.Pts) || (y.r.GD - x.r.GD) || (y.r.GF - x.r.GF) ||
+    String(x.r.team).localeCompare(String(y.r.team)));
+  return new Set(thirds.slice(0, 8).map(t => t.group));
+}
+
 function renderStandings(groups) {
+  const thirdsIn = bestThirdGroups(groups);
   $("#standings").innerHTML = groups.map(g => {
     const n = g.rows.length;
     const played = Math.round(g.rows.reduce((s, r) => s + r.P, 0) / 2);
     const total = n * (n - 1) / 2;
+    const qualThird = thirdsIn.has(g.group);
     return `<div class="group">
       <div class="group-head">
         <div class="group-name"><span class="chip-mini">${esc(g.group)}</span> Group ${esc(g.group)}</div>
@@ -673,13 +854,17 @@ function renderStandings(groups) {
       </div>
       <table>
         <thead><tr><th>Team</th><th>P</th><th>W</th><th>D</th><th>L</th><th>GD</th><th>Pts</th></tr></thead>
-        <tbody>${g.rows.map((r, i) => `
-          <tr class="${i < 2 ? "qual" : ""}">
-            <td><div class="crest"><span class="crest-mark">${crest(r.team)}</span>${esc(r.team)}</div></td>
+        <tbody>${g.rows.map((r, i) => {
+          const isThird = i === 2 && qualThird;
+          const cls = i < 2 ? "qual" : (isThird ? "qual-third" : "");
+          return `
+          <tr class="${cls}">
+            <td><div class="crest"><span class="crest-mark">${crest(r.team)}</span>${esc(r.team)}${isThird ? '<span class="q3" title="One of the 8 best third-placed teams">R32</span>' : ""}</div></td>
             <td>${r.P}</td><td>${r.W}</td><td>${r.D}</td><td>${r.L}</td>
             <td>${r.GD > 0 ? "+" : ""}${r.GD}</td>
             <td><b class="t-hi">${r.Pts}</b></td>
-          </tr>`).join("")}
+          </tr>`;
+        }).join("")}
         </tbody>
       </table>
     </div>`;
@@ -691,35 +876,54 @@ function projScore(h, a) {
   if (h == null || a == null) return "";
   return `${Math.round(h)}–${Math.round(a)}`;
 }
+// The model's raw expected goals (one decimal) — shown beside the rounded projection so a
+// rounded-up scoreline (e.g. 0.6 → 1) is visible.
+function rawScore(h, a) {
+  if (h == null || a == null) return "";
+  return `${(+h).toFixed(1)}–${(+a).toFixed(1)}`;
+}
+function rawScoreTag(h, a) {
+  const x = rawScore(h, a);
+  return x ? ` <span class="faint" style="font-weight:400">(${x})</span>` : "";
+}
 function probPill(val, kind, fav) {
   return `<span class="pill pill--${kind}${fav ? " pill--fav" : ""}"><span class="val">${pct(val)}</span></span>`;
 }
 function renderUpcoming(matches) {
-  const up = matches.filter(m => m.status !== "final" && m.win_home != null).slice(0, 12);
+  const up = matches.filter(m => m.status !== "final");
+  const numInput = (id, side, val) =>
+    `<input id="pick-${side}-${id}" class="field" type="number" min="0" value="${val == null ? "" : val}" />`;
   $("#upcoming").innerHTML = up.length ? up.map(m => {
-    const best = Math.max(m.win_home, m.draw, m.win_away);
+    const hasProbs = m.win_home != null;
+    const best = hasProbs ? Math.max(m.win_home, m.draw, m.win_away) : null;
     const w = x => (x || 0) * 100;
     return `<div class="match${m.overdue ? " match--overdue" : ""}">
       <div class="match-head">
         <div class="match-meta">
           <span>${esc(m.group || "")}</span><span>·</span><span>${esc(m.kickoff || "")}</span>
-          ${m.overdue ? '<span>·</span><span style="color:var(--warn)">⏳ overdue</span>' : ""}
+          ${m.overdue ? '<span>·</span><span style="color:var(--accent)">⏳ overdue</span>' : ""}
         </div>
-        <div class="match-proj">proj <span class="v">${projScore(m.pred_home_goals, m.pred_away_goals)}</span></div>
+        ${hasProbs ? `<div class="match-proj">proj <span class="v">${projScore(m.pred_home_goals, m.pred_away_goals)}</span>${rawScoreTag(m.pred_home_goals, m.pred_away_goals)}</div>` : ""}
       </div>
       <div class="match-body">
         <div class="match-team"><span class="crest">${crest(m.home)}</span><span class="name">${esc(m.home)}</span></div>
         <span class="match-vs">vs</span>
         <div class="match-team match-team--away"><span class="crest">${crest(m.away)}</span><span class="name">${esc(m.away)}</span></div>
       </div>
-      <div class="match-probs">
+      ${hasProbs ? `<div class="match-probs">
         ${probPill(m.win_home, "home", m.win_home === best)}
         ${probPill(m.draw, "draw", m.draw === best)}
         ${probPill(m.win_away, "away", m.win_away === best)}
       </div>
-      <div class="pbar"><span class="h" style="width:${w(m.win_home)}%"></span><span class="d" style="width:${w(m.draw)}%"></span><span class="a" style="width:${w(m.win_away)}%"></span></div>
+      <div class="pbar"><span class="h" style="width:${w(m.win_home)}%"></span><span class="d" style="width:${w(m.draw)}%"></span><span class="a" style="width:${w(m.win_away)}%"></span></div>` : ""}
+      <div class="match-pick">
+        <span class="lbl">your pick</span>
+        ${numInput(m.id, "h", m.user_home)}<span class="sep">–</span>${numInput(m.id, "a", m.user_away)}
+        <button class="btn btn--secondary btn--sm" onclick="savePick('${m.id}')">Save</button>
+        <span id="pick-msg-${m.id}" class="pick-save"></span>
+      </div>
     </div>`;
-  }).join("") : `<p class="muted" style="font-size:13px">No upcoming matches with predictions.</p>`;
+  }).join("") : `<p class="muted" style="font-size:13px">No upcoming matches.</p>`;
 }
 
 // --- ratings + results --------------------------------------------------
@@ -770,7 +974,7 @@ const FAN_CATS = {
   saldo:  { label: "Win+margin", badge: "badge--home",   pts: "pts--hi" },
   draw:   { label: "Draw",       badge: "badge--draw",   pts: "pts--neg" },
   gols:   { label: "Win+goals",  badge: "badge--engine", pts: "pts--hi" },
-  winner: { label: "Winner",     badge: "badge--warn",   pts: "pts--neg" },
+  winner: { label: "Winner",     badge: "badge--mute",   pts: "pts--neg" },
   miss:   { label: "Miss",       badge: "badge--mute",   pts: "pts--neg" },
 };
 
@@ -843,31 +1047,6 @@ function renderModelMetrics(m) {
     metricCard("Draws", `${m.pred_draws}/${m.actual_draws}`, `<span class="metric-foot">predicted / actual</span>`);
 }
 
-function renderPicksEditor() {
-  if (!STATE) return;
-  const ups = STATE.matches.filter(m => m.status !== "final");
-  const numInput = (id, side, val) =>
-    `<input id="pick-${side}-${id}" class="field" type="number" min="0" value="${val == null ? "" : val}" />`;
-  $("#picks-editor").innerHTML = ups.length ? ups.map(m => `
-    <div class="pick">
-      <div class="pick-l">
-        <span class="pick-time">${esc(m.kickoff || "")}</span>
-        <div class="pick-match">
-          <div class="name">${esc(m.home)} <span class="faint">v</span> ${esc(m.away)}</div>
-          <div class="sub">Group ${esc(m.group || "")}</div>
-        </div>
-      </div>
-      <div class="pick-r">
-        <div class="score-edit">
-          ${numInput(m.id, "h", m.user_home)}<span class="sep">–</span>${numInput(m.id, "a", m.user_away)}
-          <span class="proj">proj <b>${projScore(m.pred_home_goals, m.pred_away_goals) || "—"}</b></span>
-        </div>
-        <button class="btn btn--secondary btn--sm" onclick="savePick('${m.id}')">Save</button>
-        <span id="pick-msg-${m.id}" class="pick-save"></span>
-      </div>
-    </div>`).join("") : `<p class="muted" style="font-size:13px">No upcoming fixtures.</p>`;
-}
-
 async function savePick(id) {
   const hv = $("#pick-h-" + id).value.trim(), av = $("#pick-a-" + id).value.trim();
   const span = $("#pick-msg-" + id);
@@ -906,9 +1085,39 @@ async function loadSimulation(force) {
     $("#sim-status").innerHTML = `<span class="msg msg--err">✗ ${esc(String(e))}</span>`;
   }
 }
+function renderBracket(b) {
+  const host = $("#sim-bracket");
+  if (!host) return;
+  if (!b || !b.rounds) {
+    // The page (read fresh from disk) has the bracket UI, but /api/simulate returned no
+    // bracket — almost always a server still running the pre-bracket code in memory.
+    host.innerHTML = `<p class="muted" style="font-size:13px; padding:14px 16px; border:1px solid var(--edge); border-radius:var(--r-lg); background:var(--ink-1);">
+      Projected bracket not returned by the engine. <span class="faint">Restart the app — stop it and re-run <span class="num">python app.py</span> — to load it.</span></p>`;
+    return;
+  }
+  const teamRow = (t, p) => `<div class="bk-row${t.win ? " bk-row--win" : ""}">
+      <span class="seed">${esc(t.seed || "")}</span>
+      <span class="nm">${esc(t.name)}</span>
+      ${t.win ? `<span class="p">${Math.round(p * 100)}%</span>` : ""}
+    </div>`;
+  const cols = b.rounds.map(r => `
+    <div class="bk-col">
+      <div class="bk-col-head">${esc(r.name)}</div>
+      <div class="bk-col-body">${r.matches.map(m =>
+        `<div class="bk-match">${teamRow(m.a, m.p)}${teamRow(m.b, m.p)}</div>`).join("")}</div>
+    </div>`).join("");
+  const champ = `<div class="bk-col bk-col--champ">
+      <div class="bk-col-head">Champion</div>
+      <div class="bk-col-body"><div class="bk-champ">${I.trophy}
+        <span class="nm">${esc(b.champion)}</span><span class="lbl">Projected</span></div></div>
+    </div>`;
+  host.innerHTML = `<div class="bracket-wrap"><div class="bracket">${cols}${champ}</div></div>`;
+}
+
 function renderSimulation(d) {
   $("#sim-status").innerHTML = `<span class="status status--ok"><span class="dot"></span>
     ${d.n.toLocaleString()} trials · ${d.played} played, ${d.remaining} to play</span>`;
+  renderBracket(d.bracket);
   const fmt = x => x >= 0.0995 ? Math.round(x * 100) + "%" : x > 0 ? (x * 100).toFixed(1) + "%" : "·";
   const maxChamp = Math.max(...d.teams.map(t => t.champ), 0.0001);
   const rows = d.teams.map((t, i) => `
@@ -930,7 +1139,7 @@ function renderSimulation(d) {
     </tr>`).join("");
   $("#sim-table").innerHTML = `
     <div class="dt-head">
-      <div class="card-title card-title-icon" style="color:var(--warn)">${I.trophy} Win probability</div>
+      <div class="card-title card-title-icon" style="color:var(--accent)">${I.trophy} Win probability</div>
       <span class="status status--idle" style="font-size:11px"><span class="dot"></span> ${d.teams.length} teams</span>
     </div>
     <table>
@@ -943,8 +1152,8 @@ function renderSimulation(d) {
 
 // --- proposals ----------------------------------------------------------
 const PROP_KINDS = {
-  propose_params:        { rail: "tuning", badge: "badge--warn",   label: "Model tuning" },
-  propose_sos_overrides: { rail: "sched",  badge: "badge--home",   label: "Schedule strength" },
+  propose_params:        { rail: "tuning", badge: "badge--home",   label: "Model tuning" },
+  propose_sos_overrides: { rail: "sched",  badge: "badge--away",   label: "Schedule strength" },
   propose_team_form:     { rail: "form",   badge: "badge--engine", label: "Team form" },
   flag_sos_outliers:     { rail: "audit",  badge: "badge--mute",   label: "Data audit" },
 };
@@ -1008,7 +1217,7 @@ function describeProposal(p) {
     detailsHtml = contra.length ? `<details class="prop-details"><summary>Flagged teams · ${contra.length}</summary>
       <div class="kv-grid">${contra.map(t =>
         `<div class="kv"><span class="k">${esc(t.team)}</span>
-         <span class="v" style="color:${t.swing > 0 ? "var(--pos)" : "var(--away)"}">swing ${t.swing > 0 ? "+" : ""}${t.swing}${t.on_default ? " · default" : ""}</span></div>`).join("")}</div></details>` : "";
+         <span class="v" style="color:${t.swing > 0 ? "var(--pos)" : "var(--warn)"}">swing ${t.swing > 0 ? "+" : ""}${t.swing}${t.on_default ? " · default" : ""}</span></div>`).join("")}</div></details>` : "";
   } else {
     summary = esc((p.payload || "").slice(0, 160));
   }
@@ -1096,6 +1305,7 @@ async function decide(id, action) {
 }
 
 load();
+updateProgress();
 </script>
 </body>
 </html>
