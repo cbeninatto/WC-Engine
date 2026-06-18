@@ -1116,10 +1116,10 @@
       "kickoff": "2026-06-16",
       "home_id": "france",
       "away_id": "senegal",
-      "home_goals": null,
-      "away_goals": null,
-      "status": "scheduled",
-      "source": "seed:xlsx"
+      "home_goals": 3,
+      "away_goals": 1,
+      "status": "final",
+      "source": "sportdb"
     },
     {
       "id": "g-23",
@@ -1128,10 +1128,10 @@
       "kickoff": "2026-06-16",
       "home_id": "iraq",
       "away_id": "norway",
-      "home_goals": null,
-      "away_goals": null,
-      "status": "scheduled",
-      "source": "seed:xlsx"
+      "home_goals": 1,
+      "away_goals": 4,
+      "status": "final",
+      "source": "sportdb"
     },
     {
       "id": "g-24",
@@ -1140,10 +1140,10 @@
       "kickoff": "2026-06-16",
       "home_id": "argentina",
       "away_id": "algeria",
-      "home_goals": null,
-      "away_goals": null,
-      "status": "scheduled",
-      "source": "seed:xlsx"
+      "home_goals": 3,
+      "away_goals": 0,
+      "status": "final",
+      "source": "sportdb"
     },
     {
       "id": "g-25",
@@ -1152,10 +1152,10 @@
       "kickoff": "2026-06-16",
       "home_id": "austria",
       "away_id": "jordan",
-      "home_goals": null,
-      "away_goals": null,
-      "status": "scheduled",
-      "source": "seed:xlsx"
+      "home_goals": 3,
+      "away_goals": 1,
+      "status": "final",
+      "source": "sportdb"
     },
     {
       "id": "g-26",
@@ -1164,10 +1164,10 @@
       "kickoff": "2026-06-17",
       "home_id": "portugal",
       "away_id": "dr-congo",
-      "home_goals": null,
-      "away_goals": null,
-      "status": "scheduled",
-      "source": "seed:xlsx"
+      "home_goals": 1,
+      "away_goals": 1,
+      "status": "final",
+      "source": "sportdb"
     },
     {
       "id": "g-27",
@@ -1176,10 +1176,10 @@
       "kickoff": "2026-06-17",
       "home_id": "england",
       "away_id": "croatia",
-      "home_goals": null,
-      "away_goals": null,
-      "status": "scheduled",
-      "source": "seed:xlsx"
+      "home_goals": 4,
+      "away_goals": 2,
+      "status": "final",
+      "source": "sportdb"
     },
     {
       "id": "g-28",
@@ -1188,10 +1188,10 @@
       "kickoff": "2026-06-17",
       "home_id": "ghana",
       "away_id": "panama",
-      "home_goals": null,
-      "away_goals": null,
-      "status": "scheduled",
-      "source": "seed:xlsx"
+      "home_goals": 1,
+      "away_goals": 0,
+      "status": "final",
+      "source": "sportdb"
     },
     {
       "id": "g-29",
@@ -1200,10 +1200,10 @@
       "kickoff": "2026-06-17",
       "home_id": "uzbekistan",
       "away_id": "colombia",
-      "home_goals": null,
-      "away_goals": null,
-      "status": "scheduled",
-      "source": "seed:xlsx"
+      "home_goals": 1,
+      "away_goals": 3,
+      "status": "final",
+      "source": "sportdb"
     },
     {
       "id": "g-30",
@@ -1780,6 +1780,152 @@
       "away_goals": null,
       "status": "scheduled",
       "source": "seed:xlsx"
+    }
+  ],
+  "user_predictions": [
+    {
+      "match_id": "g-6",
+      "pred_home": 2,
+      "pred_away": 1,
+      "source": "old-model"
+    },
+    {
+      "match_id": "g-7",
+      "pred_home": 1,
+      "pred_away": 2,
+      "source": "old-model"
+    },
+    {
+      "match_id": "g-8",
+      "pred_home": 2,
+      "pred_away": 1,
+      "source": "old-model"
+    },
+    {
+      "match_id": "g-9",
+      "pred_home": 2,
+      "pred_away": 1,
+      "source": "old-model"
+    },
+    {
+      "match_id": "g-13",
+      "pred_home": 0,
+      "pred_away": 2,
+      "source": "old-model"
+    },
+    {
+      "match_id": "g-10",
+      "pred_home": 2,
+      "pred_away": 1,
+      "source": "old-model"
+    },
+    {
+      "match_id": "g-12",
+      "pred_home": 0,
+      "pred_away": 1,
+      "source": "old-model"
+    },
+    {
+      "match_id": "g-11",
+      "pred_home": 2,
+      "pred_away": 2,
+      "source": "old-model"
+    },
+    {
+      "match_id": "g-14",
+      "pred_home": 3,
+      "pred_away": 0,
+      "source": "old-model"
+    },
+    {
+      "match_id": "g-16",
+      "pred_home": 2,
+      "pred_away": 2,
+      "source": "old-model"
+    },
+    {
+      "match_id": "g-15",
+      "pred_home": 2,
+      "pred_away": 0,
+      "source": "old-model"
+    },
+    {
+      "match_id": "g-17",
+      "pred_home": 1,
+      "pred_away": 2,
+      "source": "old-model"
+    },
+    {
+      "match_id": "g-18",
+      "pred_home": 4,
+      "pred_away": 0,
+      "source": "old-model"
+    },
+    {
+      "match_id": "g-19",
+      "pred_home": 2,
+      "pred_away": 1,
+      "source": "old-model"
+    },
+    {
+      "match_id": "g-20",
+      "pred_home": 1,
+      "pred_away": 3,
+      "source": "old-model"
+    },
+    {
+      "match_id": "g-21",
+      "pred_home": 3,
+      "pred_away": 1,
+      "source": "old-model"
+    },
+    {
+      "match_id": "g-22",
+      "pred_home": 2,
+      "pred_away": 1,
+      "source": "manual"
+    },
+    {
+      "match_id": "g-23",
+      "pred_home": 0,
+      "pred_away": 2,
+      "source": "manual"
+    },
+    {
+      "match_id": "g-24",
+      "pred_home": 3,
+      "pred_away": 1,
+      "source": "manual"
+    },
+    {
+      "match_id": "g-25",
+      "pred_home": 2,
+      "pred_away": 0,
+      "source": "manual"
+    },
+    {
+      "match_id": "g-26",
+      "pred_home": 2,
+      "pred_away": 0,
+      "source": "manual"
+    },
+    {
+      "match_id": "g-29",
+      "pred_home": 1,
+      "pred_away": 3,
+      "source": "manual"
+    },
+    {
+      "match_id": "g-27",
+      "pred_home": 1,
+      "pred_away": 1,
+      "source": "manual"
+    },
+    {
+      "match_id": "g-28",
+      "pred_home": 2,
+      "pred_away": 1,
+      "source": "manual"
     }
   ]
 }
