@@ -40,8 +40,8 @@ def walk_forward(team_forms: dict, finals: list[dict], p: dict = DEFAULT_PARAMS)
         hg, ag = m["home_goals"], m["away_goals"]
         oc = outcome(hg, ag)
         samples.append({"probs": probs, "outcome": oc, "pred_goals": pg, "actual_goals": (hg, ag)})
-        rows.append({"home_id": h, "away_id": a, "probs": probs, "pred_goals": pg,
-                     "actual_goals": (hg, ag), "outcome": oc})
+        rows.append({"id": m.get("id"), "home_id": h, "away_id": a, "probs": probs,
+                     "pred_goals": pg, "actual_goals": (hg, ag), "outcome": oc})
         cur[h], cur[a] = apply_result(cur[h], cur[a], hg, ag, p)  # then fold it in
     return samples, rows
 

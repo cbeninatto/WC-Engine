@@ -73,6 +73,16 @@ CREATE TABLE IF NOT EXISTS squad_status (
   reported_at      TEXT DEFAULT (datetime('now'))
 );
 
+-- The user's own scoreline picks (a fantasy-league bet slip). User-entered facts, not an
+-- agent proposal, so they're written directly. Graded against finals by engine/fantasy.py.
+CREATE TABLE IF NOT EXISTS user_predictions (
+  match_id   TEXT PRIMARY KEY REFERENCES matches(id) ON DELETE CASCADE,
+  pred_home  INTEGER NOT NULL,
+  pred_away  INTEGER NOT NULL,
+  source     TEXT,                            -- e.g. 'manual', 'old-model'
+  created_at TEXT DEFAULT (datetime('now'))
+);
+
 -- Engine output per match.
 CREATE TABLE IF NOT EXISTS predictions (
   match_id        TEXT PRIMARY KEY REFERENCES matches(id) ON DELETE CASCADE,

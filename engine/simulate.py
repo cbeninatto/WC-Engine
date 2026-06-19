@@ -118,6 +118,66 @@ def simulate(powers: dict, groups: dict, played: list, remaining: list,
     return {tid: {r: c[r] / n for r in ROUNDS} for tid, c in counts.items()}
 
 
+def project_bracket(powers: dict, groups: dict, played: list, remaining: list,
+                    p: dict = DEFAULT_PARAMS) -> dict:
+    """The single most-likely knockout bracket — deterministic, no sampling.
+
+    Finishes the group stage on the engine's expected scorelines (rounded), seeds the R32
+    exactly as the live tournament would (top two per group + the 8 best third-placed teams),
+    then advances the favourite of each tie (higher `bracket.advance_prob`) through to a
+    projected champion. Pure — same input contract as `simulate`.
+
+    Returns:
+        matches : {match_no: {"a", "b", "p_adv", "winner"}}  team ids; p_adv = P(a advances)
+        champion: team id that wins the Final (match 104)
+        seeds   : {"winners","runners","thirds": group->team, "assignment": slot->group}
+        qual_groups : the 8 groups whose third-placed team qualifies
+    """
+    table = {tid: [0, 0, 0] for members in groups.values() for tid in members}
+    for (_g, h, a, hg, ag) in played:
+        if h in table and a in table:
+            _apply(table, h, a, hg, ag)
+    for (_g, h, a) in remaining:
+        if h in table and a in table:
+            lam_h, lam_a = expected_goals(powers[h], powers[a], p)
+            _apply(table, h, a, int(round(lam_h)), int(round(lam_a)))
+
+    # Rank each group (points, GD, GF, then power as a deterministic final tiebreak).
+    winners, runners, thirds, third_recs = {}, {}, {}, []
+    for g, members in groups.items():
+        ranked = sorted(members,
+                        key=lambda t: (table[t][0], table[t][1], table[t][2], powers[t]),
+                        reverse=True)
+        winners[g], runners[g], thirds[g] = ranked[0], ranked[1], ranked[2]
+        r = table[ranked[2]]
+        third_recs.append((r[0], r[1], r[2], powers[ranked[2]], g))
+
+    third_recs.sort(reverse=True)
+    qual_groups = [g for (*_r, g) in third_recs[:8]]
+    assignment = bracket.assign_thirds(qual_groups)
+
+    matches, winner_of = {}, {}
+
+    def _play(mno: int, ta, tb) -> None:
+        p_adv = bracket.advance_prob(powers[ta], powers[tb], p)
+        winner_of[mno] = ta if p_adv >= 0.5 else tb
+        matches[mno] = {"a": ta, "b": tb, "p_adv": p_adv, "winner": winner_of[mno]}
+
+    for mno, (ta, tb) in bracket.r32_pairings(winners, runners, thirds, assignment).items():
+        _play(mno, ta, tb)
+    for mno in bracket.KO_ORDER:
+        sa, sb = bracket.KO_TREE[mno]
+        _play(mno, winner_of[sa], winner_of[sb])
+
+    return {
+        "matches": matches,
+        "champion": winner_of[104],
+        "qual_groups": qual_groups,
+        "seeds": {"winners": winners, "runners": runners, "thirds": thirds,
+                  "assignment": assignment},
+    }
+
+
 if __name__ == "__main__":
     # Build a synthetic but well-formed world: 12 groups of 4, no games played yet, so the
     # simulation drives the entire tournament. Equal powers => everyone equally likely.
@@ -140,4 +200,10 @@ if __name__ == "__main__":
     # With equal strength, champion odds should sit near 1/48 for everyone.
     champ = [p["champ"] for p in probs.values()]
     assert abs(max(champ) - 1 / 48) < 0.02 and abs(min(champ) - 1 / 48) < 0.02
-    print(f"engine.simulate self-check OK ({n} trials, totals + monotonicity verified)")
+
+    # Projected bracket: a full, well-formed tree (16 R32 + 15 later ties) with a champion.
+    proj = project_bracket(powers, groups, [], remaining)
+    assert len(proj["matches"]) == 31, len(proj["matches"])
+    assert proj["champion"] in powers
+    assert len(proj["qual_groups"]) == 8 and len(set(proj["qual_groups"])) == 8
+    print(f"engine.simulate self-check OK ({n} trials + projected bracket verified)")

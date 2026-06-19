@@ -43,12 +43,16 @@ def main(path: str | None = None):
         db.upsert_form(conn, f.pop("team_id"), **f)
     for m in snap["matches"]:
         db.upsert_match(conn, m)
+    for up in snap.get("user_predictions", []):  # .get: tolerate pre-feature snapshots
+        db.upsert_user_prediction(conn, up["match_id"], up["pred_home"],
+                                  up["pred_away"], up.get("source", "manual"))
     conn.commit()
 
     post, _prior, _wc, _teams, n = recompute(conn)
     conn.commit()
     conn.close()
-    print(f"Seeded {len(snap['teams'])} teams + {len(snap['matches'])} matches from {p.name}; "
+    print(f"Seeded {len(snap['teams'])} teams + {len(snap['matches'])} matches + "
+          f"{len(snap.get('user_predictions', []))} user picks from {p.name}; "
           f"re-rated over {n} finals.")
 
 

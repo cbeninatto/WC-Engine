@@ -29,6 +29,7 @@ FORM_COLS = ["team_id", "played", "wins", "draws", "losses", "gf", "ga",
              "pass_acc", "pressing", "sos", "notes"]
 MATCH_COLS = ["id", "stage", "group_code", "kickoff", "home_id", "away_id",
               "home_goals", "away_goals", "status", "source"]
+USER_PRED_COLS = ["match_id", "pred_home", "pred_away", "source"]
 
 
 def main():
@@ -47,6 +48,7 @@ def main():
         "teams": dump("teams", TEAM_COLS),
         "team_form": dump("team_form", FORM_COLS),
         "matches": dump("matches", MATCH_COLS),
+        "user_predictions": dump("user_predictions", USER_PRED_COLS),
     }
     conn.close()
 
@@ -55,7 +57,8 @@ def main():
     out.write_text(json.dumps(snap, indent=2, ensure_ascii=False), encoding="utf-8")
     finals = sum(1 for m in snap["matches"] if m["status"] == "final")
     print(f"Wrote {out}\n  {len(snap['teams'])} teams · {len(snap['team_form'])} form rows · "
-          f"{len(snap['matches'])} matches ({finals} final)")
+          f"{len(snap['matches'])} matches ({finals} final) · "
+          f"{len(snap['user_predictions'])} user picks")
 
 
 if __name__ == "__main__":

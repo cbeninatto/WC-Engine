@@ -27,6 +27,8 @@ backtest scored with Brier / log-loss). We never fine-tune Claude itself.
   - `rerate.py` — in-tournament Elo-style update of prior ratings from real results.
   - `scoring.py` — Brier / log-loss / RPS / accuracy. `backtest.py` — leakage-free
     walk-forward replay; both the scoreboard and the tuner score through this one path.
+  - `fantasy.py` — fantasy-pool scoring of an exact-scoreline pick (15/9/8/7/5/0); grades
+    the user's picks AND the engine's own rounded pick head-to-head (the Performance tab).
   - `params.py` — `DEFAULT_PARAMS` (the tunable knobs) + confederation SoS defaults.
 - `lib/db.py` — all DB access, **dual-backend**: SQLite by default, Postgres (Supabase)
   when `DATABASE_URL` is set. Translates placeholders + coerces timestamps so callers are
@@ -40,6 +42,10 @@ backtest scored with Brier / log-loss). We never fine-tune Claude itself.
   `--save` records the baseline), `migrate_to_postgres.py` (copy `wc.db` → Supabase).
 - `app.py` + `webapp/` — FastAPI + Tailwind dashboard/control panel. `api/index.py` +
   `vercel.json` deploy it to Vercel; control actions fire GitHub Actions when serverless.
+  The **Performance** tab tracks results: engine forecast accuracy (Brier/log-loss/RPS via
+  the same walk-forward path) plus you-vs-engine fantasy points, and an editor that POSTs
+  scoreline picks to `/api/predictions` (stored in `user_predictions`, user-entered facts so
+  they commit directly — not the agent proposal queue). `GET /api/scoreboard` serves it.
 - `db/schema.sql` (SQLite) + `db/schema_postgres.sql` (Supabase) — the schema, two dialects.
 
 Deeper references in `docs/`: [ARCHITECTURE](docs/ARCHITECTURE.md), [MODEL](docs/MODEL.md),
@@ -85,6 +91,7 @@ window-limited (`--since`), so pre-window cross-confederation wins are under-wei
     python scripts/snapshot_db.py               # freeze the current DB as a new seed baseline
     python agents/build_team_form.py            # rebuild team_form from real SportDB results (propose; --apply to commit)
     python agents/sos_sourcer.py --all          # evidence-based SoS for every team (propose; --apply to commit)
+    python scripts/seed_user_predictions.py     # load the user's scoreline picks (fantasy bet slip); snapshot to bake in
     python scripts/predict.py                   # compute ratings + predictions
     python scripts/scoreboard.py                # grade forecasts vs finals (Brier/log-loss/RPS)
     python scripts/build_holdout.py             # build data/holdout/wc2022.json (real out-of-sample set)

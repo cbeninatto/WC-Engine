@@ -123,6 +123,11 @@ def final_matches(conn) -> list[dict]:
     return [dict(r) for r in rows]
 
 
+def user_predictions(conn) -> dict[str, dict]:
+    """The user's scoreline picks, keyed by match_id."""
+    return {r["match_id"]: dict(r) for r in conn.execute("SELECT * FROM user_predictions")}
+
+
 def prior_powers(conn) -> dict[str, float]:
     rows = conn.execute("SELECT team_id, power, prior_power FROM power_ratings")
     return {
@@ -173,6 +178,21 @@ def record_result(conn, match_id, hg, ag, source):
         "updated_at=CURRENT_TIMESTAMP WHERE id=?",
         (hg, ag, source, match_id),
     )
+
+
+def upsert_user_prediction(conn, match_id, pred_home, pred_away, source="manual"):
+    conn.execute(
+        """INSERT INTO user_predictions(match_id,pred_home,pred_away,source)
+           VALUES(?,?,?,?)
+           ON CONFLICT(match_id) DO UPDATE SET
+             pred_home=excluded.pred_home, pred_away=excluded.pred_away,
+             source=excluded.source, created_at=CURRENT_TIMESTAMP""",
+        (match_id, pred_home, pred_away, source),
+    )
+
+
+def delete_user_prediction(conn, match_id):
+    conn.execute("DELETE FROM user_predictions WHERE match_id=?", (match_id,))
 
 
 def upsert_power(conn, team_id, power, prior_power, wc_games, version):
