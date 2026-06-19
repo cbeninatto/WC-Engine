@@ -20,7 +20,11 @@ DEFAULT_PARAMS = {
     # expected-scoreline mapping: goals = score_base +/- power_gap/score_div
     "score_base": 1.3, "score_div": 30.0,
     # win/draw/loss probability model
-    "draw_base": 0.56, "draw_slope": 48.0, "draw_floor": 0.19,
+    # draw_base lowered 0.56 -> 0.34 (2026-06-19) after round 1: at 0.56 the model picked
+    # "Draw" as the modal outcome in 9/28 games, dragging winner accuracy below a coin-flip
+    # (25%). 0.34 sits near real-world draw rates and is robust across datasets; logistic_scale
+    # left at 15 deliberately — the tuner's Brier-optimal 38.9 overfit a single upset-heavy round.
+    "draw_base": 0.34, "draw_slope": 48.0, "draw_floor": 0.19,
     "logistic_scale": 15.0,
     # in-tournament update strength (Elo-style K)
     "rerate_k": 6.0,
