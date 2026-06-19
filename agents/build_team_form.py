@@ -47,9 +47,17 @@ from agents.ingest import _norm, NAME_ALIASES
 from agents.sos_sourcer import gather, nkey
 from scripts.build_holdout import team_record
 from engine.power import TeamForm, power
+from engine.params import CONFED_SOS
 from scripts.predict import recompute
 
 CITE = 4  # most-recent scorelines quoted in a provenance note
+
+
+def _sos(t: dict) -> float:
+    """Curated SoS if set, else the team's CONFEDERATION DEFAULT (guardrail #2: absence of
+    evidence keeps a team on its confederation default — NOT a neutral 1.0), else 1.0. A bare
+    `or 1.0` here is what stranded Brazil/Morocco/etc. on 1.0 instead of CONMEBOL 1.12 / CAF 0.72."""
+    return t.get("sos") or CONFED_SOS.get(t.get("confederation"), 1.0)
 
 
 def team_matches(team_name: str, pool: list[dict], window: int) -> list[dict]:
@@ -122,7 +130,7 @@ def apply_from_file(conn, teams: dict) -> None:
         db.upsert_form(conn, tid, played=f["played"], wins=f["wins"], draws=f["draws"],
                        losses=f["losses"], gf=f["gf"], ga=f["ga"],
                        pass_acc=t.get("pass_acc") or 80.0, pressing=t.get("pressing") or 6.0,
-                       sos=t.get("sos") or 1.0, notes=f.get("notes"))
+                       sos=_sos(t), notes=f.get("notes"))
     db.log_run(conn, "build_team_form", "apply_team_form",
                {"applied": len(forms), "window": payload.get("window"), "since": payload.get("since"),
                 "source": PROPOSAL}, status="applied")
@@ -179,7 +187,7 @@ def main():
         rebuilt[t["id"]] = {
             "name": t["name"], **rec,
             "pass_acc": t.get("pass_acc") or 80.0, "pressing": t.get("pressing") or 6.0,
-            "sos": t.get("sos") or 1.0, "notes": provenance(t["name"], mine),
+            "sos": _sos(t), "notes": provenance(t["name"], mine),
         }
 
     # ---- report: old vs new power, sorted by the biggest rating move ----
@@ -191,7 +199,7 @@ def main():
     for tid, f in rebuilt.items():
         t = teams[tid]
         old = pow_of({**t, "pass_acc": t.get("pass_acc") or 80.0,
-                      "pressing": t.get("pressing") or 6.0, "sos": t.get("sos") or 1.0})
+                      "pressing": t.get("pressing") or 6.0, "sos": _sos(t)})
         rows.append((pow_of(f) - old, t["name"],
                      f"{t['wins']}-{t['draws']}-{t['losses']}", f"{f['wins']}-{f['draws']}-{f['losses']}",
                      round(old, 1), round(pow_of(f), 1)))

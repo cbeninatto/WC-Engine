@@ -405,8 +405,8 @@
       "ga": 21,
       "pass_acc": 85.0,
       "pressing": 7.0,
-      "sos": 1.0,
-      "notes": "Form = last 20 official matches (2024-06-09..2026-06-06); sources: Friendlies 10, WC2026 qualifiers 6, Copa America 2024 4. Recent: 2-1 vs Egypt; 6-2 vs Panama; 3-1 vs Croatia; 1-2 vs France. [src: SportDB; PROPOSED, awaiting approval]"
+      "sos": 1.12,
+      "notes": "SoS 1.12 = CONMEBOL confederation default, applied 2026-06-19 (guardrail #2: no evidence-based override sourced; corrects an erroneous 1.0 fallback). Form = last 20 official matches (2024-06-09..2026-06-06); sources: Friendlies 10, WC2026 qualifiers 6, Copa America 2024 4. Recent: 2-1 vs Egypt; 6-2 vs Panama; 3-1 vs Croatia; 1-2 vs France. [src: SportDB; PROPOSED, awaiting approval]"
     },
     {
       "team_id": "morocco",
@@ -418,8 +418,8 @@
       "ga": 10,
       "pass_acc": 78.0,
       "pressing": 6.0,
-      "sos": 1.0,
-      "notes": "Form = last 20 official matches (2024-01-30..2026-06-07); sources: Friendlies 14, WC2026 qualifiers 5, AFCON 1. Recent: 1-1 vs Norway; 4-0 vs Madagascar; 5-0 vs Burundi; 2-1 vs Paraguay. [src: SportDB; PROPOSED, awaiting approval]"
+      "sos": 0.72,
+      "notes": "SoS 0.72 = CAF confederation default, applied 2026-06-19 (guardrail #2: no evidence-based override sourced; corrects an erroneous 1.0 fallback). Form = last 20 official matches (2024-01-30..2026-06-07); sources: Friendlies 14, WC2026 qualifiers 5, AFCON 1. Recent: 1-1 vs Norway; 4-0 vs Madagascar; 5-0 vs Burundi; 2-1 vs Paraguay. [src: SportDB; PROPOSED, awaiting approval]"
     },
     {
       "team_id": "scotland",
@@ -652,8 +652,8 @@
       "ga": 22,
       "pass_acc": 77.0,
       "pressing": 6.0,
-      "sos": 1.0,
-      "notes": "Form = last 17 official matches (2024-03-22..2026-06-06); sources: Friendlies 15, WC2026 qualifiers 2. Recent: 1-0 @ England; 4-0 @ Haiti; 2-0 @ Ecuador; 2-1 @ Colombia. [src: SportDB; PROPOSED, awaiting approval]"
+      "sos": 0.55,
+      "notes": "SoS 0.55 = OFC confederation default, applied 2026-06-19 (guardrail #2: no evidence-based override sourced; corrects an erroneous 1.0 fallback). Form = last 17 official matches (2024-03-22..2026-06-06); sources: Friendlies 15, WC2026 qualifiers 2. Recent: 1-0 @ England; 4-0 @ Haiti; 2-0 @ Ecuador; 2-1 @ Colombia. [src: SportDB; PROPOSED, awaiting approval]"
     },
     {
       "team_id": "spain",
@@ -769,8 +769,8 @@
       "ga": 6,
       "pass_acc": 84.0,
       "pressing": 7.0,
-      "sos": 1.0,
-      "notes": "Form = last 20 official matches (2024-06-15..2026-06-10); sources: Friendlies 8, WC2026 qualifiers 6, Copa America 2024 6. Recent: 3-0 vs Iceland; 2-0 vs Honduras; 5-0 vs Zambia; 2-1 vs Mauritania. [src: SportDB; PROPOSED, awaiting approval]"
+      "sos": 1.12,
+      "notes": "SoS 1.12 = CONMEBOL confederation default, applied 2026-06-19 (guardrail #2: no evidence-based override sourced; corrects an erroneous 1.0 fallback). Form = last 20 official matches (2024-06-15..2026-06-10); sources: Friendlies 8, WC2026 qualifiers 6, Copa America 2024 6. Recent: 3-0 vs Iceland; 2-0 vs Honduras; 5-0 vs Zambia; 2-1 vs Mauritania. [src: SportDB; PROPOSED, awaiting approval]"
     },
     {
       "team_id": "austria",
@@ -1212,10 +1212,10 @@
       "kickoff": "2026-06-18",
       "home_id": "czechia",
       "away_id": "south-africa",
-      "home_goals": null,
-      "away_goals": null,
-      "status": "scheduled",
-      "source": "seed:xlsx"
+      "home_goals": 1,
+      "away_goals": 1,
+      "status": "final",
+      "source": "sportdb"
     },
     {
       "id": "g-31",
@@ -1224,10 +1224,10 @@
       "kickoff": "2026-06-18",
       "home_id": "switzerland",
       "away_id": "bosnia-and-herzegovina",
-      "home_goals": null,
-      "away_goals": null,
-      "status": "scheduled",
-      "source": "seed:xlsx"
+      "home_goals": 4,
+      "away_goals": 1,
+      "status": "final",
+      "source": "sportdb"
     },
     {
       "id": "g-32",
@@ -1236,10 +1236,10 @@
       "kickoff": "2026-06-18",
       "home_id": "canada",
       "away_id": "qatar",
-      "home_goals": null,
-      "away_goals": null,
-      "status": "scheduled",
-      "source": "seed:xlsx"
+      "home_goals": 6,
+      "away_goals": 0,
+      "status": "final",
+      "source": "sportdb"
     },
     {
       "id": "g-33",
@@ -1248,10 +1248,10 @@
       "kickoff": "2026-06-18",
       "home_id": "mexico",
       "away_id": "south-korea",
-      "home_goals": null,
-      "away_goals": null,
-      "status": "scheduled",
-      "source": "seed:xlsx"
+      "home_goals": 1,
+      "away_goals": 0,
+      "status": "final",
+      "source": "sportdb"
     },
     {
       "id": "g-34",
@@ -1925,6 +1925,30 @@
       "match_id": "g-28",
       "pred_home": 2,
       "pred_away": 1,
+      "source": "manual"
+    },
+    {
+      "match_id": "g-30",
+      "pred_home": 2,
+      "pred_away": 1,
+      "source": "manual"
+    },
+    {
+      "match_id": "g-32",
+      "pred_home": 2,
+      "pred_away": 1,
+      "source": "manual"
+    },
+    {
+      "match_id": "g-31",
+      "pred_home": 2,
+      "pred_away": 1,
+      "source": "manual"
+    },
+    {
+      "match_id": "g-33",
+      "pred_home": 1,
+      "pred_away": 2,
       "source": "manual"
     }
   ]
